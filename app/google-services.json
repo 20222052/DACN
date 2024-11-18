@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "262906481358",
+    "project_id": "dacn-6bb7e",
+    "storage_bucket": "dacn-6bb7e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262906481358:android:3059dffbbd2ab7484c5e9f",
+        "android_client_info": {
+          "package_name": "com.example.dacn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkCn4dI6kQ3FLYsQKrcrT7NTIDJMh3N2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
