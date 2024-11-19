@@ -3,12 +3,15 @@ package com.example.dacn.View;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.R;
 
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Staff extends AppCompatActivity {
+
+    ImageButton bellButton;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -29,6 +34,14 @@ public class Staff extends AppCompatActivity {
             return insets;
         });
 
+        initView();
+        loadData();
+
+        bellButton.setOnClickListener(view -> showNotificationFragment());
+
+    }
+
+    private void loadData() {
         GridView gridViewMenu = findViewById(R.id.gridView_menu);
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.drawable.pho_cuon, "Phở cuốn", "80.000"));
@@ -54,11 +67,37 @@ public class Staff extends AppCompatActivity {
         listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
         listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
         listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
 
         ListAdapter lst_adapter = new ListAdapter(this, listItems);
         listView.setAdapter(lst_adapter);
-
     }
+
+    private void initView() {
+        bellButton = findViewById(R.id.btn_bell);
+    }
+
+    private void showNotificationFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        NotificationFragment fragment = new NotificationFragment();
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     public class MenuItem {
         private int imageResource;
         private String name;

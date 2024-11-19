@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/shadow_item_background">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textColor="#000"
+            android:paddingLeft="25dp"
+            android:textSize="24sp"
+            android:text="Đơn Hàng: 3333"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="25dp"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:layout_weight="1"
+            android:text="Số Lượng: 3"
+            android:gravity="right"/>
+    </LinearLayout>
+</LinearLayout>
