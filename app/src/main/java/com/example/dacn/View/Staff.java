@@ -30,7 +30,7 @@ public class Staff extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_staff);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.khachhang), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -62,7 +62,6 @@ public class Staff extends AppCompatActivity {
         menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
         MenuAdapter adapter = new MenuAdapter(this, menuItems);
         gridViewMenu.setAdapter(adapter);
-
 
         GridView listView = findViewById(R.id.gridView_list);
         List<ListItem> listItems = new ArrayList<>();
