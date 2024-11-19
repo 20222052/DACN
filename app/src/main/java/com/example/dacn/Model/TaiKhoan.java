@@ -18,7 +18,6 @@ public class TaiKhoan {
         this.matKhau = matKhau;
         this.vaiTro = vaiTro;
     }
-
     // Getters and Setters
     public int getMaTaiKhoan() {
         return maTaiKhoan;

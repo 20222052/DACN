@@ -52,8 +52,6 @@ public class ListAdapter extends BaseAdapter {
         itemPrice.setText(String.valueOf(listitems.getPrice()));
         itemQuantity.setText(String.valueOf(listitems.getQuantity()));
 
-
-
         return convertView;
     }
 }

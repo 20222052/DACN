@@ -60,7 +60,6 @@ public class Staff extends AppCompatActivity {
         MenuAdapter adapter = new MenuAdapter(this, menuItems);
         gridViewMenu.setAdapter(adapter);
 
-
         GridView listView = findViewById(R.id.gridView_list);
         List<ListItem> listItems = new ArrayList<>();
         listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
