@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/popup_layout"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@drawable/borders_view"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/tv_cart_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giỏ hàng của bạn"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="8dp" />
+
+        <!-- Danh sách sản phẩm -->
+        <GridView
+            android:id="@+id/gv_cart_items"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:horizontalSpacing="8dp"
+            android:verticalSpacing="8dp"
+            android:scrollbars="vertical"
+            android:stretchMode="columnWidth" />
+
+        <!-- Phần hiển thị tổng tiền và nút thanh toán -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <!-- Tổng tiền -->
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tổng tiền: 0đ"
+                android:textSize="26sp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:paddingBottom="8dp" />
+
+            <!-- Nút thanh toán -->
+            <Button
+                android:id="@+id/btn_checkout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:paddingRight="50dp"
+                android:paddingLeft="50dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="20sp"
+                android:backgroundTint="#FB8C00"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

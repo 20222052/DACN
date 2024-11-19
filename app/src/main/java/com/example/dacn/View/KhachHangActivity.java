@@ -1,6 +1,9 @@
 package com.example.dacn.View;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -9,6 +12,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,8 +33,10 @@ public class KhachHangActivity extends AppCompatActivity {
     FoodAdapter foodAdapter;
     DrinkAdapter drinksAdapter;
     SearchView searchView;
+    ImageButton btn_cart;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,7 @@ public class KhachHangActivity extends AppCompatActivity {
         rcv_food = findViewById(R.id.rcv_food);
         rcv_drink = findViewById(R.id.rcv_drink);
         searchView = findViewById(R.id.search_food);
+        btn_cart = findViewById(R.id.btn_cart);
         int numberOfColumns = 3;
         int numberOfColumns2 = 3;
 
@@ -78,6 +86,20 @@ public class KhachHangActivity extends AppCompatActivity {
         drinksList = getListDrink();
         drinksAdapter = new DrinkAdapter(drinksList);
         rcv_drink.setAdapter(drinksAdapter);
+
+        //xu ly btn_card de hienthi fragment
+        btn_cart.setOnClickListener(view -> showCartFragment());
+    }
+
+    //show fragment
+    private void showCartFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        CartFragment fragment = new CartFragment();
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     // Lọc và tìm kiếm
@@ -131,7 +153,6 @@ public class KhachHangActivity extends AppCompatActivity {
         list.add(new Food("", 5));
         list.add(new Food("", 6));
         list.add(new Food("", 7));
-
         return list;
     }
 }

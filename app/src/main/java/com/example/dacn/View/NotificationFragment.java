@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.dacn.Controller.NotificationAdapter;
 import com.example.dacn.R;
 
 import java.util.ArrayList;

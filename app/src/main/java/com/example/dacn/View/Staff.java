@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.dacn.Controller.ListAdapter;
+import com.example.dacn.Controller.MenuAdapter;
 import com.example.dacn.R;
 
 import java.util.ArrayList;

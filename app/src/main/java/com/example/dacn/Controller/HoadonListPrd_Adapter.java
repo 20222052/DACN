@@ -1,4 +1,4 @@
-package com.example.dacn.View;
+package com.example.dacn.Controller;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,23 +11,23 @@ import com.example.dacn.R;
 
 import java.util.List;
 
-public class NotificationAdapter extends BaseAdapter {
+public class HoadonListPrd_Adapter extends BaseAdapter {
     private final Context context;
-    private final List<NotificationItem> notificationItems;
+    private final List<HoaDonItem> hoadonItems;
 
-    public NotificationAdapter(Context context, List<NotificationItem> notificationItems) {
+    public HoadonListPrd_Adapter(Context context, List<HoaDonItem> hoadonItems) {
         this.context = context;
-        this.notificationItems = notificationItems;
+        this.hoadonItems = hoadonItems;
     }
 
     @Override
     public int getCount() {
-        return notificationItems.size();
+        return hoadonItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return notificationItems.get(position);
+        return hoadonItems.get(position);
     }
 
     @Override
@@ -38,26 +38,33 @@ public class NotificationAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_notification, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_item_prd_hoadon, parent, false);
         }
 
-        NotificationItem item = notificationItems.get(position);
+        HoaDonItem item = hoadonItems.get(position);
 
+        // Ánh xạ các view từ layout
         TextView itemName = convertView.findViewById(R.id.item_name);
         TextView itemPrice = convertView.findViewById(R.id.item_price);
+        TextView itemQuantity = convertView.findViewById(R.id.item_quantity);
 
-        itemName.setText(String.format("Đơn Hàng: %s", item.getOrderName()));
-        itemPrice.setText(String.format("Số Lượng: %s", item.getQuantity()));
+        // Đặt dữ liệu lên giao diện
+        itemName.setText(item.getOrderName());
+        itemPrice.setText(String.format("%,.0f VND", item.getPrice()));
+        itemQuantity.setText(String.format("%dx", item.getQuantity()));
 
         return convertView;
     }
 
-    public static class NotificationItem {
+    // Lớp mô tả thông tin hoá đơn
+    public static class HoaDonItem {
         private final String orderName;
+        private final double price;
         private final int quantity;
 
-        public NotificationItem(String orderName, int quantity) {
+        public HoaDonItem(String orderName, double price, int quantity) {
             this.orderName = orderName;
+            this.price = price;
             this.quantity = quantity;
         }
 
@@ -65,9 +72,12 @@ public class NotificationAdapter extends BaseAdapter {
             return orderName;
         }
 
+        public double getPrice() {
+            return price;
+        }
+
         public int getQuantity() {
             return quantity;
         }
     }
 }
-

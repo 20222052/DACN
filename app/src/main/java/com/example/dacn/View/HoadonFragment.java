@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.dacn.Controller.HoadonListPrd_Adapter;
 import com.example.dacn.R;
 
 import java.util.ArrayList;
@@ -35,6 +36,16 @@ public class HoadonFragment extends Fragment {
 
         // Xử lý sự kiện cho nút "Huỷ"
         btnHuy.setOnClickListener(v -> closeFragment());
+
+        // Xử lý sự kiện khi an vao layout rong se dong frahment
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) View backgroundLayout = view.findViewById(R.id.hoadonlayout);
+        backgroundLayout.setOnClickListener(v -> closeFragment());
+        // Đảm bảo nội dung bên trong popup không bị ảnh hưởng
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) View popupLayout = view.findViewById(R.id.hoadonitem);
+        popupLayout.setOnClickListener(v -> {
+            // Chặn sự kiện click thoát fragment
+        });
+
 
         // Khởi tạo GridView và dữ liệu
         GridView gridView = view.findViewById(R.id.gridView_itemList_prd);
