@@ -16,7 +16,7 @@
             android:name=".View.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Staff"
+            android:name=".View.KhachHangActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
