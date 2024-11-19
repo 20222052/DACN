@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Admin_Activity">
+
+    <FrameLayout
+        android:layout_width="324dp"
+        android:layout_height="799dp"
+        android:background="#D5D5D5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+        <Button
+            android:id="@+id/button_QL_menu"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/custom_button_admin"
+            android:text="Quản lý menu"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/button_QL_DH"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="290dp"
+            android:background="@drawable/custom_button_admin"
+            android:text="Quản lý Đơn hàng"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/button_QL_KM"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="380dp"
+            android:background="@drawable/custom_button_admin"
+            android:text="Quản lý khuyến mãi"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/button_QL_TK"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="470dp"
+            android:background="@drawable/custom_button_admin"
+            android:text="Quản lý tài khoản"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/button_QL_BCTK"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="560dp"
+            android:background="@drawable/custom_button_admin"
+            android:text="Quản lý báo cáo thống kê"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:backgroundTint="@null" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="100dp"
+            android:text="Admin"/>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="62dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="30dp"
+            app:srcCompat="@drawable/baseline_assignment_ind_24" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="954dp"
+        android:layout_height="798dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

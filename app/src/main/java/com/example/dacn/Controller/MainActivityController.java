@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.dacn.Model.TaiKhoan;
 import com.example.dacn.View.Admin_Activity;
+import com.example.dacn.View.Staff;
 import com.example.dacn.View.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,9 @@ public class MainActivityController {
     public MainActivityController(Context context) {
         this.context = context;
     }
+
     public void DK_TaiKhoan(int maTaiKhoan, int maNhanVien, String tenDangNhap, String matKhau, String vaiTro) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         TaiKhoan user = new TaiKhoan(maTaiKhoan, maNhanVien, tenDangNhap, matKhau, vaiTro);
         mDatabase.child("users").push().setValue(user);
     }
@@ -65,6 +68,9 @@ public class MainActivityController {
         Intent intent;
         if (role.equals("admin")) {
             intent = new Intent(context, Admin_Activity.class);
+        }
+        else if (role.equals("nhanvien")) {
+            intent = new Intent(context, Staff.class);
         }
         else {
             Toast.makeText(context, "Vai trò không hợp lệ!", Toast.LENGTH_SHORT).show();

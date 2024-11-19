@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         EditText_pass = findViewById(R.id.EditText_pass);
         EditText_user = findViewById(R.id.EditText_user);
         controller = new MainActivityController(this);
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             taiKhoan.setTenDangNhap(EditText_user.getText().toString());
             taiKhoan.setMatKhau(EditText_pass.getText().toString());
             controller.DN_TaiKhoan(taiKhoan.getTenDangNhap(), taiKhoan.getMatKhau());
+            //controller.DK_TaiKhoan(2,2,"nhanvien1","123","nhanvien");
         });
     }
 }
