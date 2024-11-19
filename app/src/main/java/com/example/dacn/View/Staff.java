@@ -2,6 +2,7 @@ package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class Staff extends AppCompatActivity {
 
     ImageButton bellButton;
+    Button btn_huy, btn_xacnhan;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,6 +40,7 @@ public class Staff extends AppCompatActivity {
         loadData();
 
         bellButton.setOnClickListener(view -> showNotificationFragment());
+        btn_xacnhan.setOnClickListener(view -> showHoadonFragment());
 
     }
 
@@ -86,6 +89,8 @@ public class Staff extends AppCompatActivity {
 
     private void initView() {
         bellButton = findViewById(R.id.btn_bell);
+        btn_huy = findViewById(R.id.btn_huy);
+        btn_xacnhan = findViewById(R.id.btn_xacnhan);
     }
 
     private void showNotificationFragment() {
@@ -93,6 +98,16 @@ public class Staff extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         NotificationFragment fragment = new NotificationFragment();
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void showHoadonFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        HoadonFragment fragment = new HoadonFragment();
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

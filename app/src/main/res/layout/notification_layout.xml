@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FFFFFF"
+        android:background="@drawable/borders_view"
         android:padding="16dp"
         android:elevation="8dp"
         android:layout_margin="20dp">
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Có đơn hàng mới!"
-            android:textSize="20sp"
+            android:textSize="34sp"
             android:textStyle="bold"
             android:paddingBottom="10dp"
             android:textColor="#000000" />
