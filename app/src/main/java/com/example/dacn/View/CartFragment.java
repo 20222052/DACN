@@ -11,6 +11,8 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.CartAdapter;
 import com.example.dacn.Controller.HoadonListPrd_Adapter;
@@ -40,6 +42,11 @@ public class CartFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) View popupLayout = view.findViewById(R.id.popup_layout); // Đặt ID cho layout trong XML
         popupLayout.setOnClickListener(v -> {
             // Chặn sự kiện click thoát fragment
+        });
+
+        btnXacNhan.setOnClickListener(v -> {
+            closeFragment();
+            showCartFragment();
         });
 
         // Khởi tạo GridView và dữ liệu
@@ -72,11 +79,21 @@ public class CartFragment extends Fragment {
 
         return view;
     }
+    //show fragment
+    private void showCartFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-    // Hàm xử lý sự kiện khi click vào nền
-    public void onBackgroundClick(View view) {
-        closeFragment();
+        String thongbaothanhcong = "Cảm ơn bạn đã đặt hàng!";
+        String thongbaokhachdoi = "Chúng tôi đang xử lý đơn hàng của bạn. Vui lòng đợi ít phút";
+
+        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi);
+
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
+
 
     // Hàm đóng fragment
     private void closeFragment() {

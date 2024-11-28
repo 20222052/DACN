@@ -1,8 +1,174 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="954dp"
-    android:layout_height="798dp"
-    tools:context=".View.QL_menu_Fragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</FrameLayout>
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center" />
+
+    <!-- Sorting options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <!-- Search bar -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_food"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_search"
+            app:iconifiedByDefault="false"
+            android:layout_weight="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            app:queryHint="Tìm kiếm tài khoản" />
+
+        <!-- Dropdown filter for categories -->
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/cat_list"/>
+
+        <!-- Dropdown filter -->
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/cat_list"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!-- Form nhập liệu (Thêm, sửa, xóa sản phẩm) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="#F0F0F0">
+
+            <!-- Input fields for product data -->
+            <EditText
+                android:id="@+id/edit_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên sản phẩm"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edit_product_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá sản phẩm"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Dropdown filter for categories -->
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:entries="@array/cat_list"/>
+
+            <EditText
+                android:id="@+id/edit_product_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mô tả sản phẩm"
+                android:inputType="textMultiLine"
+                android:minLines="4"
+                android:gravity="top|start"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Radio buttons for visibility -->
+            <RadioGroup
+                android:id="@+id/radio_group_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:text="Hiển thị"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radio_hide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Ẩn" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom">
+
+                <Button
+                    android:id="@+id/btn_add_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lưu sản phẩm" />
+
+                <Button
+                    android:id="@+id/btn_delete_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Xóa sản phẩm" />
+                <Button
+                    android:id="@+id/btn_clear_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Xóa form" />
+                <Button
+                    android:id="@+id/btn_edit_danhmuc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chỉnh sửa danh mục" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Grid of products -->
+        <GridView
+            android:id="@+id/grid_view_products"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginTop="8dp"
+            android:horizontalSpacing="8dp"
+            android:verticalSpacing="8dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center" />
+    </LinearLayout>
+</LinearLayout>

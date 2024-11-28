@@ -2,4 +2,33 @@
     <string name="app_name">DACN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="qu_n_l_t_i_kho_n">Quản lý tài khoản</string>
+    <string name="cat_list" />
+    <string-array name="vai_tro_array">
+        <item>Admin</item>
+        <item>Quản lý</item>
+        <item>Nhân viên</item>
+    </string-array>
+
+    <string-array name="chuc_vu_array">
+        <item>Admin</item>
+        <item>Quản lý</item>
+        <item>Nhân viên fulltime</item>
+        <item>Nhân viên thời vụ</item>
+        <item>Nhân viên passtime</item>
+    </string-array>
+
+    <string-array name="danh_sach_nhan_vien">
+        <item>Nguyễn Văn A</item>
+        <item>Trần Thị B</item>
+        <item>Lê Văn C</item>
+    </string-array>
+
+    <string-array name="cat_list">
+        <item>Nguyễn Văn A</item>
+        <item>Trần Thị B</item>
+        <item>Lê Văn C</item>
+    </string-array>
+
 </resources>
+

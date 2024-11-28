@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    tools:context=".View.FragmentAlertSuccesful">
+
+    <LinearLayout
+        android:id="@+id/popup_layout"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/ctm_bg_alert_succesful">
+
+        <ImageView
+            android:id="@+id/img_alert"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/circle"/>
+        <TextView
+            android:id="@+id/tv_datHangThanhCong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="34sp"
+            android:text="Cảm ơn bạn đã đặt hàng"/>
+        <TextView
+            android:id="@+id/tv_thongBaoKhach"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="28sp"
+            android:gravity="center"
+            android:text="Chúng tôi đang xử lý đơn cho bạn vui lòng đợi trong ít phút"/>
+
+        <Button
+            android:id="@+id/btn_dong"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:text="Đóng"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:textSize="26sp"
+            android:backgroundTint="#FB8C00"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
+</LinearLayout>
