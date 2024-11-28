@@ -40,9 +40,9 @@ public class QL_DH_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_q_l__d_h_, container, false);
 
         // Find the EditText in the inflated view
-        editTextNS = view.findViewById(R.id.edt_ngay);
-
-        setupDateInputWatcher();
+//        editTextNS = view.findViewById(R.id.);
+//
+//        setupDateInputWatcher();
         return view;
     }
 
