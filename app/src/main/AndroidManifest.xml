@@ -16,10 +16,14 @@
             android:name=".View.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Admin_Activity"
+            android:name=".View.KhachHangActivity"
             android:exported="false" />
         <activity
             android:name=".View.Staff"
+            android:exported="false" />
+
+        <activity
+            android:name=".View.Admin_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

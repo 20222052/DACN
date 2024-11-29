@@ -52,6 +52,7 @@ public class KhachHangActivity extends AppCompatActivity {
         rcv_drink = findViewById(R.id.rcv_drink);
         searchView = findViewById(R.id.search_food);
         btn_cart = findViewById(R.id.btn_cart);
+
         int numberOfColumns = 3;
         int numberOfColumns2 = 3;
 

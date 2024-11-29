@@ -10,15 +10,10 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.dacn" />
-                  <option name="mobileSdkAppId" value="1:262906481358:android:3059dffbbd2ab7484c5e9f" />
-                  <option name="projectId" value="dacn-6bb7e" />
-                  <option name="projectNumber" value="262906481358" />
+                  <option name="mobileSdkAppId" value="1:121091298758:android:4872f99e91a182004d4ec7" />
+                  <option name="projectId" value="c2309lmspringboots" />
+                  <option name="projectNumber" value="121091298758" />
                 </ConnectionSetting>
-              </option>
-              <option name="failureTypes">
-                <list>
-                  <option value="FATAL" />
-                </list>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="THIRTY_DAYS" />

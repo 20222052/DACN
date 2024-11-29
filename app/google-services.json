@@ -1,14 +1,32 @@
 {
   "project_info": {
-    "project_number": "262906481358",
-    "firebase_url":"https://dacn-6bb7e-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    "project_id": "dacn-6bb7e",
-    "storage_bucket": "dacn-6bb7e.firebasestorage.app"
+    "project_number": "121091298758",
+    "project_id": "c2309lmspringboots",
+    "storage_bucket": "c2309lmspringboots.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:262906481358:android:3059dffbbd2ab7484c5e9f",
+        "mobilesdk_app_id": "1:121091298758:android:4fb7ca62c5c8a5c04d4ec7",
+        "android_client_info": {
+          "package_name": "com.example.appeducation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCK4u0kweWKbqJVzH1649xYzbn7ixLT5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121091298758:android:4872f99e91a182004d4ec7",
         "android_client_info": {
           "package_name": "com.example.dacn"
         }
@@ -16,7 +34,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAkCn4dI6kQ3FLYsQKrcrT7NTIDJMh3N2I"
+          "current_key": "AIzaSyBCK4u0kweWKbqJVzH1649xYzbn7ixLT5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121091298758:android:1ede472a5d20c37e4d4ec7",
+        "android_client_info": {
+          "package_name": "com.example.test_anh_stroge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCK4u0kweWKbqJVzH1649xYzbn7ixLT5c"
         }
       ],
       "services": {

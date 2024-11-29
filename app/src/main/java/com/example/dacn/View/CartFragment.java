@@ -1,6 +1,7 @@
 package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartFragment extends Fragment {
+    Button btnXacNhan;
+
     public CartFragment(){
     }
 
+    @SuppressLint("CutPasteId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cart_layout, container, false);
-
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button btnXacNhan = view.findViewById(R.id.btn_checkout);
+        btnXacNhan = view.findViewById(R.id.btn_checkout);
 
         // Lấy LinearLayout ngoài cùng
         View backgroundLayout = view.findViewById(R.id.background_layout); // Đặt ID cho layout trong XML
@@ -40,6 +42,12 @@ public class CartFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) View popupLayout = view.findViewById(R.id.popup_layout); // Đặt ID cho layout trong XML
         popupLayout.setOnClickListener(v -> {
             // Chặn sự kiện click thoát fragment
+        });
+
+        // Gán sự kiện click btnXacNhan chuyển sang layout NhanVien
+        btnXacNhan.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Staff.class);
+            startActivity(intent);
         });
 
         // Khởi tạo GridView và dữ liệu
