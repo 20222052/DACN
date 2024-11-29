@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -48,6 +49,9 @@ public class KhachHangActivity extends AppCompatActivity {
             return insets;
         });
 
+
+
+
         rcv_food = findViewById(R.id.rcv_food);
         rcv_drink = findViewById(R.id.rcv_drink);
         searchView = findViewById(R.id.search_food);
@@ -90,6 +94,14 @@ public class KhachHangActivity extends AppCompatActivity {
 
         //xu ly btn_card de hienthi fragment
         btn_cart.setOnClickListener(view -> showCartFragment());
+        int[] cartCount = {0}; // Dùng mảng để lưu số lượng
+
+        TextView cartCountText = findViewById(R.id.cart_count);
+
+        foodAdapter.setOnAddToCartListener(() -> {
+            cartCount[0]++;
+            cartCountText.setText(String.valueOf(cartCount[0]));
+        });
     }
 
     //show fragment

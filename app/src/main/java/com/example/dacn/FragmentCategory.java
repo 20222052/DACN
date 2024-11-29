@@ -1,4 +1,4 @@
-package com.example.dacn.View;
+package com.example.dacn;
 
 import android.os.Bundle;
 
@@ -8,14 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dacn.R;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link QL_KM_Fragment#newInstance} factory method to
+ * Use the {@link FragmentCategory#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QL_KM_Fragment extends Fragment {
+public class FragmentCategory extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +24,7 @@ public class QL_KM_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public QL_KM_Fragment() {
+    public FragmentCategory() {
         // Required empty public constructor
     }
 
@@ -36,11 +34,11 @@ public class QL_KM_Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment QL_KM_Fragment.
+     * @return A new instance of fragment FragmentCategory.
      */
     // TODO: Rename and change types and number of parameters
-    public static QL_KM_Fragment newInstance(String param1, String param2) {
-        QL_KM_Fragment fragment = new QL_KM_Fragment();
+    public static FragmentCategory newInstance(String param1, String param2) {
+        FragmentCategory fragment = new FragmentCategory();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +59,6 @@ public class QL_KM_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_q_l__k_m_, container, false);
+        return inflater.inflate(R.layout.fragment_category, container, false);
     }
 }

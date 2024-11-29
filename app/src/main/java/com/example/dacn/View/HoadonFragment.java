@@ -11,6 +11,8 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.HoadonListPrd_Adapter;
 import com.example.dacn.R;
@@ -46,7 +48,10 @@ public class HoadonFragment extends Fragment {
             // Chặn sự kiện click thoát fragment
         });
 
-
+        btnXacNhan.setOnClickListener(v->{
+            showFragment();
+            closeFragment();
+        });
         // Khởi tạo GridView và dữ liệu
         GridView gridView = view.findViewById(R.id.gridView_itemList_prd);
 
@@ -61,6 +66,21 @@ public class HoadonFragment extends Fragment {
         gridView.setAdapter(adapter);
 
         return view;
+    }
+
+    //show fragment
+    private void showFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        String thongbaothanhcong = "Thanh toán thành công!";
+        String thongbaokhachdoi = "Cảm ơn bạn đã sử dụng dịch vụ. Hẹn có gặp lại bạn.";
+
+        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi);
+
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     // Hàm đóng fragment
