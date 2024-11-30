@@ -6,13 +6,11 @@
     <string name="qu_n_l_t_i_kho_n">Quản lý tài khoản</string>
     <string name="cat_list" />
     <string-array name="vai_tro_array">
-        <item>Admin</item>
         <item>Quản lý</item>
         <item>Nhân viên</item>
     </string-array>
 
     <string-array name="chuc_vu_array">
-        <item>Admin</item>
         <item>Quản lý</item>
         <item>Nhân viên fulltime</item>
         <item>Nhân viên thời vụ</item>
