@@ -2,6 +2,7 @@
     <string name="app_name">DACN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_act_khachhang">Tất cả</string>
     <string name="qu_n_l_t_i_kho_n">Quản lý tài khoản</string>
     <string name="cat_list" />
     <string-array name="vai_tro_array">

@@ -1,18 +1,23 @@
 package com.example.dacn.Model;
 
-public class SanPham {
+import java.io.Serializable;
+
+public class SanPham implements Serializable {
     private int maSanPham;
     private int maDanhMuc;
     private String tenSanPham;
     private String hinhAnh;
     private String moTa;
-    private float gia;
+    private double gia;
     private boolean trangThai;
+    private int quantity;
 
+    // Constructor mặc định
     public SanPham() {
     }
 
-    public SanPham(boolean trangThai, float gia, String hinhAnh, String tenSanPham, int maDanhMuc, int maSanPham, String moTa) {
+    // Constructor có tham số để khởi tạo tất cả các thuộc tính bao gồm quantity
+    public SanPham(boolean trangThai, float gia, String hinhAnh, String tenSanPham, int maDanhMuc, int maSanPham, String moTa, int quantity) {
         this.trangThai = trangThai;
         this.gia = gia;
         this.hinhAnh = hinhAnh;
@@ -20,8 +25,10 @@ public class SanPham {
         this.maDanhMuc = maDanhMuc;
         this.maSanPham = maSanPham;
         this.moTa = moTa;
+        this.quantity = quantity;  // Khởi tạo quantity
     }
 
+    // Getter và Setter cho các thuộc tính
     public int getMaSanPham() {
         return maSanPham;
     }
@@ -70,11 +77,20 @@ public class SanPham {
         this.trangThai = trangThai;
     }
 
-    public float getGia() {
+    public double getGia() {
         return gia;
     }
 
     public void setGia(float gia) {
         this.gia = gia;
+    }
+
+    // Getter và Setter cho quantity
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
