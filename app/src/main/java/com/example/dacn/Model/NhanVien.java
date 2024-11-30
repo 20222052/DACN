@@ -1,30 +1,31 @@
 package com.example.dacn.Model;
 
 public class NhanVien {
-    private int maNhanVien;
+    private String id;
     private String tenNhanVien;
-    private String diaChi;
-    private String sdt;
-    private String chucVu;
-    private String ngaySinh;
+    private String soDienThoai;
+    private String address;
+    private String vaiTro;
 
-    public NhanVien() {}
+    // Default constructor required for calls to DataSnapshot.getValue(NhanVien.class)
+    public NhanVien() {
+    }
 
-    public NhanVien(int maNhanVien, String tenNhanVien, String diaChi, String sdt, String chucVu, String ngaySinh) {
-        this.maNhanVien = maNhanVien;
+    public NhanVien(String id, String tenNhanVien, String soDienThoai, String address, String vaiTro) {
+        this.id = id;
         this.tenNhanVien = tenNhanVien;
-        this.diaChi = diaChi;
-        this.sdt = sdt;
-        this.chucVu = chucVu;
-        this.ngaySinh = ngaySinh;
+        this.soDienThoai = soDienThoai;
+        this.address = address;
+        this.vaiTro = vaiTro;
     }
 
-    public int getMaNhanVien() {
-        return maNhanVien;
+    // Getters and setters
+    public String getId() {
+        return id;
     }
 
-    public void setMaNhanVien(int maNhanVien) {
-        this.maNhanVien = maNhanVien;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTenNhanVien() {
@@ -35,35 +36,27 @@ public class NhanVien {
         this.tenNhanVien = tenNhanVien;
     }
 
-    public String getDiaChi() {
-        return diaChi;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getChucVu() {
-        return chucVu;
+    public String getVaiTro() {
+        return vaiTro;
     }
 
-    public void setChucVu(String chucVu) {
-        this.chucVu = chucVu;
-    }
-
-    public String getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(String ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 }

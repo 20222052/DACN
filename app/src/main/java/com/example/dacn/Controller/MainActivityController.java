@@ -22,12 +22,6 @@ public class MainActivityController {
     public MainActivityController(Context context) {
         this.context = context;
     }
-
-    public void DK_TaiKhoan(int maTaiKhoan, int maNhanVien, String tenDangNhap, String matKhau, String vaiTro) {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        TaiKhoan user = new TaiKhoan(maTaiKhoan, maNhanVien, tenDangNhap, matKhau, vaiTro);
-        mDatabase.child("users").push().setValue(user);
-    }
     public void DN_TaiKhoan(String tenDangNhap, String matKhau) {
         if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
             Toast.makeText(context, "Tài Khoản hoặc mật khẩu không được để trống", Toast.LENGTH_SHORT).show();

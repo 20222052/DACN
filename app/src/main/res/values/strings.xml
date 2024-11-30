@@ -25,10 +25,17 @@
     </string-array>
 
     <string-array name="cat_list">
-        <item>Nguyễn Văn A</item>
-        <item>Trần Thị B</item>
-        <item>Lê Văn C</item>
     </string-array>
 
+    <string-array name="Sort_name">
+        <item>Tên</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+    </string-array>
+    <string-array name="Sort_price">
+        <item>Giá</item>
+        <item>Giá Cao - Thấp</item>
+        <item>Giá Thấp - Cao</item>
+    </string-array>
 </resources>
 

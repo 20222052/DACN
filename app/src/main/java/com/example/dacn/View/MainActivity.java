@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             taiKhoan.setTenDangNhap(EditText_user.getText().toString());
             taiKhoan.setMatKhau(EditText_pass.getText().toString());
             controller.DN_TaiKhoan(taiKhoan.getTenDangNhap(), taiKhoan.getMatKhau());
-            //controller.DK_TaiKhoan(2,2,"nhanvien1","123","nhanvien");
         });
     }
 }

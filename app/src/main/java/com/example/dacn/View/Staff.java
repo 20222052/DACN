@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.ListAdapter;
-import com.example.dacn.Controller.MenuAdapter;
 import com.example.dacn.R;
 
 import java.util.ArrayList;
@@ -47,45 +46,45 @@ public class Staff extends AppCompatActivity {
     }
 
     private void loadData() {
-        GridView gridViewMenu = findViewById(R.id.gridView_menu);
-        List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.drawable.pho_cuon, "Phở cuốn", "80.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_ga_la_e, "Lẩu gà lá é", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_bo, "Lẩu bò", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-        MenuAdapter adapter = new MenuAdapter(this, menuItems);
-        gridViewMenu.setAdapter(adapter);
-
-        GridView listView = findViewById(R.id.gridView_list);
-        List<ListItem> listItems = new ArrayList<>();
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-
-        ListAdapter lst_adapter = new ListAdapter(this, listItems);
-        listView.setAdapter(lst_adapter);
+//        GridView gridViewMenu = findViewById(R.id.gridView_menu);
+//        List<MenuItem> menuItems = new ArrayList<>();
+//        menuItems.add(new MenuItem(R.drawable.pho_cuon, "Phở cuốn", "80.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_ga_la_e, "Lẩu gà lá é", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_bo, "Lẩu bò", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
+//        MenuAdapter adapter = new MenuAdapter(this, menuItems);
+//        gridViewMenu.setAdapter(adapter);
+//
+//        GridView listView = findViewById(R.id.gridView_list);
+//        List<ListItem> listItems = new ArrayList<>();
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
+//
+//        ListAdapter lst_adapter = new ListAdapter(this, listItems);
+//        listView.setAdapter(lst_adapter);
     }
 
     private void initView() {
