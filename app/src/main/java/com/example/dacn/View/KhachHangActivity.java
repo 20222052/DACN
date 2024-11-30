@@ -2,10 +2,9 @@ package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,27 +14,37 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dacn.Controller.DrinkAdapter;
-import com.example.dacn.Controller.FoodAdapter;
-import com.example.dacn.Model.Drink;
-import com.example.dacn.Model.Food;
+import com.example.dacn.Controller.CartAdapter;
+import com.example.dacn.Controller.ProductAdapter;
+import com.example.dacn.Model.Cart;
+import com.example.dacn.Model.CartViewModel;
+import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KhachHangActivity extends AppCompatActivity {
-    RecyclerView rcv_food, rcv_drink;
-    List<Food> list;
-    List<Drink> drinksList;
-    FoodAdapter foodAdapter;
-    DrinkAdapter drinksAdapter;
+public class KhachHangActivity extends AppCompatActivity implements ProductAdapter.OnAddToCartListener {
+    RecyclerView rcvProduct;
     SearchView searchView;
     ImageButton btn_cart;
-
+    private List<SanPham> productList;
+    private ProductAdapter productAdapter;
+    private DatabaseReference database;
+    private List<Cart> cartList;
+    private int cartCount = 0;
+    TextView cartCountText;
+    private CartAdapter cartAdapter;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,59 +58,57 @@ public class KhachHangActivity extends AppCompatActivity {
             return insets;
         });
 
+        rcvProduct = findViewById(R.id.rcv_product);
 
-
-
-        rcv_food = findViewById(R.id.rcv_food);
-        rcv_drink = findViewById(R.id.rcv_drink);
         searchView = findViewById(R.id.search_food);
+
         btn_cart = findViewById(R.id.btn_cart);
 
-        int numberOfColumns = 3;
-        int numberOfColumns2 = 3;
+        cartCountText = findViewById(R.id.cart_count);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumns);
+        cartList = new ArrayList<>();  // Khởi tạo giỏ hàng
+        productList = new ArrayList<>();
+        productAdapter = new ProductAdapter(productList, this);  // Gửi listener vào adapter
+        rcvProduct.setAdapter(productAdapter);
 
-        GridLayoutManager gridLayoutManager2 = new GridLayoutManager(this, numberOfColumns2);
-        // set layout cho các recycleView
-        rcv_food.setLayoutManager(gridLayoutManager);
-        rcv_drink.setLayoutManager(gridLayoutManager2);
+        // Lấy dữ liệu từ Firebase
+        database = FirebaseDatabase.getInstance().getReference("SanPham");
 
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                productList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    SanPham product = snapshot.getValue(SanPham.class);
+                    productList.add(product);
+                }
+                // Cập nhật RecyclerView
+                productAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Firebase", "loadProduct:onCancelled", databaseError.toException());
+            }
+        });
+        // set layout
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+
+        rcvProduct.setLayoutManager(gridLayoutManager);
+        // SearchView
         searchView.clearFocus();
 
-        // Tìm kiếm
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterList(newText);
-                return true;
-            }
+        productAdapter.setOnAddToCartListener(product -> {
+            cartCount++;  // Tăng số lượng giỏ hàng
+            cartCountText.setText(String.valueOf(cartCount));  // Cập nhật UI
         });
-        // food
-        list = getListFood();
-        foodAdapter = new FoodAdapter(list);
-        rcv_food.setAdapter(foodAdapter);
 
-        // drink
-        drinksList = getListDrink();
-        drinksAdapter = new DrinkAdapter(drinksList);
-        rcv_drink.setAdapter(drinksAdapter);
+        CartViewModel cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+        cartViewModel.setCartList(cartList); // Truyền dữ liệu vào ViewModel
 
-        //xu ly btn_card de hienthi fragment
+
+        // Xem giỏ hàng
         btn_cart.setOnClickListener(view -> showCartFragment());
-        int[] cartCount = {0}; // Dùng mảng để lưu số lượng
-
-        TextView cartCountText = findViewById(R.id.cart_count);
-
-        foodAdapter.setOnAddToCartListener(() -> {
-            cartCount[0]++;
-            cartCountText.setText(String.valueOf(cartCount[0]));
-        });
     }
 
     //show fragment
@@ -109,63 +116,57 @@ public class KhachHangActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+        // Tạo đối tượng CartFragment
         CartFragment fragment = new CartFragment();
+
+        // Truyền dữ liệu giỏ hàng (cartList) vào CartFragment
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("cart_items", (Serializable) cartList);  // Truyền giỏ hàng vào Bundle
+        fragment.setArguments(bundle);
+
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    // Lọc và tìm kiếm
-    private void filterList(String newText) {
-        // Food
-        List<Food> filteredFoodList = new ArrayList<>();
-        for (Food itemFood : list) {
-            if (itemFood.getName().toLowerCase().contains(newText.toLowerCase())) {
-                filteredFoodList.add(itemFood);
+    public void onAddToCart(SanPham product) {
+        boolean productExists = false;
+
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        for (Cart cartItem : cartList) {
+            if (cartItem.getId() == product.getMaSanPham()) {
+                cartItem.setSoLuong(cartItem.getSoLuong() + 1); // Tăng số lượng
+                productExists = true;
+                break;
             }
         }
-        if (filteredFoodList.isEmpty()) {
-            Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
-        } else {
-            foodAdapter.setFilterList(filteredFoodList);
+
+        // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+        if (!productExists) {
+            Cart newCartItem = new Cart(
+                    product.getMaSanPham(), // Mã sản phẩm
+                    product.getTenSanPham(), // Tên sản phẩm
+                    product.getHinhAnh(), // URL hình ảnh
+                    product.getGia(), // Giá sản phẩm
+
+                    1 // Số lượng mặc định là 1
+            );
+            cartList.add(newCartItem);
         }
-        //Drink
-        List<Drink> filteredDrinkList = new ArrayList<>();
-        for (Drink itemDrink : drinksList) {
-            if (itemDrink.getName().toLowerCase().contains(newText.toLowerCase())) {
-                filteredDrinkList.add(itemDrink);
-            }
+
+        // Cập nhật tổng số lượng sản phẩm trong giỏ hàng
+        int cartCount = 0;
+        for (Cart item : cartList) {
+            cartCount += item.getSoLuong();
         }
-        if (filteredDrinkList.isEmpty()) {
-            Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
-        } else {
-            drinksAdapter.setFilterList2(filteredDrinkList);
-        }
+
+        // Cập nhật giao diện người dùng (UI)
+        cartCountText.setText(String.valueOf(cartCount));
+
+        // Thông báo cho Adapter cập nhật lại giao diện giỏ hàng
+        cartAdapter.notifyDataSetChanged();
+
+        Log.d("Cart", "Added product: " + product.getTenSanPham());
     }
 
-    private List<Drink> getListDrink() {
-        List<Drink> drinkList = new ArrayList<>();
-        drinkList.add(new Drink(1, ""));
-        drinkList.add(new Drink(2, ""));
-        drinkList.add(new Drink(3, ""));
-        drinkList.add(new Drink(4, ""));
-        drinkList.add(new Drink(5, ""));
-        drinkList.add(new Drink(6, ""));
-        drinkList.add(new Drink(7, ""));
-        drinkList.add(new Drink(8, ""));
-
-        return drinkList;
-    }
-
-    private List<Food> getListFood() {
-        List<Food> list = new ArrayList<>();
-        list.add(new Food("", 1));
-        list.add(new Food("", 2));
-        list.add(new Food("", 3));
-        list.add(new Food("", 4));
-        list.add(new Food("", 5));
-        list.add(new Food("", 6));
-        list.add(new Food("", 7));
-        return list;
-    }
 }

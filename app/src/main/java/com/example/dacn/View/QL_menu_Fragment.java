@@ -14,8 +14,6 @@ import android.widget.Button;
 import com.example.dacn.FragmentCategory;
 import com.example.dacn.R;
 
-
-
 public class QL_menu_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

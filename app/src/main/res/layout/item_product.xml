@@ -17,6 +17,7 @@
             android:layout_marginBottom="10dp"
             app:cardElevation="2dp">
             <ImageView
+                android:id="@+id/img_food"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_foodName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="20sp"
@@ -38,13 +40,17 @@
                 android:layout_marginLeft="10dp"/>
 
             <TextView
+                android:id="@+id/tv_discription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Giá bán: 80.000đ/đĩa 10 chiếc"
                 android:textSize="18sp"
                 android:padding="10dp"
                 android:textColor="@color/textGrayColor"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,7 +60,7 @@
                 android:layout_marginLeft="10dp">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tv_Price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
