@@ -1,11 +1,14 @@
 package com.example.dacn.View;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,19 +22,24 @@ import com.example.dacn.R;
 
 import java.util.List;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateListener {
     private List<Cart> cartItems;
-    public CartFragment(){
-    }
+    private TextView tvTotalPrice;
+
+    public CartFragment() {}
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cart_layout, container, false);
 
         if (getArguments() != null) {
-            cartItems = (List<Cart>) getArguments().getSerializable("cart_items");  // Lấy danh sách sản phẩm từ Bundle
+            cartItems = (List<Cart>) getArguments().getSerializable("cart_items");
         }
 
+        Log.d("CartFragment", "Received cart items: " + cartItems.size());
+        tvTotalPrice = view.findViewById(R.id.tv_total_price);
+        updateTotalPrice();
 
         Button btnXacNhan = view.findViewById(R.id.btn_checkout);
 
@@ -45,19 +53,28 @@ public class CartFragment extends Fragment {
         });
 
         btnXacNhan.setOnClickListener(v -> {
-            closeFragment();
-            showCartFragment();
+            if (cartItems == null || cartItems.isEmpty()) {
+                // Hiển thị thông báo giỏ hàng rỗng
+                Toast.makeText(requireContext(), "Giỏ hàng đang trống. Vui lòng thêm sản phẩm trước khi gọi món!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Xử lý gọi món nếu giỏ hàng không rỗng
+                closeFragment();
+                showCartFragment();
+            }
         });
 
-        // Khởi tạo GridView và dữ liệu
+
         GridView gridView = view.findViewById(R.id.gv_cart_items);
-
-        // Gán adapter cho GridView
-        CartAdapter adapter = new CartAdapter(requireContext(), cartItems);
-
+        CartAdapter adapter = new CartAdapter(requireContext(), cartItems, this);
         gridView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onCartUpdated(List<Cart> updatedCartList) {
+        cartItems = updatedCartList;
+        updateTotalPrice();
     }
 
     private void showCartFragment() {
@@ -79,5 +96,13 @@ public class CartFragment extends Fragment {
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .remove(CartFragment.this)
                 .commit();
+    }
+
+    private void updateTotalPrice() {
+        int totalPrice = 0;
+        for (Cart item : cartItems) {
+            totalPrice += item.getGia() * item.getSoLuong();
+        }
+        tvTotalPrice.setText(String.format("Tổng: %,d VND", totalPrice));
     }
 }
