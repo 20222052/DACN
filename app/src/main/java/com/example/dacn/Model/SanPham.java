@@ -1,23 +1,19 @@
 package com.example.dacn.Model;
 
-import java.io.Serializable;
-
-public class SanPham implements Serializable {
+public class SanPham {
     private int maSanPham;
     private int maDanhMuc;
     private String tenSanPham;
-    private String hinhAnh;
+    private String hinhAnh; // Resource ID for image
     private String moTa;
-    private double gia;
+    private float gia;
+    private int soLuong;
     private boolean trangThai;
-    private int quantity;
 
-    // Constructor mặc định
     public SanPham() {
     }
 
-    // Constructor có tham số để khởi tạo tất cả các thuộc tính bao gồm quantity
-    public SanPham(boolean trangThai, float gia, String hinhAnh, String tenSanPham, int maDanhMuc, int maSanPham, String moTa, int quantity) {
+    public SanPham(boolean trangThai, float gia, String hinhAnh, String tenSanPham, int maDanhMuc, int maSanPham, String moTa, int soLuong) {
         this.trangThai = trangThai;
         this.gia = gia;
         this.hinhAnh = hinhAnh;
@@ -25,10 +21,15 @@ public class SanPham implements Serializable {
         this.maDanhMuc = maDanhMuc;
         this.maSanPham = maSanPham;
         this.moTa = moTa;
-        this.quantity = quantity;  // Khởi tạo quantity
+        this.soLuong = soLuong;
+    }
+    public int getSoLuong() {
+        return soLuong;
+    }
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 
-    // Getter và Setter cho các thuộc tính
     public int getMaSanPham() {
         return maSanPham;
     }
@@ -65,11 +66,12 @@ public class SanPham implements Serializable {
         return hinhAnh;
     }
 
+    // Accepts integer resource ID for image
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
 
-    public boolean isTrangThai() {
+    public boolean getTrangThai() {
         return trangThai;
     }
 
@@ -77,20 +79,11 @@ public class SanPham implements Serializable {
         this.trangThai = trangThai;
     }
 
-    public double getGia() {
+    public float getGia() {
         return gia;
     }
 
     public void setGia(float gia) {
         this.gia = gia;
-    }
-
-    // Getter và Setter cho quantity
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }

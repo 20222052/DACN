@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:elevation="6dp"
+    app:cardUseCompatPadding="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp">
+        </TextView>
+        <TextView
+            android:id="@+id/SDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SDT"
+            android:textSize="20sp"
+            android:inputType="phone"
+            android:layout_below="@+id/name"
+            android:layout_marginStart="10dp">
+        </TextView>
+        <TextView
+            android:id="@+id/DC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DC"
+            android:textSize="20sp"
+            android:layout_below="@+id/SDT"
+            android:layout_marginStart="10dp">
+        </TextView>
+        <TextView
+            android:id="@+id/CV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CV"
+            android:textSize="20sp"
+            android:layout_below="@+id/DC"
+            android:layout_marginStart="10dp">
+        </TextView>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

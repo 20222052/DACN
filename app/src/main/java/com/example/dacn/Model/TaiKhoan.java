@@ -1,38 +1,31 @@
 package com.example.dacn.Model;
 
 public class TaiKhoan {
-    private int maTaiKhoan;
-    private int maNhanVien;
+    private String maTaiKhoan;
     private String tenDangNhap;
     private String matKhau;
+    private String nhanVienId;
     private String vaiTro;
 
-    // Default constructor
-    public TaiKhoan() {}
+    // Default constructor required for calls to DataSnapshot.getValue(TaiKhoan.class)
+    public TaiKhoan() {
+    }
 
-    // Parameterized constructor
-    public TaiKhoan(int maTaiKhoan, int maNhanVien, String tenDangNhap, String matKhau, String vaiTro) {
+    public TaiKhoan(String maTaiKhoan, String tenDangNhap, String matKhau, String nhanVienId, String vaiTro) {
         this.maTaiKhoan = maTaiKhoan;
-        this.maNhanVien = maNhanVien;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
+        this.nhanVienId = nhanVienId;
         this.vaiTro = vaiTro;
     }
-    // Getters and Setters
-    public int getMaTaiKhoan() {
+
+    // Getters and setters
+    public String getMaTaiKhoan() {
         return maTaiKhoan;
     }
 
-    public void setMaTaiKhoan(int maTaiKhoan) {
+    public void setMaTaiKhoan(String maTaiKhoan) {
         this.maTaiKhoan = maTaiKhoan;
-    }
-
-    public int getMaNhanVien() {
-        return maNhanVien;
-    }
-
-    public void setMaNhanVien(int maNhanVien) {
-        this.maNhanVien = maNhanVien;
     }
 
     public String getTenDangNhap() {
@@ -51,6 +44,14 @@ public class TaiKhoan {
         this.matKhau = matKhau;
     }
 
+    public String getNhanVienId() {
+        return nhanVienId;
+    }
+
+    public void setNhanVienId(String nhanVienId) {
+        this.nhanVienId = nhanVienId;
+    }
+
     public String getVaiTro() {
         return vaiTro;
     }
@@ -59,4 +60,3 @@ public class TaiKhoan {
         this.vaiTro = vaiTro;
     }
 }
-

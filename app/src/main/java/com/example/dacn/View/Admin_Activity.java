@@ -33,7 +33,6 @@ public class Admin_Activity extends AppCompatActivity {
         btn_QL_TK = findViewById(R.id.button_QL_TK);
         btn_QL_BCTK = findViewById(R.id.button_QL_BCTK);
         fragment_container = findViewById(R.id.fragment_container);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QL_menu_Fragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
         btn_QL_menu.setOnClickListener(view -> {
             btn_QL_menu.setBackgroundResource(R.color.white);
             btn_QL_menu.setTextColor(Color.BLACK);

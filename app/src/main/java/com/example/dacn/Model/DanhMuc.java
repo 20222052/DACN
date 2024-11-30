@@ -1,19 +1,21 @@
 package com.example.dacn.Model;
 
+import androidx.annotation.NonNull;
+
 public class DanhMuc {
     private int maDanhMuc;
     private String tenDanhMuc;
 
-    // Default constructor
-    public DanhMuc() {}
+    // Constructor
+    public DanhMuc() {
+    }
 
-    // Parameterized constructor
     public DanhMuc(int maDanhMuc, String tenDanhMuc) {
         this.maDanhMuc = maDanhMuc;
         this.tenDanhMuc = tenDanhMuc;
     }
 
-    // Getters and Setters
+    // Getter and Setter
     public int getMaDanhMuc() {
         return maDanhMuc;
     }
@@ -29,4 +31,11 @@ public class DanhMuc {
     public void setTenDanhMuc(String tenDanhMuc) {
         this.tenDanhMuc = tenDanhMuc;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.tenDanhMuc; // Ensure this returns the category name
+    }
+
 }

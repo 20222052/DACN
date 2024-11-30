@@ -43,14 +43,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Mật khẩu"
-            android:inputType="textPassword" />
-        <EditText
+            />
+        <AutoCompleteTextView
             android:id="@+id/edt_nhan_vien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Tên nhân viên"
-            android:inputType="textPassword" />
+            android:hint="Nhân viên" />
 
         <!-- Spinner chọn vai trò -->
         <Spinner
@@ -113,14 +111,14 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
-
-    <GridView
-        android:id="@+id/gridview_nhan_vien"
+    <ListView
+        android:id="@+id/listview_TK"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:verticalSpacing="8dp"
         android:horizontalSpacing="8dp"
         android:padding="8dp"
-        android:background="#EFEFEF" />
+        android:background="#EFEFEF" >
+    </ListView>
 </LinearLayout>

@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -10,49 +10,54 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menu"
-        android:textSize="34sp"
-        android:textStyle="bold"
+        android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="15dp"
-        android:layout_gravity="center" />
+        android:text="Menu"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
     <!-- Sorting options -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
         <!-- Search bar -->
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_food"
+            android:id="@+id/search_food_menu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2"
             android:background="@drawable/bg_search"
             app:iconifiedByDefault="false"
-            android:layout_weight="2"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="8dp"
-            app:queryHint="Tìm kiếm tài khoản" />
+            app:queryHint="Tìm kiếm món ăn" />
 
         <!-- Dropdown filter for categories -->
         <Spinner
+            android:id="@+id/Sort_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
-            android:entries="@array/cat_list"/>
+            android:background="@drawable/bg_spinner"
+            android:layout_marginBottom="1dp"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:entries="@array/Sort_name" />
 
         <!-- Dropdown filter -->
         <Spinner
+            android:id="@+id/Sort_price"
+            android:background="@drawable/bg_spinner"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
-            android:entries="@array/cat_list"/>
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:entries="@array/Sort_price" />
 
     </LinearLayout>
 
@@ -65,45 +70,46 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:background="#F0F0F0">
+            android:layout_weight="1"
+            android:background="#F0F0F0"
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <!-- Input fields for product data -->
             <EditText
                 android:id="@+id/edit_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên sản phẩm"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:hint="Tên sản phẩm" />
 
             <EditText
                 android:id="@+id/edit_product_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:hint="Giá sản phẩm"
-                android:inputType="numberDecimal"
-                android:layout_marginBottom="8dp" />
+                android:inputType="numberDecimal" />
 
             <!-- Dropdown filter for categories -->
             <Spinner
+                android:id="@+id/spinner_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="8dp"
-                android:entries="@array/cat_list"/>
+                android:layout_marginBottom="10dp"
+                android:entries="@array/cat_list" />
 
             <EditText
                 android:id="@+id/edit_product_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="top|start"
                 android:hint="Mô tả sản phẩm"
                 android:inputType="textMultiLine"
-                android:minLines="4"
-                android:gravity="top|start"
-                android:layout_marginBottom="8dp" />
+                android:minLines="4" />
 
             <!-- Radio buttons for visibility -->
             <RadioGroup
@@ -117,9 +123,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
+                    android:checked="true"
                     android:padding="10dp"
-                    android:text="Hiển thị"
-                    android:checked="true" />
+                    android:text="Hiển thị" />
 
                 <RadioButton
                     android:id="@+id/radio_hide"
@@ -132,9 +138,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="bottom">
-
+                android:gravity="bottom"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_edit_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sửa sản phẩm" />
                 <Button
                     android:id="@+id/btn_add_product"
                     android:layout_width="match_parent"
@@ -146,17 +156,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Xóa sản phẩm" />
+
                 <Button
                     android:id="@+id/btn_clear_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Xóa form" />
-                <Button
-                    android:id="@+id/btn_edit_danhmuc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Chỉnh sửa danh mục" />
-
             </LinearLayout>
         </LinearLayout>
         <!-- Grid of products -->
@@ -164,11 +169,11 @@
             android:id="@+id/grid_view_products"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
             android:layout_marginTop="8dp"
+            android:layout_weight="2"
+            android:gravity="center"
             android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
             android:stretchMode="columnWidth"
-            android:gravity="center" />
+            android:verticalSpacing="8dp" />
     </LinearLayout>
 </LinearLayout>
