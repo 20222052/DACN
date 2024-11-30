@@ -124,7 +124,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
                     product.getMaSanPham(),
                     product.getTenSanPham(),
                     product.getHinhAnh(),
-                    product.getGia(),
+                    Double.parseDouble(String.valueOf(product.getGia())),
                     1
             );
             cartList.add(newCart);
