@@ -1,5 +1,6 @@
 package com.example.dacn.Controller;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,29 +27,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.onAddToCartListener = listener;
     }
 
-    // Set listener cho Activity hoặc Fragment
     public void setOnAddToCartListener(OnAddToCartListener listener) {
         this.onAddToCartListener = listener;
     }
 
+    @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SanPham product = productList.get(position);
 
-        holder.tvFoodName.setText(product.getTenSanPham());
+        if (product == null) {
+            Log.e("ProductAdapter", "Product at position " + position + " is null!");
+            return;
+        }
 
         holder.bind(product);
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return productList != null ? productList.size() : 0;
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -69,12 +73,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvFoodName.setText(product.getTenSanPham());
             tvDescription.setText(product.getMoTa());
             tvPrice.setText(String.valueOf(product.getGia()));
-            // Giả sử hình ảnh được tải bằng Glide
-            Glide.with(itemView.getContext()).load(product.getHinhAnh()).into(imgFood);
+
+            Glide.with(itemView.getContext())
+                    .load(product.getHinhAnh())
+                    .into(imgFood);
 
             btnAdd.setOnClickListener(v -> {
                 if (onAddToCartListener != null) {
-                    onAddToCartListener.onAddToCart(product); // Thêm sản phẩm vào giỏ hàng
+                    Log.d("ProductAdapter", "Adding product to cart: " + product.getTenSanPham());
+                    onAddToCartListener.onAddToCart(product);
+                } else {
+                    Log.e("ProductAdapter", "onAddToCartListener is null!");
                 }
             });
         }
@@ -84,4 +93,3 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         void onAddToCart(SanPham product);
     }
 }
-

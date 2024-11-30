@@ -147,7 +147,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
                     product.getMaSanPham(), // Mã sản phẩm
                     product.getTenSanPham(), // Tên sản phẩm
                     product.getHinhAnh(), // URL hình ảnh
-                    (double) product.getGia(), // Giá sản phẩm
+                    product.getGia(), // Giá sản phẩm
 
                     1 // Số lượng mặc định là 1
             );
