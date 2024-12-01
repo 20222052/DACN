@@ -43,8 +43,8 @@ public class NotificationAdapter extends BaseAdapter {
 
         NotificationItem item = notificationItems.get(position);
 
-        TextView itemName = convertView.findViewById(R.id.item_name);
-        TextView itemPrice = convertView.findViewById(R.id.item_price);
+        TextView itemName = convertView.findViewById(R.id.item_name_cart_list);
+        TextView itemPrice = convertView.findViewById(R.id.item_price_cart_list);
 
         itemName.setText(String.format("Đơn Hàng: %s", item.getOrderName()));
         itemPrice.setText(String.format("Số Lượng: %s", item.getQuantity()));

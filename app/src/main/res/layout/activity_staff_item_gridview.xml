@@ -25,7 +25,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
-                android:id="@+id/item_name"
+                android:id="@+id/item_name_cart_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -35,7 +35,7 @@
                 android:gravity="center"/>
 
             <TextView
-                android:id="@+id/item_price"
+                android:id="@+id/item_price_cart_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -43,6 +43,15 @@
                 android:textSize="20sp"
                 android:text="40,000"
                 android:gravity="center"/>
+            <ImageButton
+                android:id="@+id/btn_plus"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="right"
+                android:background="@drawable/circle_background"
+                android:contentDescription="Plus button"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_plus" />
         </LinearLayout>
 
     </LinearLayout>

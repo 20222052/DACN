@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,76 +18,87 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.ListAdapter;
+import com.example.dacn.Controller.MenuAdapter;
+import com.example.dacn.Model.ListItem;
+import com.example.dacn.Model.MenuItem;
+import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Staff extends AppCompatActivity {
-
+    private GridView gridViewMenu;
+    private MenuAdapter menuAdapter;
+    private List<MenuItem> menuItems;
+    private List<SanPham> productList;
+    private GridView gridViewSelectedItems; // GridView cho danh sách sản phẩm đã chọn
+    private ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
+    private List<ListItem> listItems; // Danh sách sản phẩm đã chọn
     ImageButton bellButton;
     Button btn_huy, btn_xacnhan;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_staff);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.khachhang), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         initView();
-        loadData();
+        gridViewMenu = findViewById(R.id.gridView_menu);
+        menuItems = new ArrayList<>();
+        productList = new ArrayList<>();
+        menuAdapter = new MenuAdapter(this, menuItems);
+        gridViewMenu.setAdapter(menuAdapter);
+
+        gridViewSelectedItems = findViewById(R.id.gridView_list);
+        listItems = new ArrayList<>();
+        listAdapter = new ListAdapter(this, listItems);
+        gridViewSelectedItems.setAdapter(listAdapter);
+
+        loadMenuData();
 
         bellButton.setOnClickListener(view -> showNotificationFragment());
         btn_xacnhan.setOnClickListener(view -> showHoadonFragment());
 
     }
 
-    private void loadData() {
-//        GridView gridViewMenu = findViewById(R.id.gridView_menu);
-//        List<MenuItem> menuItems = new ArrayList<>();
-//        menuItems.add(new MenuItem(R.drawable.pho_cuon, "Phở cuốn", "80.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_ga_la_e, "Lẩu gà lá é", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_bo, "Lẩu bò", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        menuItems.add(new MenuItem(R.drawable.lau_kimchi, "Lẩu kim chi", "70.000"));
-//        MenuAdapter adapter = new MenuAdapter(this, menuItems);
-//        gridViewMenu.setAdapter(adapter);
-//
-//        GridView listView = findViewById(R.id.gridView_list);
-//        List<ListItem> listItems = new ArrayList<>();
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//        listItems.add(new ListItem("Phở cuốn", "80.000", "1"));
-//
-//        ListAdapter lst_adapter = new ListAdapter(this, listItems);
-//        listView.setAdapter(lst_adapter);
+    public void addToListItem(ListItem listItem) {
+        listItems.add(listItem);
+        listAdapter.notifyDataSetChanged();  // Cập nhật ListView
+    }
+
+    private void loadMenuData() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SanPham");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                menuItems.clear(); // Xóa dữ liệu cũ
+                productList = new ArrayList<>(); // Khởi tạo lại productList để tránh lỗi NullPointerException
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    SanPham product = data.getValue(SanPham.class); // Đọc dữ liệu từ từng `data`
+                    if (product != null) {
+                        if (product.getTrangThai()) {
+                            productList.add(product);
+                            // Chuyển dữ liệu từ SanPham sang MenuItem
+                            menuItems.add(new MenuItem(product.getHinhAnh(), product.getTenSanPham(), String.valueOf(product.getGia())));
+                        }
+                    }
+                }
+                menuAdapter.notifyDataSetChanged(); // Cập nhật GridView
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Staff.this, "Không thể tải dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initView() {
@@ -111,83 +125,5 @@ public class Staff extends AppCompatActivity {
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    public class MenuItem {
-        private int imageResource;
-        private String name;
-        private String price;
-
-        public MenuItem() {
-        }
-
-        public MenuItem(int imageResource, String name, String price) {
-            this.imageResource = imageResource;
-            this.price = price;
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
-        public int getImageResource() {
-            return imageResource;
-        }
-
-        public void setImageResource(int imageResource) {
-            this.imageResource = imageResource;
-        }
-    }
-
-    public class ListItem {
-        private String name;
-        private String price;
-        private int quantity;
-
-        public ListItem() {
-        }
-
-        public ListItem(String name, String price, String quantity) {
-            this.name = name;
-            this.price = price;
-            this.quantity = Integer.parseInt(quantity);
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
     }
 }

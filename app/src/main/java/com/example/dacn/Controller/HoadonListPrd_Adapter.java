@@ -44,8 +44,8 @@ public class HoadonListPrd_Adapter extends BaseAdapter {
         HoaDonItem item = hoadonItems.get(position);
 
         // Ánh xạ các view từ layout
-        TextView itemName = convertView.findViewById(R.id.item_name);
-        TextView itemPrice = convertView.findViewById(R.id.item_price);
+        TextView itemName = convertView.findViewById(R.id.item_name_cart_list);
+        TextView itemPrice = convertView.findViewById(R.id.item_price_cart_list);
         TextView itemQuantity = convertView.findViewById(R.id.item_quantity);
 
         // Đặt dữ liệu lên giao diện
