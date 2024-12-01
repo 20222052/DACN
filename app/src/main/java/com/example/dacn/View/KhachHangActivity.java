@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,21 +52,28 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_khachhang);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.khachhang), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         rcvProduct = findViewById(R.id.rcv_product);
+
+        searchView = findViewById(R.id.search_food);
+
         btn_cart = findViewById(R.id.btn_cart);
+
         cartCountText = findViewById(R.id.cart_count);
 
+        cartList = new ArrayList<>();  // Khởi tạo giỏ hàng
         productList = new ArrayList<>();
-        cartList = new ArrayList<>();
-
-        productAdapter = new ProductAdapter(productList, this);
+        productAdapter = new ProductAdapter(productList, this);  // Gửi listener vào adapter
         rcvProduct.setAdapter(productAdapter);
 
-        rcvProduct.setLayoutManager(new GridLayoutManager(this, 3));
-
+        // Lấy dữ liệu từ Firebase
         database = FirebaseDatabase.getInstance().getReference("SanPham");
+
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -76,6 +82,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
                     SanPham product = snapshot.getValue(SanPham.class);
                     productList.add(product);
                 }
+                // Cập nhật RecyclerView
                 productAdapter.notifyDataSetChanged();
             }
 
@@ -84,8 +91,24 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
                 Log.w("Firebase", "loadProduct:onCancelled", databaseError.toException());
             }
         });
+        // set layout
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
 
-        btn_cart.setOnClickListener(v -> showCartFragment());
+        rcvProduct.setLayoutManager(gridLayoutManager);
+        // SearchView
+        searchView.clearFocus();
+
+        productAdapter.setOnAddToCartListener(product -> {
+            cartCount++;  // Tăng số lượng giỏ hàng
+            cartCountText.setText(String.valueOf(cartCount));  // Cập nhật UI
+        });
+
+        CartViewModel cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+        cartViewModel.setCartList(cartList); // Truyền dữ liệu vào ViewModel
+
+
+        // Xem giỏ hàng
+        btn_cart.setOnClickListener(view -> showCartFragment());
     }
 
     //show fragment
@@ -98,7 +121,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
 
         // Truyền dữ liệu giỏ hàng (cartList) vào CartFragment
         Bundle bundle = new Bundle();
-        bundle.putSerializable("cart_items", (Serializable) cartList);
+        bundle.putSerializable("cart_items", (Serializable) cartList);  // Truyền giỏ hàng vào Bundle
         fragment.setArguments(bundle);
 
         transaction.add(android.R.id.content, fragment);
@@ -106,31 +129,44 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         transaction.commit();
     }
 
-    @Override
     public void onAddToCart(SanPham product) {
-        Log.d("KhachHangActivity", "Adding product to cart: " + product.getTenSanPham());
-
         boolean productExists = false;
+
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         for (Cart cartItem : cartList) {
             if (cartItem.getId() == product.getMaSanPham()) {
-                cartItem.setSoLuong(cartItem.getSoLuong() + 1);
+                cartItem.setSoLuong(cartItem.getSoLuong() + 1); // Tăng số lượng
                 productExists = true;
                 break;
             }
         }
 
+        // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
         if (!productExists) {
-            Cart newCart = new Cart(
-                    product.getMaSanPham(),
-                    product.getTenSanPham(),
-                    product.getHinhAnh(),
-                    Double.parseDouble(String.valueOf(product.getGia())),
-                    1
+            Cart newCartItem = new Cart(
+                    product.getMaSanPham(), // Mã sản phẩm
+                    product.getTenSanPham(), // Tên sản phẩm
+                    product.getHinhAnh(), // URL hình ảnh
+                    product.getGia(), // Giá sản phẩm
+
+                    1 // Số lượng mặc định là 1
             );
-            cartList.add(newCart);
+            cartList.add(newCartItem);
         }
 
-        cartCount++;
+        // Cập nhật tổng số lượng sản phẩm trong giỏ hàng
+        int cartCount = 0;
+        for (Cart item : cartList) {
+            cartCount += item.getSoLuong();
+        }
+
+        // Cập nhật giao diện người dùng (UI)
         cartCountText.setText(String.valueOf(cartCount));
+
+        // Thông báo cho Adapter cập nhật lại giao diện giỏ hàng
+        cartAdapter.notifyDataSetChanged();
+
+        Log.d("Cart", "Added product: " + product.getTenSanPham());
     }
+
 }
