@@ -46,13 +46,12 @@ public class ListAdapter extends BaseAdapter {
 
         TextView itemName = convertView.findViewById(R.id.item_name_cart_list);
         TextView itemPrice = convertView.findViewById(R.id.item_price_cart_list);
-        TextView itemQuantity = convertView.findViewById(R.id.item_quantity);
         ImageButton btnMinus = convertView.findViewById(R.id.btn_minus);
         ImageButton btnPlus = convertView.findViewById(R.id.btn_plus);
         TextView tvQuantity = convertView.findViewById(R.id.tv_quantity);
 
         // Kiểm tra các thành phần null
-        if (itemName == null || itemPrice == null || itemQuantity == null ||
+        if (itemName == null || itemPrice == null ||
                 btnMinus == null || btnPlus == null || tvQuantity == null) {
             throw new IllegalStateException("One or more views in activity_staff_item_listview.xml are missing or have incorrect IDs.");
         }
@@ -62,7 +61,7 @@ public class ListAdapter extends BaseAdapter {
         // Thiết lập dữ liệu
         itemName.setText(listItem.getName());
         itemPrice.setText(String.valueOf(listItem.getPrice()));
-        itemQuantity.setText(String.valueOf(listItem.getQuantity()));
+        tvQuantity.setText(String.valueOf(listItem.getQuantity()));
 
         // Cập nhật số lượng
         btnMinus.setOnClickListener(v -> {
