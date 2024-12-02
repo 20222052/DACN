@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:paddingBottom="10dp">
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -17,24 +16,24 @@
 
         <TextView
             android:id="@+id/item_name_cart_list"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:textColor="#000"
             android:paddingLeft="25dp"
             android:textSize="24sp"
             android:text="Đơn Hàng: 3333"
-            android:gravity="left"/>
+            android:gravity="left" />
 
         <TextView
             android:id="@+id/item_price_cart_list"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingRight="25dp"
             android:textColor="#000"
             android:textSize="24sp"
             android:layout_weight="1"
             android:text="Số Lượng: 3"
-            android:gravity="right"/>
+            android:gravity="right" />
     </LinearLayout>
 </LinearLayout>
