@@ -1,12 +1,16 @@
 package com.example.dacn.View;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
@@ -19,16 +23,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dacn.Controller.CartAdapter;
+import com.example.dacn.Controller.MessagingNotification;
 import com.example.dacn.Controller.ProductAdapter;
 import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.CartViewModel;
 import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,9 +50,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     private ProductAdapter productAdapter;
     private DatabaseReference database;
     private List<Cart> cartList;
-    private int cartCount = 0;
     TextView cartCountText;
-    private CartAdapter cartAdapter;
 
     @SuppressLint("MissingInflatedId")
     @Override

@@ -1,6 +1,15 @@
 package com.example.dacn.View;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +22,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.CartAdapter;
+import com.example.dacn.Controller.MessagingNotification;
 import com.example.dacn.Controller.OrderController;
 import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.ChiTietDonHang;
@@ -54,6 +67,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
 
         btnXacNhan = view.findViewById(R.id.btn_checkout);
+
         updateTotalPrice();
         updateButtonState();
 
@@ -86,8 +100,11 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
                 // Xóa sạch giỏ hàng
                 cartItems.clear();
 
+
                 // Cập nhật giao diện
                 updateCartUI();
+
+                showOrderNotification();
 
                 // Hiển thị thông báo thành công
                 Toast.makeText(requireContext(), "Đặt món thành công! Giỏ hàng đã được làm trống.", Toast.LENGTH_SHORT).show();
@@ -96,6 +113,10 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
                 showCartFragment();
             }
         });
+
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+        }
 
         // Cập nhật GridView
         GridView gridView = view.findViewById(R.id.gv_cart_items);
@@ -225,5 +246,38 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .remove(CartFragment.this)
                 .commit();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showOrderNotification() {
+        Intent intent = new Intent(getActivity(), Staff.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+
+        // Tạo channel cho Android 8.0 trở lên
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "order_channel_id",
+                    "Order Notifications",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        // Tạo nội dung thông báo
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "order_channel_id")
+                .setSmallIcon(R.drawable.ic_bell) // Thay icon theo dự án của bạn
+                .setContentTitle("Nhà Hàng Hadilao")
+                .setContentText("Có đơn hàng mới!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        // Hiển thị thông báo
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
+        notificationManager.notify(1, builder.build());
     }
 }

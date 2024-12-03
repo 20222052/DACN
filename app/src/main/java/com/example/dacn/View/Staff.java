@@ -157,9 +157,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         });
     }
 
-
-
-
     private void loadMenuData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SanPham");
         databaseReference.addValueEventListener(new ValueEventListener() {
