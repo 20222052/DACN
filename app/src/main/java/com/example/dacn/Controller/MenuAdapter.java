@@ -40,7 +40,6 @@ public class MenuAdapter extends BaseAdapter {
         return position;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -61,19 +60,31 @@ public class MenuAdapter extends BaseAdapter {
 
         // Xử lý sự kiện bấm vào sản phẩm
         convertView.setOnClickListener(view -> {
-            // Lấy thông tin sản phẩm từ menuItem
             String name = menuItem.getName();
             String price = menuItem.getPrice();
 
-            // Tạo một ListItem mới và thêm vào danh sách
-            ListItem listItem = new ListItem(name, price, "1"); // Số lượng mặc định là 1
-            // Giả sử bạn có thể truyền một biến để cập nhật ListView trong Staff Activity.
-            ((Staff) context).addToListItem(listItem);
-        });
+            // Lấy danh sách listItems từ Staff
+            Staff staffActivity = (Staff) context;
 
+            // Kiểm tra nếu món đã tồn tại
+            boolean found = false;
+            for (ListItem listItem : staffActivity.listItems) {
+                if (listItem.getName().equals(name)) {
+                    listItem.setQuantity(listItem.getQuantity() + 1); // Tăng số lượng
+                    found = true;
+                    break;
+                }
+            }
+
+            // Nếu món chưa tồn tại, thêm mới
+            if (!found) {
+                staffActivity.addToListItem(new ListItem(name, price, "1"));
+            }
+
+            // Cập nhật ListView
+            staffActivity.listAdapter.notifyDataSetChanged();
+        });
 
         return convertView;
     }
-
-
 }

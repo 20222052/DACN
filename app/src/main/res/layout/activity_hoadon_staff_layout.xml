@@ -57,10 +57,10 @@
                 tools:srcCompat="@tools:sample/avatars"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vui lòng thanh toán số tiền là: 100000 VND"
+                android:text="Vui lòng thanh toán số tiền là: ... VND"
                 android:textSize="24dp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="520dp" />
@@ -97,14 +97,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="24dp"
-                    android:text="Tien Mat" />
+                    android:text="Tiền Mặt" />
 
                 <RadioButton
                     android:id="@+id/radioChuyenKhoan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="24dp"
-                    android:text="Chuyen Khoan" />
+                    android:text="CChuyển Khoản" />
             </RadioGroup>
 
             <LinearLayout

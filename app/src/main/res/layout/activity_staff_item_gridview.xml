@@ -45,8 +45,8 @@
                 android:gravity="center"/>
             <ImageButton
                 android:id="@+id/btn_plus"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="right"
                 android:background="@drawable/circle_background"
                 android:contentDescription="Plus button"

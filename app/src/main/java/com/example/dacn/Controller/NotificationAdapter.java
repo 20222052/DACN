@@ -47,27 +47,34 @@ public class NotificationAdapter extends BaseAdapter {
         TextView itemPrice = convertView.findViewById(R.id.item_price_cart_list);
 
         itemName.setText(String.format("Đơn Hàng: %s", item.getOrderName()));
-        itemPrice.setText(String.format("Số Lượng: %s", item.getQuantity()));
+        itemPrice.setText(String.format(""));
 
         return convertView;
     }
 
+
+
+    // Thêm phương thức này để trả về danh sách notificationItems
+    public List<NotificationItem> getNotificationItems() {
+        return notificationItems;
+    }
+
     public static class NotificationItem {
         private final String orderName;
-        private final int quantity;
+        private final float totalPrice;
 
-        public NotificationItem(String orderName, int quantity) {
+        public NotificationItem(String orderName, float totalPrice) {
             this.orderName = orderName;
-            this.quantity = quantity;
+            this.totalPrice = totalPrice;
         }
 
         public String getOrderName() {
             return orderName;
         }
 
-        public int getQuantity() {
-            return quantity;
+        public float getTotalPrice() {
+            return totalPrice;
         }
+
     }
 }
-

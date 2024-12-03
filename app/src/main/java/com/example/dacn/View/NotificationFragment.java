@@ -1,26 +1,48 @@
 package com.example.dacn.View;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.dacn.Controller.NotificationAdapter;
+import com.example.dacn.Model.DonHang;
+import com.example.dacn.Model.OnOrderSelectedListener;
 import com.example.dacn.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationFragment extends Fragment {
+    private List<DonHang> donhang;
+    private NotificationAdapter adapter;
+    private OnOrderSelectedListener listener; // Tham chiếu giao diện
 
     public NotificationFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnOrderSelectedListener) {
+            listener = (OnOrderSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " phải triển khai OnOrderSelectedListener");
+        }
     }
 
     @Nullable
@@ -28,35 +50,56 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notification_layout, container, false);
 
+        donhang = new ArrayList<>();
+        List<NotificationAdapter.NotificationItem> notificationItems = new ArrayList<>();
+        adapter = new NotificationAdapter(requireContext(), notificationItems);
+
         Button closeButton = view.findViewById(R.id.btn_close_notification);
         closeButton.setOnClickListener(v -> closeFragment());
 
         GridView gridView = view.findViewById(R.id.gridView_notification);
-
-        // Dữ liệu mẫu
-        List<NotificationAdapter.NotificationItem> notificationItems = new ArrayList<>();
-        notificationItems.add(new NotificationAdapter.NotificationItem("101", 3));
-        notificationItems.add(new NotificationAdapter.NotificationItem("102", 5));
-        notificationItems.add(new NotificationAdapter.NotificationItem("103", 2));
-        notificationItems.add(new NotificationAdapter.NotificationItem("104", 4));
-        notificationItems.add(new NotificationAdapter.NotificationItem("101", 3));
-        notificationItems.add(new NotificationAdapter.NotificationItem("102", 5));
-        notificationItems.add(new NotificationAdapter.NotificationItem("103", 2));
-        notificationItems.add(new NotificationAdapter.NotificationItem("104", 4));
-        notificationItems.add(new NotificationAdapter.NotificationItem("101", 3));
-        notificationItems.add(new NotificationAdapter.NotificationItem("102", 5));
-        notificationItems.add(new NotificationAdapter.NotificationItem("103", 2));
-        notificationItems.add(new NotificationAdapter.NotificationItem("104", 4));
-        notificationItems.add(new NotificationAdapter.NotificationItem("101", 3));
-        notificationItems.add(new NotificationAdapter.NotificationItem("102", 5));
-        notificationItems.add(new NotificationAdapter.NotificationItem("103", 2));
-        notificationItems.add(new NotificationAdapter.NotificationItem("104", 4));
-
-        // Áp dụng adapter
-        NotificationAdapter adapter = new NotificationAdapter(requireContext(), notificationItems);
         gridView.setAdapter(adapter);
 
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
+            NotificationAdapter.NotificationItem item = adapter.getNotificationItems().get(position);
+            String orderCode = item.getOrderName();
+            if (listener != null) {
+                listener.onOrderSelected(orderCode); // Gửi mã đơn hàng qua giao diện
+            }
+        });
+
+        loadMenuData();
+
         return view;
+    }
+
+    private void loadMenuData() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Don_Hang");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donhang.clear();
+                adapter.getNotificationItems().clear();
+
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    DonHang data_dh = data.getValue(DonHang.class);
+                    if (data_dh != null) {
+                        donhang.add(data_dh);
+                        adapter.getNotificationItems().add(new NotificationAdapter.NotificationItem(
+                                String.valueOf(data_dh.getMaDonHang()),
+                                data_dh.getTongTien()
+                        ));
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Không thể tải dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void closeFragment() {
