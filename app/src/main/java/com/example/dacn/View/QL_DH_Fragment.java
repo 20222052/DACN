@@ -98,6 +98,7 @@ public class QL_DH_Fragment extends Fragment {
     private void setupButtonListeners() {
         btnChiTiet.setOnClickListener(v -> {
             if (selectedDonHangId != -1) {
+                Log.d("OrderDetail", "Selected Order ID: " + selectedDonHangId);
                 controller.getChiTietDonHangByMaDonHang(selectedDonHangId, new QL_DHController.ChiTietDonHangListener() {
                     @Override
                     public void onChiTietDonHangLoaded(List<ChiTietDonHang> chiTietDonHangList) {
@@ -179,18 +180,14 @@ public class QL_DH_Fragment extends Fragment {
 
     private void filterDonHangList(String query) {
         List<DonHang> filteredList = new ArrayList<>();
-        for (DonHang donHang : donHangList) {
-            if (String.valueOf(donHang.getMaNhanVien()).contains(query)) {
-                filteredList.add(donHang);
-            }
-        }
+
         donHangAdapter = new QL_DH_Adapter(requireContext(), filteredList, nhanVienIdToNameMap);
         gridViewDonHang.setAdapter(donHangAdapter);
     }
 
     private void showChiTietDonHangDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Chi tiết đơn hàng");
+        builder.setTitle("Chi tiết đơn hàng : #" + selectedDonHangId);
 
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_chi_tiet_don_hang, null);
         ListView listView = dialogView.findViewById(R.id.listview_chi_tiet_don_hang);

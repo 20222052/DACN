@@ -1,5 +1,6 @@
 package com.example.dacn.View;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +24,11 @@ import com.example.dacn.Model.ChiTietDonHang;
 import com.example.dacn.Model.DonHang;
 import com.example.dacn.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateListener {
     private List<Cart> cartItems;
@@ -34,11 +38,11 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
 
     public CartFragment() {}
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cart_layout, container, false);
-
         // Nhận danh sách giỏ hàng từ Bundle
         if (getArguments() != null) {
             cartItems = (List<Cart>) getArguments().getSerializable("cart_items");
@@ -48,6 +52,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
 
         // Khởi tạo các thành phần giao diện
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
+
         btnXacNhan = view.findViewById(R.id.btn_checkout);
         updateTotalPrice();
         updateButtonState();
@@ -76,7 +81,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
                 List<ChiTietDonHang> chiTietDonHangList = createOrderDetails(donHang);
 
                 // Gọi OrderController để xử lý đơn hàng
-                orderController.handleOrderButtonClick(chiTietDonHangList, donHang.getMaNhanVien());
+                orderController.handleOrderButtonClick(chiTietDonHangList);
 
                 // Xóa sạch giỏ hàng
                 cartItems.clear();
@@ -104,11 +109,11 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
     private DonHang createOrder() {
         // Tạo đơn hàng mới, mã đơn hàng có thể tự động tăng dần
         int maDonHang = generateMaDonHang(); // Giả sử có phương thức để tạo mã tự động
-        String ngayDatHang = "2024-12-01"; // Lấy ngày hiện tại
-        float tongTien = calculateTotalPrice(); // Tổng tiền từ giỏ hàng
-        int maNhanVien = 1; // Giả sử mã nhân viên là 1
+        String ngayDatHang = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());; // Lấy ngày hiện tại
 
-        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang, maNhanVien);
+        float tongTien = calculateTotalPrice(); // Tổng tiền từ giỏ hàng
+
+        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang);
 
         // Lưu đơn hàng vào cơ sở dữ liệu hoặc bộ nhớ
         // Ví dụ: DonHangDAO.save(donHang);
@@ -149,15 +154,6 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
     private int generateMaChiTietDonHang() {
         // Tạo mã chi tiết đơn hàng tự động
         return (int) (Math.random() * 100000); // Ví dụ: tạo mã ngẫu nhiên
-    }
-
-    // Tính toán tổng giá tiền của giỏ hàng
-    private float calculateTotalPrice() {
-        float totalPrice = 0;
-        for (Cart item : cartItems) {
-            totalPrice += item.getGia() * item.getSoLuong();
-        }
-        return totalPrice;
     }
 
     // Cập nhật giao diện giỏ hàng sau khi thay đổi
@@ -209,12 +205,20 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
     private void updateTotalPrice() {
         float totalPrice = 0;
         for (Cart item : cartItems) {
-            totalPrice += item.getGia() * item.getSoLuong();
+            totalPrice += (float) (item.getGia() * item.getSoLuong());
         }
         // Use %,.2f to format the float value with two decimal places
-        tvTotalPrice.setText(String.format("Tổng: %.2f VND", totalPrice));
+        tvTotalPrice.setText(String.format("Tổng: %,.0f VND", totalPrice));
     }
 
+    // Tính toán tổng giá tiền của giỏ hàng
+    private float calculateTotalPrice() {
+        float totalPrice = 0;
+        for (Cart item : cartItems) {
+            totalPrice += item.getGia() * item.getSoLuong();
+        }
+        return totalPrice;
+    }
 
     // Đóng fragment
     private void closeFragment() {

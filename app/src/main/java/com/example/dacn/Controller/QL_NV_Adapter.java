@@ -46,11 +46,13 @@ public class QL_NV_Adapter extends BaseAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.item_nv, parent, false);
         NhanVien nhanVien = nhanVienList.get(position);
+        TextView tvMaNV = convertView.findViewById(R.id.idNV);
         TextView tvName = convertView.findViewById(R.id.name);
         TextView tvPhone = convertView.findViewById(R.id.SDT);
         TextView tvAddress = convertView.findViewById(R.id.DC);
         TextView tvRole = convertView.findViewById(R.id.CV);
 
+        tvMaNV.setText(String.format("Mã nhân viên: %s", nhanVien.getId()));
         tvName.setText(String.format("Tên nhân viên :%s", nhanVien.getTenNhanVien()));
         tvPhone.setText(String.format("SDT :%s", nhanVien.getSoDienThoai()));
         tvAddress.setText(String.format("Địa chỉ :%s", nhanVien.getAddress()));

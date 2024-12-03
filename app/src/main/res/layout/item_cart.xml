@@ -38,14 +38,15 @@
                     android:textSize="24sp"
                     android:ellipsize="end"
                     android:singleLine="true"/>
+
                 <TextView
                     android:id="@+id/tv_product_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="end"
                     android:text="Giá: 0đ"
-                    android:textSize="18sp"
-                    android:gravity="end" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <!-- Số lượng sản phẩm -->

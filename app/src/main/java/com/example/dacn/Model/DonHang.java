@@ -1,7 +1,6 @@
 package com.example.dacn.Model;
 public class DonHang {
     private int maDonHang;
-    private int maNhanVien;
     private String ngayDatHang;
     private float tongTien;
     private boolean trangThai;
@@ -9,12 +8,11 @@ public class DonHang {
     public DonHang() {
     }
 
-    public DonHang(int maDonHang, boolean trangThai, float tongTien, String ngayDatHang, int maNhanVien) {
+    public DonHang(int maDonHang, boolean trangThai, float tongTien, String ngayDatHang) {
         this.maDonHang = maDonHang;
         this.trangThai = trangThai;
         this.tongTien = tongTien;
         this.ngayDatHang = ngayDatHang;
-        this.maNhanVien = maNhanVien;
     }
 
     public int getMaDonHang() {
@@ -47,13 +45,5 @@ public class DonHang {
 
     public void setNgayDatHang(String ngayDatHang) {
         this.ngayDatHang = ngayDatHang;
-    }
-
-    public int getMaNhanVien() {
-        return maNhanVien;
-    }
-
-    public void setMaNhanVien(int maNhanVien) {
-        this.maNhanVien = maNhanVien;
     }
 }

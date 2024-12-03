@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,18 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DACN"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".View.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.KhachHangActivity"
             android:exported="false" />
         <activity
             android:name=".View.Admin_Activity"
             android:exported="false" />
         <activity
             android:name=".View.Staff"
+            android:exported="false" />
+        <activity
+            android:name=".View.KhachHangActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -13,27 +13,28 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
         <TextView
-            android:id="@+id/name_NV"
+            android:id="@+id/ma_DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="name"
+            android:text="Mã đơn hàng"
             android:textSize="20sp"
             android:layout_marginStart="10dp">
         </TextView>
+
         <TextView
             android:id="@+id/date_hd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="date"
+            android:text="Ngày đặt"
             android:textSize="20sp"
-            android:layout_below="@+id/name_NV"
+            android:layout_below="@+id/ma_DH"
             android:layout_marginStart="10dp">
         </TextView>
         <TextView
             android:id="@+id/Tong_tien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tông tien"
+            android:text="Tổng tiền"
             android:textSize="20sp"
             android:layout_below="@+id/date_hd"
             android:layout_marginStart="10dp">
@@ -42,7 +43,7 @@
             android:id="@+id/trang_thai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tramg thái"
+            android:text="Trạng thái"
             android:textSize="20sp"
             android:layout_below="@+id/Tong_tien"
             android:layout_marginStart="10dp">
