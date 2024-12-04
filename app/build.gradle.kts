@@ -47,4 +47,8 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("com.google.firebase:firebase-messaging:23.3.1")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 }

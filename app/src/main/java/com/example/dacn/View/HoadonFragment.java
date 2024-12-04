@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,8 +17,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.HoadonListPrd_Adapter;
+import com.example.dacn.Model.Cart;
+import com.example.dacn.Model.ChiTietDonHang;
+import com.example.dacn.Model.DonHang;
 import com.example.dacn.Model.ListItem;
+import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +35,8 @@ import java.util.List;
 public class HoadonFragment extends Fragment {
     private TextView tvTongTien;
     private List<HoadonListPrd_Adapter.HoaDonItem> hoadonItems = new ArrayList<>();
+    private List<ListItem> lstSp = new ArrayList<>();
+    Integer MaDH;
 
     public HoadonFragment() {
         // Required empty public constructor
@@ -59,17 +71,59 @@ public class HoadonFragment extends Fragment {
             // Chặn sự kiện click thoát fragment
         });
 
+//        btnXacNhan.setOnClickListener(v -> {
+//            // Gọi phương thức xóa chi tiết đơn hàng theo mã đơn hàng trước
+//            // Gọi phương thức thêm chi tiết đơn hàng với MaDH
+//            // Thực hiện thanh toán và hiển thị thông báo
+//            showFragment();
+//            closeFragment();
+//        });
+
         btnXacNhan.setOnClickListener(v -> {
-//            updateOrderDetails(orderCode);
-            // Thực hiện thanh toán và hiển thị thông báo
-            showFragment();
-            closeFragment();
+            // Xóa chi tiết đơn hàng cũ
+            DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
+
+            chiTietDonHangRef.orderByChild("maDonHang").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot data : snapshot.getChildren()) {
+                        data.getRef().removeValue(); // Xóa từng chi tiết đơn hàng
+                    }
+
+                    // Thêm lại chi tiết đơn hàng mới
+                    for (ListItem item : lstSp) {
+                        ChiTietDonHang chiTiet = new ChiTietDonHang(
+                                generateUniqueKey(), // Tạo mã chi tiết đơn hàng tự động
+                                item.getId(),//masp
+                                MaDH,
+                                item.getQuantity(),
+                                Integer.parseInt(item.getPrice())
+                        );
+
+                        chiTietDonHangRef.push().setValue(chiTiet); // Lưu chi tiết đơn hàng vào Firebase
+                    }
+
+                    // Hiển thị thông báo thanh toán thành công
+                    showFragment();
+                    closeFragment();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(requireContext(), "Lỗi khi xoá chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+
 
         // Nhận danh sách listItems từ Staff activity
         if (getArguments() != null) {
             ArrayList<ListItem> listItems = (ArrayList<ListItem>) getArguments().getSerializable("listItems");
             hoadonItems = convertToHoaDonItems(listItems); // Chuyển đổi thành HoaDonItem
+            ArrayList<ListItem> ListSp = (ArrayList<ListItem>) getArguments().getSerializable("listItems");
+            lstSp = convertToListSPItems(ListSp); // Chuyển đổi thành HoaDonItem
+            MaDH = getArguments().getInt("orderCode"); // Truyền Mã đơn hàng
+
         }
 
         // Khởi tạo GridView và dữ liệu
@@ -84,6 +138,10 @@ public class HoadonFragment extends Fragment {
         return view;
     }
 
+    private int generateUniqueKey() {
+        return (int) (System.currentTimeMillis() / 1000); // Tạo mã duy nhất từ timestamp
+    }
+
     // Chuyển listItems thành danh sách HoaDonItem để sử dụng trong adapter
     private List<HoadonListPrd_Adapter.HoaDonItem> convertToHoaDonItems(List<ListItem> listItems) {
         List<HoadonListPrd_Adapter.HoaDonItem> hoaDonItems = new ArrayList<>();
@@ -92,14 +150,15 @@ public class HoadonFragment extends Fragment {
         }
         return hoaDonItems;
     }
-
-    // Phương thức nhận dữ liệu chi tiết đơn hàng từ StaffFragment
-    public static HoadonFragment newInstance(List<HoadonListPrd_Adapter.HoaDonItem> hoadonItems) {
-        HoadonFragment fragment = new HoadonFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("hoadonItems", new ArrayList<>(hoadonItems));
-        fragment.setArguments(args);
-        return fragment;
+    // Chuyển listItems thành danh sách HoaDonItem để sử dụng trong adapter
+    private List<ListItem> convertToListSPItems(List<ListItem> listSp) {
+        List<ListItem> spItems = new ArrayList<>();
+        for (ListItem item : listSp) {
+            spItems.add(
+                    new ListItem(item.getName(), String.valueOf(item.getPrice()), String.valueOf(item.getQuantity()), item.getId())
+            );
+        }
+        return spItems;
     }
 
     // Hiển thị fragment thông báo thành công

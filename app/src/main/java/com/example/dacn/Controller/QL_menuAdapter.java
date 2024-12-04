@@ -57,15 +57,15 @@ public class QL_menuAdapter extends BaseAdapter {
         if (product.getTrangThai()) {
             Glide.with(context)
                     .load(product.getHinhAnh())
-                    .placeholder(R.drawable.ic_launcher_background) // Add a placeholder image
-                    .error(R.drawable.ic_launcher_background) // Add an error image
                     .into(ivTT);
+            convertView.setAlpha(1.0f);
+            convertView.setEnabled(true);
         } else {
             Glide.with(context)
-                    .load(R.drawable.ic_launcher_background)
-                    .placeholder(R.drawable.ic_launcher_background) // Add a placeholder image
-                    .error(R.drawable.ic_launcher_background) // Add an error image
+                    .load(product.getHinhAnh())
                     .into(ivTT);
+            convertView.setAlpha(0.3f);
+            convertView.setEnabled(false);
         }
 
         tvName.setText(product.getTenSanPham());

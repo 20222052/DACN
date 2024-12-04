@@ -32,7 +32,10 @@
                 android:textColor="#000"
                 android:textSize="24sp"
                 android:text="Phở cuốn"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/item_price_cart_list"

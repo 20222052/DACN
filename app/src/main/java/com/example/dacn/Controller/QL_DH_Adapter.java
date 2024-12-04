@@ -50,17 +50,15 @@ public class QL_DH_Adapter extends BaseAdapter {
 
         DonHang donHang = donHangList.get(position);
 
+        TextView tvMaDonHang = convertView.findViewById(R.id.ma_DH);
         TextView tvNgayDatHang = convertView.findViewById(R.id.date_hd);
         TextView tvTongTien = convertView.findViewById(R.id.Tong_tien);
         TextView tvTrangThai = convertView.findViewById(R.id.trang_thai);
-        TextView tvTenNhanVien = convertView.findViewById(R.id.name_NV);
 
+        tvMaDonHang.setText("Mã đơn hàng: #" +donHang.getMaDonHang());
         tvNgayDatHang.setText("Ngày đặt hàng : " + donHang.getNgayDatHang());
         tvTongTien.setText("Tổng tiền : " + donHang.getTongTien());
         tvTrangThai.setText(donHang.isTrangThai() ? "Trạng thái : Completed" : "Trạng thái : Pending");
-
-        String tenNhanVien = nhanVienIdToNameMap.get(+donHang.getMaNhanVien());
-        tvTenNhanVien.setText(tenNhanVien != null ? "Tên nhân viên : " +tenNhanVien : "Unknown");
 
         return convertView;
     }

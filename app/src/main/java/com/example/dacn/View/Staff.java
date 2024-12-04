@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.ListAdapter;
 import com.example.dacn.Controller.MenuAdapter;
+import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.ListItem;
 import com.example.dacn.Model.MenuItem;
 import com.example.dacn.Model.OnOrderSelectedListener;
@@ -41,10 +42,12 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
     private GridView gridViewSelectedItems; // GridView cho danh sách sản phẩm đã chọn
     public ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
+    public List<Cart> lstCart = new ArrayList<>();
     private List<SanPham> lstSp = new ArrayList<>();
     ImageButton bellButton;
     Button btn_huy, btn_xacnhan;
     private TextView tvTongTien;
+    Integer MaDH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             // Truyền danh sách đơn hàng (listItems) sang fragment HoadonFragment
             Bundle bundle = new Bundle();
             bundle.putSerializable("listItems", new ArrayList<>(listItems)); // Dùng putSerializable để truyền danh sách
+            bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
+            bundle.putDouble("orderCode", MaDH); // Truyền Mã đơn hàng
 
             HoadonFragment hoadonFragment = new HoadonFragment();
             hoadonFragment.setArguments(bundle);
@@ -111,7 +116,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
 
     private void loadOrderDetails(String orderCode) {
         DatabaseReference orderDetailsRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
-
         orderDetailsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -120,6 +124,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Integer maDonHang = data.child("maDonHang").getValue(Integer.class);
+                    MaDH = maDonHang; //gaán maDH
                     Integer maSanPham = data.child("maSanPham").getValue(Integer.class);
                     Integer soLuong = data.child("soLuong").getValue(Integer.class);
                     Integer donGia = data.child("donGia").getValue(Integer.class);
@@ -154,9 +159,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
                                 if (productName != null) {
                                     String price = String.valueOf(donGia);
                                     String quantity = String.valueOf(soLuong);
-
+                                    int id = Integer.valueOf(maSanPham);
                                     // Thêm tên sản phẩm, giá, số lượng vào danh sách
-                                    listItems.add(new ListItem(productName, price, quantity));
+                                    listItems.add(new ListItem(productName, price, quantity, id));
                                     listAdapter.notifyDataSetChanged(); // Cập nhật giao diện
                                     updateTongTien(); // Tính lại tổng tiền
                                 }
@@ -177,9 +182,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             }
         });
     }
-
-
-
 
     private void loadMenuData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SanPham");

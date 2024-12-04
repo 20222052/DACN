@@ -60,7 +60,7 @@ public class CartAdapter extends BaseAdapter {
 
         Cart cart = cartList.get(position);
         holder.tvProductName.setText(cart.getTenSP());
-        holder.tvProductPrice.setText(String.format("%,.2f VND", cart.getGia() * cart.getSoLuong()));
+        holder.tvProductPrice.setText(String.format("%,.0f VND", cart.getGia()));
         holder.tvQuantity.setText(String.valueOf(cart.getSoLuong()));
 
         // Load image with Glide

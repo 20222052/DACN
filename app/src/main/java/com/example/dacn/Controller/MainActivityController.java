@@ -2,12 +2,14 @@ package com.example.dacn.Controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.dacn.Model.TaiKhoan;
 import com.example.dacn.View.Admin_Activity;
+import com.example.dacn.View.KhachHangActivity;
 import com.example.dacn.View.Staff;
 import com.example.dacn.View.MainActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +29,7 @@ public class MainActivityController {
             Toast.makeText(context, "Tài Khoản hoặc mật khẩu không được để trống", Toast.LENGTH_SHORT).show();
         } else {
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            mDatabase.child("TaiKhoan").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     boolean userFound = false;
@@ -38,7 +40,13 @@ public class MainActivityController {
                             String getpassword = userSnapshot.child("matKhau").getValue(String.class);
                             if (getpassword != null && getpassword.equals(matKhau)) {
                                 String role = userSnapshot.child("vaiTro").getValue(String.class);
+                                String userId = userSnapshot.getKey();
                                 if (role != null) {
+                                    SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("role", role);
+                                    editor.putString("userId", userId);
+                                    editor.apply();
                                     navigateToActivity(role);
                                 }
                             }
@@ -60,11 +68,11 @@ public class MainActivityController {
     }
     private void navigateToActivity(String role) {
         Intent intent;
-        if (role.equals("admin")) {
+        if (role.equals("Admin")) {
             intent = new Intent(context, Admin_Activity.class);
         }
-        else if (role.equals("nhanvien")) {
-            intent = new Intent(context, Staff.class);
+        else if (role.equals("Nhân viên")) {
+            intent = new Intent(context, KhachHangActivity.class);
         }
         else {
             Toast.makeText(context, "Vai trò không hợp lệ!", Toast.LENGTH_SHORT).show();
