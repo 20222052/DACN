@@ -84,7 +84,7 @@
                     android:background="@drawable/circle_background"
                     android:contentDescription="Plus button"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_plus" />
+                    android:src="@drawable/ic_pluss" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

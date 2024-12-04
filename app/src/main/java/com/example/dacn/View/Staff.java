@@ -41,6 +41,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
     private GridView gridViewSelectedItems; // GridView cho danh sách sản phẩm đã chọn
     public ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
+    private List<SanPham> lstSp = new ArrayList<>();
     ImageButton bellButton;
     Button btn_huy, btn_xacnhan;
     private TextView tvTongTien;
@@ -115,12 +116,32 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listItems.clear(); // Xóa danh sách hiện tại trước khi tải dữ liệu mới
+                lstSp.clear();
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Integer maDonHang = data.child("maDonHang").getValue(Integer.class);
                     Integer maSanPham = data.child("maSanPham").getValue(Integer.class);
                     Integer soLuong = data.child("soLuong").getValue(Integer.class);
                     Integer donGia = data.child("donGia").getValue(Integer.class);
+
+                    // lay chi tiet sp
+                    if (maDonHang != null && maDonHang.toString().equals(orderCode)) {
+                        // Truy vấn để lấy thông tin sản phẩm theo `maSanPham`
+                        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(maSanPham.toString());
+                        productRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot productSnapshot) {
+                                SanPham sp = productSnapshot.getValue(SanPham.class); // Lấy sản phẩm
+                                if (sp != null) {
+                                    lstSp.add(sp); // Thêm vào danh sách sản phẩm
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(Staff.this, "Không thể tải thông tin sản phẩm", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
 
                     if (maDonHang != null && maDonHang.toString().equals(orderCode)) {
                         // Chỉ thêm các mục khớp với `orderCode`
