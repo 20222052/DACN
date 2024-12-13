@@ -71,13 +71,6 @@ public class HoadonFragment extends Fragment {
             // Chặn sự kiện click thoát fragment
         });
 
-//        btnXacNhan.setOnClickListener(v -> {
-//            // Gọi phương thức xóa chi tiết đơn hàng theo mã đơn hàng trước
-//            // Gọi phương thức thêm chi tiết đơn hàng với MaDH
-//            // Thực hiện thanh toán và hiển thị thông báo
-//            showFragment();
-//            closeFragment();
-//        });
 
         btnXacNhan.setOnClickListener(v -> {
             // Xóa chi tiết đơn hàng cũ
@@ -97,7 +90,7 @@ public class HoadonFragment extends Fragment {
                                 item.getId(),//masp
                                 MaDH,
                                 item.getQuantity(),
-                                Integer.parseInt(item.getPrice())
+                                item.getPrice()
                         );
 
                         chiTietDonHangRef.push().setValue(chiTiet); // Lưu chi tiết đơn hàng vào Firebase
@@ -123,7 +116,6 @@ public class HoadonFragment extends Fragment {
             ArrayList<ListItem> ListSp = (ArrayList<ListItem>) getArguments().getSerializable("listItems");
             lstSp = convertToListSPItems(ListSp); // Chuyển đổi thành HoaDonItem
             MaDH = getArguments().getInt("orderCode"); // Truyền Mã đơn hàng
-
         }
 
         // Khởi tạo GridView và dữ liệu

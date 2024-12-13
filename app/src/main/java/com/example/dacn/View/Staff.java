@@ -1,6 +1,7 @@
 package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -46,9 +47,8 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
     private GridView gridViewSelectedItems; // GridView cho danh sách sản phẩm đã chọn
     public ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
-    public List<Cart> lstCart = new ArrayList<>();
     private List<SanPham> lstSp = new ArrayList<>();
-    ImageButton bellButton;
+    ImageButton bellButton, btn_back;
     Button btn_huy, btn_xacnhan;
     private TextView tvTongTien;
     Integer MaDH;
@@ -83,7 +83,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             bundle.putSerializable("listItems", new ArrayList<>(listItems)); // Dùng putSerializable để truyền danh sách
             bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
-            bundle.putDouble("orderCode", MaDH); // Truyền Mã đơn hàng
+            bundle.putInt("orderCode", MaDH); // Truyền Mã đơn hàng
 
             HoadonFragment hoadonFragment = new HoadonFragment();
             hoadonFragment.setArguments(bundle);
@@ -96,6 +96,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             transaction.commit();
         });
 
+        //trở về layout khach hang
+        Intent intent = new Intent(this, KhachHangActivity.class);
+        btn_back.setOnClickListener(view -> startActivity(intent));
     }
 
     public void addToListItem(ListItem listItem) {
@@ -246,11 +249,13 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         });
     }
 
+    @SuppressLint("WrongViewCast")
     private void initView() {
         bellButton = findViewById(R.id.btn_bell);
         btn_huy = findViewById(R.id.btn_huy);
         btn_xacnhan = findViewById(R.id.btn_xacnhan);
         tvTongTien = findViewById(R.id.tv_tongtien); // Liên kết TextView hiển thị tổng tiền
+        btn_back = findViewById(R.id.btn_back);
     }
 
     // Tính và cập nhật tổng tiền
@@ -273,19 +278,11 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         transaction.commit();
     }
 
-    private void showHoadonFragment(HoadonFragment hoadonFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        HoadonFragment fragment = new HoadonFragment();
-        transaction.add(android.R.id.content, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     @Override
     public void onOrderSelected(String orderCode) {
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
+        MaDH = Integer.valueOf(orderCode);
     }
 }

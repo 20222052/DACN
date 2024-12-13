@@ -18,6 +18,9 @@ public class ChiTietDonHang {
         this.maSanPham = maSanPham;
     }
 
+    public ChiTietDonHang(int donGia, int id, Integer maDH, int quantity, String price) {
+    }
+
     public int getMaChiTietDonHang() {
         return maChiTietDonHang;
     }

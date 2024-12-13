@@ -83,7 +83,7 @@ public class NotificationFragment extends Fragment {
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     DonHang data_dh = data.getValue(DonHang.class);
-                    if (data_dh != null) {
+                    if (data_dh != null && data_dh.isTrangThai()==false) {
                         donhang.add(data_dh);
                         adapter.getNotificationItems().add(new NotificationAdapter.NotificationItem(
                                 String.valueOf(data_dh.getMaDonHang()),
