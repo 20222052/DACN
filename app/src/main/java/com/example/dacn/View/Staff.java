@@ -2,6 +2,7 @@ package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.dacn.Controller.ListAdapter;
 import com.example.dacn.Controller.MenuAdapter;
 import com.example.dacn.Model.Cart;
+import com.example.dacn.Model.ChiTietDonHang;
 import com.example.dacn.Model.ListItem;
 import com.example.dacn.Model.MenuItem;
 import com.example.dacn.Model.OnOrderSelectedListener;
@@ -33,7 +35,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Staff extends AppCompatActivity implements OnOrderSelectedListener {
     private GridView gridViewMenu;
@@ -84,7 +88,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             HoadonFragment hoadonFragment = new HoadonFragment();
             hoadonFragment.setArguments(bundle);
 
-
             // Hiển thị HoadonFragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -113,75 +116,113 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         listAdapter.notifyDataSetChanged(); // Cập nhật giao diện
         updateTongTien(); // Cập nhật tổng tiền
     }
+    public void updateOrAddChiTietDonHang(float donGia, int soLuong, int maDonHang, int maChiTietDonHang, int maSanPham) {
+        // Đảm bảo các biến này là final hoặc không thay đổi trong suốt quá trình
+        final float finalDonGia = donGia;
+        final int finalSoLuong = soLuong;
+        final int finalMaDonHang = maDonHang;
+        final int finalMaChiTietDonHang = maChiTietDonHang;
+        final int finalMaSanPham = maSanPham;
+
+        // Tham chiếu đến chi tiết đơn hàng trong Firebase
+        DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang").child(String.valueOf(finalMaChiTietDonHang));
+
+        chiTietDonHangRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    chiTietDonHangRef.child("soLuong").setValue(finalSoLuong).addOnCompleteListener(updateTask -> {
+                        if (updateTask.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    // Sử dụng các biến final để tạo đối tượng ChiTietDonHang
+                    ChiTietDonHang newChiTiet = new ChiTietDonHang(finalDonGia, finalSoLuong, finalMaDonHang, finalMaChiTietDonHang, finalMaSanPham);
+                    chiTietDonHangRef.setValue(newChiTiet).addOnCompleteListener(addTask -> {
+                        if (addTask.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Thêm mới thành công!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Thêm mới thất bại!", Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase", "Add task failed: " + addTask.getException());
+                        }
+                    });
+                }
+            } else {
+                Log.e("Firebase", "Error retrieving data: " + task.getException());
+                Toast.makeText(getApplicationContext(), "Lỗi khi truy xuất dữ liệu!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void loadOrderDetails(String orderCode) {
         DatabaseReference orderDetailsRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
-        orderDetailsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("SanPham");
+
+        // Bước 1: Lấy tất cả sản phẩm trước
+        productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listItems.clear(); // Xóa danh sách hiện tại trước khi tải dữ liệu mới
-                lstSp.clear();
+            public void onDataChange(@NonNull DataSnapshot productSnapshot) {
+                // Map lưu thông tin sản phẩm: key = maSanPham, value = SanPham
+                Map<Integer, SanPham> productMap = new HashMap<>();
+                for (DataSnapshot productData : productSnapshot.getChildren()) {
+                    Integer maSanPham = Integer.valueOf(productData.getKey());
+                    SanPham sp = productData.getValue(SanPham.class);
+                    productMap.put(maSanPham, sp);
+                }
 
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    Integer maDonHang = data.child("maDonHang").getValue(Integer.class);
-                    MaDH = maDonHang; //gaán maDH
-                    Integer maSanPham = data.child("maSanPham").getValue(Integer.class);
-                    Integer soLuong = data.child("soLuong").getValue(Integer.class);
-                    Integer donGia = data.child("donGia").getValue(Integer.class);
+                // Bước 2: Lấy chi tiết đơn hàng
+                orderDetailsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot orderSnapshot) {
+                        listItems.clear();
+                        lstSp.clear();
 
-                    // lay chi tiet sp
-                    if (maDonHang != null && maDonHang.toString().equals(orderCode)) {
-                        // Truy vấn để lấy thông tin sản phẩm theo `maSanPham`
-                        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(maSanPham.toString());
-                        productRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot productSnapshot) {
-                                SanPham sp = productSnapshot.getValue(SanPham.class); // Lấy sản phẩm
+                        for (DataSnapshot data : orderSnapshot.getChildren()) {
+                            Integer maDonHang = data.child("maDonHang").getValue(Integer.class);
+                            Integer maSanPham = data.child("maSanPham").getValue(Integer.class);
+                            Integer soLuong = data.child("soLuong").getValue(Integer.class);
+                            Integer donGia = data.child("donGia").getValue(Integer.class);
+
+                            // Kiểm tra mã đơn hàng khớp
+                            if (maDonHang != null && maDonHang.toString().equals(orderCode)) {
+                                // Lấy thông tin sản phẩm từ Map
+                                SanPham sp = productMap.get(maSanPham);
                                 if (sp != null) {
                                     lstSp.add(sp); // Thêm vào danh sách sản phẩm
+
+                                    // Tạo đối tượng ListItem
+                                    ListItem listItem = new ListItem();
+                                    listItem.setName(sp.getTenSanPham());
+                                    listItem.setPrice(String.valueOf(donGia));
+                                    listItem.setQuantity(soLuong);
+                                    listItem.setMaChiTietDonHang(listItem.getMaChiTietDonHang());
+                                    listItems.add(listItem);
                                 }
                             }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(Staff.this, "Không thể tải thông tin sản phẩm", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        }
+
+                        // Cập nhật giao diện sau khi xử lý xong toàn bộ dữ liệu
+                        listAdapter.notifyDataSetChanged();
+                        updateTongTien();
                     }
 
-                    if (maDonHang != null && maDonHang.toString().equals(orderCode)) {
-                        // Chỉ thêm các mục khớp với `orderCode`
-                        // Truy vấn để lấy tên sản phẩm từ "SanPham"
-                        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("SanPham").child(maSanPham.toString());
-                        productRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot productSnapshot) {
-                                String productName = productSnapshot.child("tenSanPham").getValue(String.class);
-                                if (productName != null) {
-                                    String price = String.valueOf(donGia);
-                                    String quantity = String.valueOf(soLuong);
-                                    int id = Integer.valueOf(maSanPham);
-                                    // Thêm tên sản phẩm, giá, số lượng vào danh sách
-                                    listItems.add(new ListItem(productName, price, quantity, id));
-                                    listAdapter.notifyDataSetChanged(); // Cập nhật giao diện
-                                    updateTongTien(); // Tính lại tổng tiền
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(Staff.this, "Không thể tải tên sản phẩm", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Staff.this, "Không thể tải chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
                     }
-                }
+                });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Staff.this, "Không thể tải chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Staff.this, "Không thể tải danh sách sản phẩm", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void loadMenuData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SanPham");
@@ -247,5 +288,4 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
     }
-
 }

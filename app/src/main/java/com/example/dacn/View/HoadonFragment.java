@@ -155,7 +155,14 @@ public class HoadonFragment extends Fragment {
         List<ListItem> spItems = new ArrayList<>();
         for (ListItem item : listSp) {
             spItems.add(
-                    new ListItem(item.getName(), String.valueOf(item.getPrice()), String.valueOf(item.getQuantity()), item.getId())
+                    new ListItem(item.getName(),
+                            String.valueOf(item.getPrice()),
+                            String.valueOf(item.getQuantity()),
+                            item.getId(),
+                            item.getMaChiTietDonHang(),
+                            item.getMaDonHang(),
+                            item.getMaSanPham()
+                    )
             );
         }
         return spItems;

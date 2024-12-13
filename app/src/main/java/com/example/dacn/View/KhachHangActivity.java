@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dacn.Controller.CartAdapter;
 import com.example.dacn.Controller.MessagingNotification;
 import com.example.dacn.Controller.ProductAdapter;
+import com.example.dacn.Controller.QL_menuController;
 import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.CartViewModel;
 import com.example.dacn.Model.SanPham;
@@ -51,7 +52,6 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     private DatabaseReference database;
     private List<Cart> cartList;
     TextView cartCountText;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +82,14 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                productList.clear();
+                productList.clear(); // Xóa danh sách cũ
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     SanPham product = snapshot.getValue(SanPham.class);
-                    productList.add(product);
+                    if (product != null && product.getTrangThai()) { // Kiểm tra trạng thái sản phẩm
+                        productList.add(product); // Chỉ thêm sản phẩm có trạng thái true
+                    }
                 }
-                productAdapter.notifyDataSetChanged();
+                productAdapter.notifyDataSetChanged(); // Cập nhật adapter sau khi thay đổi danh sách
             }
 
             @Override
@@ -95,6 +97,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
                 Log.w("Firebase", "loadProduct:onCancelled", databaseError.toException());
             }
         });
+
 
         searchView.clearFocus();
 

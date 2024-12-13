@@ -8,20 +8,25 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dacn.Model.ListItem;
 import com.example.dacn.R;
 import com.example.dacn.View.Staff;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class ListAdapter extends BaseAdapter {
     private Context context;
     private List<ListItem> listItems;
+    private DatabaseReference databaseReference;
 
     public ListAdapter(Context context, List<ListItem> listItems) {
         this.context = context;
         this.listItems = listItems;
+        this.databaseReference = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
     }
 
     @Override
@@ -65,6 +70,18 @@ public class ListAdapter extends BaseAdapter {
             if (quantity > 1) {
                 listItem.setQuantity(quantity - 1);
                 tvQuantity.setText(String.valueOf(listItem.getQuantity()));
+
+                // Cập nhật số lượng trên Firebase
+                databaseReference.child(String.valueOf(listItem.getId()))
+                        .child("soLuong")
+                        .setValue(listItem.getQuantity())
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 notifyDataSetChanged();
                 ((Staff) context).updateTongTien(); // Cập nhật tổng tiền
             } else {
@@ -83,12 +100,24 @@ public class ListAdapter extends BaseAdapter {
         });
 
         btnPlus.setOnClickListener(v -> {
-            listItem.setQuantity(listItem.getQuantity() + 1);
-            tvQuantity.setText(String.valueOf(listItem.getQuantity()));
-            notifyDataSetChanged();
-            ((Staff) context).updateTongTien(); // Cập nhật tổng tiền
-        });
+            int newQuantity = listItem.getQuantity() + 1; // Tăng số lượng lên 1
+            listItem.setQuantity(newQuantity); // Cập nhật số lượng mới
+            tvQuantity.setText(String.valueOf(newQuantity)); // Cập nhật hiển thị số lượng
 
+            // Gọi hàm updateOrAddChiTietDonHang để cập nhật chi tiết đơn hàng
+            // Chuyển sang phương thức của Staff để xử lý Firebase
+            ((Staff) context).updateOrAddChiTietDonHang(
+                    Float.parseFloat(listItem.getPrice()),  // Dùng giá của sản phẩm
+                    newQuantity,
+                    listItem.getMaDonHang(),
+                    listItem.getMaSanPham(),
+                    listItem.getMaChiTietDonHang()
+            );
+
+            // Cập nhật giao diện và tính tổng tiền
+            notifyDataSetChanged();
+            ((Staff) context).updateTongTien();
+        });
 
         return convertView;
     }

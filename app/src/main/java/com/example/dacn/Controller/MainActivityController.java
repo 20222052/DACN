@@ -40,13 +40,7 @@ public class MainActivityController {
                             String getpassword = userSnapshot.child("matKhau").getValue(String.class);
                             if (getpassword != null && getpassword.equals(matKhau)) {
                                 String role = userSnapshot.child("vaiTro").getValue(String.class);
-                                String userId = userSnapshot.getKey();
                                 if (role != null) {
-                                    SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("role", role);
-                                    editor.putString("userId", userId);
-                                    editor.apply();
                                     navigateToActivity(role);
                                 }
                             }

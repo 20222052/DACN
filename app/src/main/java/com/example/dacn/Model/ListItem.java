@@ -2,9 +2,12 @@ package com.example.dacn.Model;
 
 public class ListItem {
     private int id;
+    private int maChiTietDonHang;
     private String name;
     private String price;
     private int quantity;
+    private int maDonHang;
+    private int maSanPham;
 
     public ListItem() {
     }
@@ -15,11 +18,38 @@ public class ListItem {
         this.quantity = Integer.parseInt(quantity);
     }
 
-    public ListItem(String name, String price, String quantity, int id) {
+    public ListItem(String name, String price, String quantity, int id, int maChiTietDonHang, int maDonHang, int maSanPham ) {
         this.name = name;
         this.price = price;
         this.quantity = Integer.parseInt(quantity);
         this.id = id;
+        this.maChiTietDonHang = maChiTietDonHang;
+        this.maDonHang = maDonHang;
+        this.maSanPham = maSanPham;
+    }
+
+    public int getMaSanPham() {
+        return maSanPham;
+    }
+
+    public void setMaSanPham(int maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
+    public int getMaDonHang() {
+        return maDonHang;
+    }
+
+    public void setMaDonHang(int maDonHang) {
+        this.maDonHang = maDonHang;
+    }
+
+    public int getMaChiTietDonHang() {
+        return maChiTietDonHang;
+    }
+
+    public void setMaChiTietDonHang(int maChiTietDonHang) {
+        this.maChiTietDonHang = maChiTietDonHang;
     }
 
     public String getName() {
@@ -49,7 +79,7 @@ public class ListItem {
     public int getId() {
         return id;
     }
-    public void seId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

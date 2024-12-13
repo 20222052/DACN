@@ -23,8 +23,8 @@ public class QL_menuController {
 
     public QL_menuController(Context context) {
         this.context = context;
-        this.mDatabase = FirebaseDatabase.getInstance().getReference(); // Initialize Firebase reference
-        this.productList = new ArrayList<>(); // Initialize the product list
+        this.mDatabase = FirebaseDatabase.getInstance().getReference();
+        this.productList = new ArrayList<>();
     }
 
     /**
@@ -76,11 +76,9 @@ public class QL_menuController {
         mDatabase.child("SanPham").child(productId).setValue(sanPham)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("QL_menuController", "Product updated successfully");
-                    // You can optionally trigger a callback or notification here
                 })
                 .addOnFailureListener(e -> {
                     Log.e("QL_menuController", "Failed to update product", e);
-                    // Handle the error case, e.g., show an error message to the user
                 });
     }
 
