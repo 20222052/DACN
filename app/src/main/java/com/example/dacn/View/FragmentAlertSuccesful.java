@@ -1,6 +1,7 @@
 package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,5 +72,10 @@ public class FragmentAlertSuccesful extends Fragment {
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .remove(FragmentAlertSuccesful.this)
                 .commit();
+
+        requireActivity().finish();
+
+        Intent intent = new Intent(this.getActivity(), Staff.class);
+        startActivity(intent);
     }
 }

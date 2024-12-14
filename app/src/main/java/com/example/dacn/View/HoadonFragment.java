@@ -2,11 +2,15 @@ package com.example.dacn.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.dacn.Controller.HoadonListPrd_Adapter;
 import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.ChiTietDonHang;
@@ -49,10 +54,28 @@ public class HoadonFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_hoadon_staff_layout, container, false);
         tvTongTien = view.findViewById(R.id.tv_total_price);
 
-        // Nhận dữ liệu chi tiết đơn hàng từ StaffFragment
-        if (getArguments() != null) {
-            hoadonItems = (List<HoadonListPrd_Adapter.HoaDonItem>) getArguments().getSerializable("hoadonItems");
-        }
+        RadioGroup radioGroupPTTT = view.findViewById(R.id.radioGroup_PTTT);
+        RadioButton radioTienMat = view.findViewById(R.id.radioTienMat);
+        RadioButton radioChuyenKhoan = view.findViewById(R.id.radioChuyenKhoan);
+        ImageView imageView = view.findViewById(R.id.imageView);
+
+        // Đặt mặc định chọn Tiền Mặt và ẩn ImageView
+        radioTienMat.setChecked(true);
+        imageView.setVisibility(View.GONE);
+
+        // Lắng nghe thay đổi của RadioGroup
+        radioGroupPTTT.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioTienMat) {
+                imageView.setVisibility(View.GONE); // Ẩn ImageView
+            } else if (checkedId == R.id.radioChuyenKhoan) {
+                imageView.setVisibility(View.VISIBLE); // Hiển thị ImageView
+                // Đặt link ảnh QR
+                String imageUrl = "https://img.vietqr.io/image/BIDV-0976956191-compact2.png?amount="+getArguments().getDouble("totallPrice")+"&addInfo=Thanh%20Toán%20Hóa%20Đơn%20Ăn%20HaDiLao&accountName=HadilaoRestauron";
+                Glide.with(requireContext()).load(imageUrl).into(imageView);
+            }
+        });
+
+
 
         // Khai báo nút "Huỷ" và "Xác nhận"
         Button btnHuy = view.findViewById(R.id.btn_huy);
@@ -75,6 +98,7 @@ public class HoadonFragment extends Fragment {
         btnXacNhan.setOnClickListener(v -> {
             // Xóa chi tiết đơn hàng cũ
             DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
+            DatabaseReference donHangRef = FirebaseDatabase.getInstance().getReference("Don_Hang");
 
             chiTietDonHangRef.orderByChild("maDonHang").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -86,15 +110,24 @@ public class HoadonFragment extends Fragment {
                     // Thêm lại chi tiết đơn hàng mới
                     for (ListItem item : lstSp) {
                         ChiTietDonHang chiTiet = new ChiTietDonHang(
+                                Float.parseFloat(item.getPrice()),//don gia
                                 generateUniqueKey(), // Tạo mã chi tiết đơn hàng tự động
-                                item.getId(),//masp
                                 MaDH,
-                                item.getQuantity(),
-                                item.getPrice()
+                                item.getMaSanPham(),//masp
+                                item.getQuantity()
                         );
-
+                        Log.d("DEBUG", "Item: " + generateUniqueKey() +", Item: " + item.getMaSanPham() + ", Quantity: " + item.getQuantity() + ", Price: " + item.getPrice());
                         chiTietDonHangRef.push().setValue(chiTiet); // Lưu chi tiết đơn hàng vào Firebase
                     }
+
+                    // Cập nhật trạng thái đơn hàng sang "true"
+                    donHangRef.child(MaDH.toString()).child("trangThai").setValue(true).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Cập nhật đơn hàng thành công!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "Lỗi khi cập nhật đơn hàng", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                     // Hiển thị thông báo thanh toán thành công
                     showFragment();
@@ -156,6 +189,7 @@ public class HoadonFragment extends Fragment {
                             item.getMaSanPham()
                     )
             );
+            Log.d("DEBUG: ", "MaSP: " + item.getMaSanPham() + ", price: " + item.getPrice() + ", quantity: " + item.getQuantity() + ", id: " + item.getId() + ", MaChiTietDonHang: " + item.getMaChiTietDonHang() + ", MaDonHang: " + item.getMaDonHang());
         }
         return spItems;
     }

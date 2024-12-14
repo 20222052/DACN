@@ -12,6 +12,13 @@ public class ListItem {
     public ListItem() {
     }
 
+    public ListItem(int maSanPham, String name, String price, String quantity) {
+        this.maSanPham = maSanPham;
+        this.name = name;
+        this.price = price;
+        this.quantity = Integer.parseInt(quantity);
+    }
+
     public ListItem(String name, String price, String quantity) {
         this.name = name;
         this.price = price;

@@ -1,6 +1,7 @@
 package com.example.dacn.Controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,16 @@ import com.example.dacn.View.Staff;
 
 import java.util.List;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MenuAdapter extends BaseAdapter {
     private Context context;
     private List<MenuItem> menuItems;
+    int maSanPham = 0;
 
     public MenuAdapter(Context context, List<MenuItem> menuItems) {
         this.context = context;
@@ -60,6 +67,7 @@ public class MenuAdapter extends BaseAdapter {
 
         // Xử lý sự kiện bấm vào sản phẩm
         convertView.setOnClickListener(view -> {
+            int id = menuItem.getIdprd();
             String name = menuItem.getName();
             String price = menuItem.getPrice();
 
@@ -78,7 +86,7 @@ public class MenuAdapter extends BaseAdapter {
 
             // Nếu món chưa tồn tại, thêm mới
             if (!found) {
-                staffActivity.addToListItem(new ListItem(name, price, "1"));
+                staffActivity.addToListItem(new ListItem(id, name, price, "1"));
             }
 
             // Cập nhật ListView
@@ -87,4 +95,6 @@ public class MenuAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
 }

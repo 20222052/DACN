@@ -80,6 +80,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             }
             // Truyền danh sách đơn hàng (listItems) sang fragment HoadonFragment
             Bundle bundle = new Bundle();
+            for (ListItem item : listItems) {
+                Log.d("MaSP: ", "" + item.getMaSanPham() + "");
+            }
             bundle.putSerializable("listItems", new ArrayList<>(listItems)); // Dùng putSerializable để truyền danh sách
             bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
@@ -94,6 +97,12 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             transaction.replace(android.R.id.content, hoadonFragment);
             transaction.addToBackStack(null);
             transaction.commit();
+        });
+
+        btn_huy.setOnClickListener(view -> {
+            listItems.clear();
+            listAdapter.notifyDataSetChanged();
+            updateTongTien();
         });
 
         //trở về layout khach hang
@@ -185,6 +194,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
 
                         for (DataSnapshot data : orderSnapshot.getChildren()) {
                             Integer maDonHang = data.child("maDonHang").getValue(Integer.class);
+                            Integer maChiTietDonHang = data.child("maChiTietDonHang").getValue(Integer.class);
                             Integer maSanPham = data.child("maSanPham").getValue(Integer.class);
                             Integer soLuong = data.child("soLuong").getValue(Integer.class);
                             Integer donGia = data.child("donGia").getValue(Integer.class);
@@ -198,10 +208,11 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
 
                                     // Tạo đối tượng ListItem
                                     ListItem listItem = new ListItem();
+                                    listItem.setMaSanPham(maSanPham);
                                     listItem.setName(sp.getTenSanPham());
                                     listItem.setPrice(String.valueOf(donGia));
                                     listItem.setQuantity(soLuong);
-                                    listItem.setMaChiTietDonHang(listItem.getMaChiTietDonHang());
+                                    listItem.setMaChiTietDonHang(maChiTietDonHang);
                                     listItems.add(listItem);
                                 }
                             }
@@ -236,7 +247,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     SanPham product = data.getValue(SanPham.class);
                     if (product != null && product.getTrangThai()) {
-                        menuItems.add(new MenuItem(product.getHinhAnh(), product.getTenSanPham(), String.valueOf(product.getGia())));
+                        menuItems.add(new MenuItem(product.getMaSanPham(), product.getHinhAnh(), product.getTenSanPham(), String.valueOf(product.getGia())));
                     }
                 }
                 menuAdapter.notifyDataSetChanged();

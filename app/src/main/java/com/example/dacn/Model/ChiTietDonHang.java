@@ -18,7 +18,12 @@ public class ChiTietDonHang {
         this.maSanPham = maSanPham;
     }
 
-    public ChiTietDonHang(int donGia, int id, Integer maDH, int quantity, String price) {
+    public ChiTietDonHang(float donGia, int id, Integer maDH, int maSanPham, int quantity) {
+        this.donGia = donGia;
+        this.maChiTietDonHang = id;
+        this.maDonHang = maDH;
+        this.maSanPham = maSanPham;
+        this.soLuong = quantity;
     }
 
     public int getMaChiTietDonHang() {
