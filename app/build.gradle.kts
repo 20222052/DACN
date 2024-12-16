@@ -1,4 +1,4 @@
-plugins {
+    plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 }
@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -47,8 +46,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
-    implementation ("com.google.android.gms:play-services-auth:20.7.0")
-    implementation ("com.google.firebase:firebase-auth:21.0.1")
-    implementation ("com.google.firebase:firebase-messaging:23.3.1")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation (libs.play.services.auth)
+    implementation (libs.firebase.auth)
+    implementation (libs.firebase.messaging)
+    implementation (libs.okhttp)
+    implementation (libs.mpandroidchart)
 }

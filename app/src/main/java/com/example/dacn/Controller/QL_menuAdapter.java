@@ -50,7 +50,6 @@ public class QL_menuAdapter extends BaseAdapter {
         SanPham product = sanPhamList.get(position);
         TextView tvName = convertView.findViewById(R.id.tv_food_name);
         TextView tvPrice = convertView.findViewById(R.id.tv_gia);
-        TextView tvQuantity = convertView.findViewById(R.id.tv_so_luong);
         ImageView ivImage = convertView.findViewById(R.id.img_food);
         ImageView ivTT = convertView.findViewById(R.id.img_TT);
 
@@ -70,7 +69,6 @@ public class QL_menuAdapter extends BaseAdapter {
 
         tvName.setText(product.getTenSanPham());
         tvPrice.setText(String.format("Price: %.2f", product.getGia()));
-        tvQuantity.setText(String.format("Quantity: %d", product.getSoLuong()));
         Glide.with(context)
                 .load(product.getHinhAnh())
                 .placeholder(R.drawable.ic_launcher_background) // Add a placeholder image

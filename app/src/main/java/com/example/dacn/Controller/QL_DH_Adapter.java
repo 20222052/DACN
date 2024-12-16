@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.dacn.Model.DonHang;
 import com.example.dacn.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +56,16 @@ public class QL_DH_Adapter extends BaseAdapter {
         TextView tvTongTien = convertView.findViewById(R.id.Tong_tien);
         TextView tvTrangThai = convertView.findViewById(R.id.trang_thai);
 
-        tvMaDonHang.setText("Mã đơn hàng: #" +donHang.getMaDonHang());
+        tvMaDonHang.setText("Mã đơn hàng: #" + donHang.getMaDonHang());
         tvNgayDatHang.setText("Ngày đặt hàng : " + donHang.getNgayDatHang());
         tvTongTien.setText("Tổng tiền : " + donHang.getTongTien());
         tvTrangThai.setText(donHang.isTrangThai() ? "Trạng thái : Completed" : "Trạng thái : Pending");
 
         return convertView;
+    }
+
+    public void updateList(List<DonHang> newList) {
+        donHangList = new ArrayList<>(newList);
+        notifyDataSetChanged();
     }
 }

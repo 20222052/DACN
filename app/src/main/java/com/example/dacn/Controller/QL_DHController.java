@@ -26,20 +26,6 @@ public class QL_DHController {
         this.mDatabase = FirebaseDatabase.getInstance().getReference("Don_Hang");
         this.donHangList = new ArrayList<>();
     }
-
-    /**
-     * Method to add a new order.
-     */
-    public void themDonHang(DonHang donHang) {
-        String id = mDatabase.push().getKey();
-        if (id != null) {
-            donHang.setMaDonHang(Integer.parseInt(id));
-            mDatabase.child(id).setValue(donHang)
-                    .addOnSuccessListener(aVoid -> Log.d("QL_DHController", "Order added successfully"))
-                    .addOnFailureListener(e -> Log.e("QL_DHController", "Failed to add order", e));
-        }
-    }
-
     /**
      * Fetches all orders from Firebase.
      */
@@ -91,21 +77,29 @@ public class QL_DHController {
     }
 
     /**
-     * Updates an existing order.
-     */
-    public void suaDonHang(DonHang donHang) {
-        mDatabase.child(String.valueOf(donHang.getMaDonHang())).setValue(donHang)
-                .addOnSuccessListener(aVoid -> Log.d("QL_DHController", "Order updated successfully"))
-                .addOnFailureListener(e -> Log.e("QL_DHController", "Failed to update order", e));
-    }
-
-    /**
      * Deletes an order from Firebase by its ID.
      */
     public void xoaDonHang(int id) {
-        mDatabase.child(String.valueOf(id)).removeValue()
-                .addOnSuccessListener(aVoid -> Log.d("QL_DHController", "Order deleted successfully"))
-                .addOnFailureListener(e -> Log.e("QL_DHController", "Failed to delete order", e));
+        // Delete order details first
+        DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
+        chiTietDonHangRef.orderByChild("maDonHang").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("QL_DHController", "Deleting order details: " + snapshot.getKey());
+                    snapshot.getRef().removeValue();
+                }
+                // Delete the order after deleting its details
+                mDatabase.child(String.valueOf(id)).removeValue()
+                        .addOnSuccessListener(aVoid -> Log.d("QL_DHController", "Order deleted successfully"))
+                        .addOnFailureListener(e -> Log.e("QL_DHController", "Failed to delete order", e));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("QL_DHController", "Failed to delete order details: " + databaseError.getMessage());
+            }
+        });
     }
 
     public interface DonHangListener {

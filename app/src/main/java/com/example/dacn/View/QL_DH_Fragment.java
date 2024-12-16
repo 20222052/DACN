@@ -33,10 +33,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class QL_DH_Fragment extends Fragment {
     private QL_DHController controller;
@@ -45,7 +52,7 @@ public class QL_DH_Fragment extends Fragment {
     private QL_DH_Adapter donHangAdapter;
     private List<DonHang> donHangList;
     private SearchView searchView;
-    private Spinner spinnerFilter;
+    private Spinner spinnerFilter,spinnerStatus;
     private Button btnChiTiet, btnTimKiem, btnXoa;
     private int selectedDonHangId = -1;
     private Map<Integer, String> nhanVienIdToNameMap;
@@ -81,20 +88,94 @@ public class QL_DH_Fragment extends Fragment {
         setupButtonListeners();
         loadNhanVienNames();
         loadSanPhamDetails();
+        setupSpinnerListeners();
         loadDonHangList();
-
         return view;
     }
 
     private void initializeViews(View view) {
         gridViewDonHang = view.findViewById(R.id.gridview_don_hang);
         searchView = view.findViewById(R.id.search_employee);
-        spinnerFilter = view.findViewById(R.id.tv_filter);
         btnChiTiet = view.findViewById(R.id.btn_chi_tiet);
         btnTimKiem = view.findViewById(R.id.btn_tim_kiem);
+        spinnerFilter = view.findViewById(R.id.sort_date); // Add this line
+        spinnerStatus = view.findViewById(R.id.status); // Add this line
         btnXoa = view.findViewById(R.id.btn_xoa);
     }
+    private void setupSpinnerListeners() {
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyFiltersAndSort();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyFiltersAndSort();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+    private void applyFiltersAndSort() {
+        String selectedStatus = spinnerStatus.getSelectedItem().toString();
+        String selectedSortOption = spinnerFilter.getSelectedItem().toString();
+
+        List<DonHang> filteredList = filterDonHangListByStatus(selectedStatus);
+        List<DonHang> sortedList = sortDonHangList(filteredList, selectedSortOption);
+
+        donHangAdapter.updateList(sortedList);
+    }
+    private List<DonHang> filterDonHangListByStatus(String option) {
+        if (option.equals("Đã thanh toán")) {
+            return donHangList.stream()
+                    .filter(DonHang::isTrangThai)
+                    .collect(Collectors.toList());
+        } else if (option.equals("Chưa thanh toán")) {
+            return donHangList.stream()
+                    .filter(donHang -> !donHang.isTrangThai())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>(donHangList);
+        }
+    }
+
+    private List<DonHang> sortDonHangList(List<DonHang> list, String option) {
+        if (donHangAdapter == null) {
+            donHangAdapter = new QL_DH_Adapter(requireContext(), donHangList, nhanVienIdToNameMap);
+            gridViewDonHang.setAdapter(donHangAdapter);
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+
+        Comparator<DonHang> comparator = (dh1, dh2) -> {
+            try {
+                Date date1 = dateFormat.parse(dh1.getNgayDatHang());
+                Date date2 = dateFormat.parse(dh2.getNgayDatHang());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        };
+
+        if (option.equals("Muộn")) {
+            Collections.sort(list, comparator);
+        } else if (option.equals("Sớm")) {
+            Collections.sort(list, Collections.reverseOrder(comparator));
+        }
+
+        return list;
+    }
     private void setupButtonListeners() {
         btnChiTiet.setOnClickListener(v -> {
             if (selectedDonHangId != -1) {
@@ -142,8 +223,13 @@ public class QL_DH_Fragment extends Fragment {
                 QL_DH_Fragment.this.donHangList = donHangList;
                 donHangAdapter = new QL_DH_Adapter(requireContext(), donHangList, nhanVienIdToNameMap);
                 gridViewDonHang.setAdapter(donHangAdapter);
+                spinnerFilter.post(() -> {
+                    spinnerFilter.setSelection(0);
+                    applyFiltersAndSort();
+                });
             }
         });
+
     }
 
     private void loadNhanVienNames() {
@@ -183,6 +269,7 @@ public class QL_DH_Fragment extends Fragment {
 
         donHangAdapter = new QL_DH_Adapter(requireContext(), filteredList, nhanVienIdToNameMap);
         gridViewDonHang.setAdapter(donHangAdapter);
+
     }
 
     private void showChiTietDonHangDialog() {
