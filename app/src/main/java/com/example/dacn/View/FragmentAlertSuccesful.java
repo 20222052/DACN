@@ -27,16 +27,20 @@ public class FragmentAlertSuccesful extends Fragment {
 
     private String message;  // Biến nhận dữ liệu từ CartFragment
     private String message2; // Biến nhận dữ liệu từ CartFragment
+    private static String nhanVienId; // Biến nhận dữ liệu từ CartFragment
+
 
     public FragmentAlertSuccesful() {
         // Constructor mặc định
     }
 
-    public static FragmentAlertSuccesful newInstance(String thongbaothanhcong, String thongbaokhachdoi) {
+    public static FragmentAlertSuccesful newInstance(String thongbaothanhcong, String thongbaokhachdoi, String nhanVienIdd) {
         FragmentAlertSuccesful fragment = new FragmentAlertSuccesful();
         Bundle args = new Bundle();
         args.putString("thongbaothanhcong", thongbaothanhcong);
         args.putString("thongbaokhachdoi", thongbaokhachdoi);
+        args.putString("nhanVienId", nhanVienIdd);
+        nhanVienId = nhanVienIdd;
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,8 +93,8 @@ public class FragmentAlertSuccesful extends Fragment {
                 .commit();
 
         requireActivity().finish();
-
         Intent intent = new Intent(this.getActivity(), Staff.class);
+        intent.putExtra("nhanVienId", nhanVienId);
         startActivity(intent);
     }
 }

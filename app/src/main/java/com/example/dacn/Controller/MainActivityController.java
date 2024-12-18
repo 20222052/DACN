@@ -3,6 +3,7 @@ package com.example.dacn.Controller;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivityController {
     private Context context;
     private DatabaseReference mDatabase;
+    private String nhanvienid;
     public MainActivityController(Context context) {
         this.context = context;
     }
@@ -38,10 +40,12 @@ public class MainActivityController {
                         if (tenDangNhap.equals(username)) {
                             userFound = true;
                             String getpassword = userSnapshot.child("matKhau").getValue(String.class);
+                            nhanvienid = userSnapshot.child("nhanVienId").getValue(String.class);
+                            Log.d("MainActivityController", "nhanvienid: " + nhanvienid);
                             if (getpassword != null && getpassword.equals(matKhau)) {
                                 String role = userSnapshot.child("vaiTro").getValue(String.class);
                                 if (role != null) {
-                                    navigateToActivity(role);
+                                    navigateToActivity(role, nhanvienid);
                                 }
                             }
                             else {
@@ -60,13 +64,15 @@ public class MainActivityController {
             });
         }
     }
-    private void navigateToActivity(String role) {
+    private void navigateToActivity(String role, String nhanvienid) {
         Intent intent;
         if (role.equals("Quản lý")) {
             intent = new Intent(context, Admin_Activity.class);
+            intent.putExtra("nhanVienId", nhanvienid);
         }
         else if (role.equals("Nhân viên")) {
-            intent = new Intent(context, KhachHangActivity.class);
+            intent = new Intent(context, Staff.class);
+            intent.putExtra("nhanVienId", nhanvienid);
         }
         else {
             Toast.makeText(context, "Vai trò không hợp lệ!", Toast.LENGTH_SHORT).show();

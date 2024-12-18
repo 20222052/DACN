@@ -4,6 +4,8 @@ public class DonHang {
     private String ngayDatHang;
     private float tongTien;
     private boolean trangThai;
+    private int tableId;
+    private String nhanVienId;
 
     public DonHang() {
     }
@@ -13,6 +15,24 @@ public class DonHang {
         this.trangThai = trangThai;
         this.tongTien = tongTien;
         this.ngayDatHang = ngayDatHang;
+    }
+
+    public  DonHang(int maDonHang, boolean trangThai, float tongTien, String ngayDatHang, int tableId, String nhanVienId) {
+        this.tableId = tableId;
+        this.maDonHang = maDonHang;
+        this.trangThai = trangThai;
+        this.tongTien = tongTien;
+        this.ngayDatHang = ngayDatHang;
+        this.nhanVienId = nhanVienId;
+
+    }
+
+    public int getTableId() {
+        return tableId;
+    }
+
+    public String getNhanVienId() {
+        return nhanVienId;
     }
 
     public int getMaDonHang() {

@@ -17,7 +17,7 @@
         android:theme="@style/Theme.DACN"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".View.MainActivity"
+            android:name=".View.Staff"
             android:exported="false" />
         <activity
             android:name=".View.Admin_Activity"
@@ -29,7 +29,7 @@
             android:name=".View.TableActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Staff"
+            android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

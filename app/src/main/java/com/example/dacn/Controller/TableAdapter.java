@@ -39,6 +39,9 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
         holder.itemView.setEnabled(!table.isStatus()); // Nếu có khách, không cho click
         holder.itemView.setSelected(table.isStatus()); // Nếu có khách, không chọn được
 
+        // Nếu có khách, làm mờ itemView
+        holder.itemView.setAlpha(table.isStatus() ? 0.5f : 1f); // Mờ 50% nếu có khách, bình thường nếu trống
+
         // Cập nhật viền và các thông tin
         holder.itemView.setOnClickListener(v -> {
             if (!table.isStatus()) { // Bàn trống mới được click

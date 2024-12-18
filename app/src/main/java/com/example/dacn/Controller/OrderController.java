@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     // Hàm xử lý sự kiện khi nhấn nút "Xác nhận"
-    public void handleOrderButtonClick(List<ChiTietDonHang> cartItems) {
+    public void handleOrderButtonClick(List<ChiTietDonHang> cartItems, DonHang donHangg) {
         if (cartItems == null || cartItems.isEmpty()) {
             Toast.makeText(context, "Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi đặt hàng!", Toast.LENGTH_SHORT).show();
             return;
@@ -33,9 +33,12 @@ public class OrderController {
         int maDonHang = generateOrderID(); // Tạo mã đơn hàng
         float tongTien = calculateTotalPrice(cartItems);
         String ngayDatHang = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        int tableId = donHangg.getTableId();
+        String nhanVienId = donHangg.getNhanVienId();
+        Toast.makeText(context, "NhanVienId: " + nhanVienId + "", Toast.LENGTH_SHORT).show();
 
         // Tạo đơn hàng và gửi lên Firebase
-        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang); // Trang thái đơn hàng là "false" (chưa xử lý)
+        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang, tableId, nhanVienId); // Trang thái đơn hàng là "false" (chưa xử lý)
         sendOrderToFirebase(donHang, cartItems);
     }
 

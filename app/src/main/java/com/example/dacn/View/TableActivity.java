@@ -22,11 +22,14 @@ import java.util.List;
 public class TableActivity extends AppCompatActivity {
     private RecyclerView rvTables;
     private TableAdapter tableAdapter;
+    private String nhanVienId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
+
+        nhanVienId = getIntent().getStringExtra("nhanVienId");
 
         rvTables = findViewById(R.id.rvTables);
 
@@ -46,6 +49,7 @@ public class TableActivity extends AppCompatActivity {
                 Toast.makeText(this, "Bạn chọn " + table.getNameTable(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, KhachHangActivity.class);
                 intent.putExtra("tableId", table.getIdTable()); // Truyền ID bàn
+                intent.putExtra("nhanVienId", nhanVienId); // Truyền ID nhân viên
                 startActivity(intent);
             }
         });

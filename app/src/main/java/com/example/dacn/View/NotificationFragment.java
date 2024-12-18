@@ -2,6 +2,7 @@ package com.example.dacn.View;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,13 +64,15 @@ public class NotificationFragment extends Fragment {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             NotificationAdapter.NotificationItem item = adapter.getNotificationItems().get(position);
             String orderCode = item.getOrderName();
+            int tableId = item.getTableId();
+            String nhanVienId = item.getNhanVienId();
+            Log.d("NotificationFragment", "NhanVienId: " + nhanVienId+" - TableId: " + tableId + "");
             if (listener != null) {
-                listener.onOrderSelected(orderCode); // Gửi mã đơn hàng qua giao diện
+                listener.onOrderSelected(orderCode, tableId, nhanVienId); // Gửi mã đơn hàng qua giao diện
             }
         });
 
         loadMenuData();
-
         return view;
     }
 
@@ -84,11 +87,18 @@ public class NotificationFragment extends Fragment {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     DonHang data_dh = data.getValue(DonHang.class);
                     if (data_dh != null && data_dh.isTrangThai()==false) {
-                        donhang.add(data_dh);
+                        DonHang donHang = new DonHang(data_dh.getMaDonHang(), data_dh.isTrangThai(), data_dh.getTongTien(), data_dh.getNgayDatHang(), data_dh.getTableId(), data_dh.getNhanVienId());
+                        donhang.add(donHang);
                         adapter.getNotificationItems().add(new NotificationAdapter.NotificationItem(
                                 String.valueOf(data_dh.getMaDonHang()),
-                                data_dh.getTongTien()
+                                data_dh.getTongTien(),
+                                data_dh.getTableId(),
+                                data_dh.getNhanVienId()
                         ));
+                        Log.d("NotificationFragment", "MaDonHang: " + data_dh.getMaDonHang() +
+                                ", TongTien: " + data_dh.getTongTien() +
+                                ", TableId: " + data_dh.getTableId() +
+                                ", NhanVienId: " + data_dh.getNhanVienId());
                     }
                 }
 

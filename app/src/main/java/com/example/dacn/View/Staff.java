@@ -48,14 +48,13 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     public ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
     private List<SanPham> lstSp = new ArrayList<>();
-    ImageButton bellButton, btn_back, btn_table;
-    SearchView searchFood;
-    Button  btn_xacnhan, btn_dangxuat;
+    private ImageButton bellButton, btn_back, btn_table;
+    private SearchView searchFood;
+    private Button  btn_xacnhan, btn_dangxuat;
     private TextView tvTongTien;
-    Integer MaDH;
+    private Integer MaDH, tableId;
+    private String nhanVienId;
 
-    DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
-    DatabaseReference donHangRef = FirebaseDatabase.getInstance().getReference("Don_Hang");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         setContentView(R.layout.activity_staff);
 
         initView();
+
+        Intent intentt = getIntent();
+        nhanVienId = intentt.getStringExtra("nhanVienId");
 
         gridViewMenu = findViewById(R.id.gridView_menu);
         menuItems = new ArrayList<>();
@@ -91,6 +93,8 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
             bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
             bundle.putInt("orderCode", MaDH); // Truyền Mã đơn hàng
+            bundle.putInt("tableId", tableId); // Truyền Mã đơn hàng
+            bundle.putString("nhanVienId", nhanVienId); // Truyền Mã đơn hàng
 
             HoadonFragment hoadonFragment = new HoadonFragment();
             hoadonFragment.setArguments(bundle);
@@ -105,12 +109,15 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
         btn_table.setOnClickListener(v -> {
             Intent intent = new Intent(Staff.this, TableActivity.class);
+            intent.putExtra("nhanVienId", nhanVienId);
+            Toast.makeText(this, "nhanVienId: " + nhanVienId, Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         });
 
         btn_dangxuat.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+
             startActivity(intent);
             finish();
         });
@@ -118,6 +125,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
         //trở về layout khach hang
         Intent intent = new Intent(this, KhachHangActivity.class);
+        intent.putExtra("nhanVienId", nhanVienId);
         btn_back.setOnClickListener(view -> startActivity(intent));
 
         // Thiết lập tìm kiếm
@@ -127,17 +135,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
     @Override
     public void huyDonHang() {
-    }
-
-    private void showFragment(String mess1, String mess2) {
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        FragmentAlertWarning fragment = FragmentAlertWarning.newInstance(mess1, mess2);
-
-        transaction.add(android.R.id.content, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     // Phương thức tạo mã đơn hàng tự động
@@ -372,9 +369,13 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
 
     @Override
-    public void onOrderSelected(String orderCode) {
+    public void onOrderSelected(String orderCode, int tableIdd, String nhanVienIdd) {
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
         MaDH = Integer.valueOf(orderCode);
+        tableId = tableIdd;
+        nhanVienId = nhanVienIdd;
+        Log.d("Staff", "MaDH: " + MaDH + ", TableId: " + tableId + ", NhanVienId: " + nhanVienId);
     }
 }
+

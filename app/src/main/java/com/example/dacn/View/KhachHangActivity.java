@@ -57,6 +57,8 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     private DatabaseReference database;
     private List<Cart> cartList;
     TextView cartCountText;
+    private int tableId;
+    private String nhanVienId;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,11 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent intent = getIntent();
+        nhanVienId = intent.getStringExtra("nhanVienId");
+        tableId = intent.getIntExtra("tableId", -1);
+
         btn_staff = findViewById(R.id.btn_staff);
         rcvProduct = findViewById(R.id.rcv_product);
         searchView = findViewById(R.id.search_food);
@@ -167,6 +174,8 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         CartFragment fragment = new CartFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("cart_items", (Serializable) cartList);
+        bundle.putString("nhanVienId", nhanVienId);
+        bundle.putInt("tableId", tableId);
         fragment.setArguments(bundle);
 
         transaction.add(android.R.id.content, fragment);

@@ -44,6 +44,8 @@ public class HoadonFragment extends Fragment {
     private List<HoadonListPrd_Adapter.HoaDonItem> hoadonItems = new ArrayList<>();
     private List<ListItem> lstSp = new ArrayList<>();
     Integer MaDH;
+    String nhanVienId;
+    int tableId;
 
     public HoadonFragment() {
         // Required empty public constructor
@@ -55,6 +57,8 @@ public class HoadonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_hoadon_staff_layout, container, false);
         tvTongTien = view.findViewById(R.id.tv_total_price);
+
+        nhanVienId = getArguments().getString("nhanVienId");
 
         RadioGroup radioGroupPTTT = view.findViewById(R.id.radioGroup_PTTT);
         RadioButton radioTienMat = view.findViewById(R.id.radioTienMat);
@@ -132,7 +136,7 @@ public class HoadonFragment extends Fragment {
                     });
 
                     // Hiển thị thông báo thanh toán thành công
-                    showFragment();
+                    showFragment(nhanVienId);
                     closeFragment();
                 }
 
@@ -151,6 +155,8 @@ public class HoadonFragment extends Fragment {
             ArrayList<ListItem> ListSp = (ArrayList<ListItem>) getArguments().getSerializable("listItems");
             lstSp = convertToListSPItems(ListSp); // Chuyển đổi thành HoaDonItem
             MaDH = getArguments().getInt("orderCode"); // Truyền Mã đơn hàng
+            tableId = getArguments().getInt("tableId"); // Truyền Mã bàn
+            nhanVienId = getArguments().getString("nhanVienId"); // Truyền Mã nhan vien
         }
 
         // Khởi tạo GridView và dữ liệu
@@ -199,14 +205,14 @@ public class HoadonFragment extends Fragment {
     }
 
     // Hiển thị fragment thông báo thành công
-    private void showFragment() {
+    private void showFragment(String nhanVienId) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         String thongbaothanhcong = "Thanh toán thành công!";
         String thongbaokhachdoi = "Cảm ơn bạn đã sử dụng dịch vụ. Hẹn có gặp lại bạn.";
 
-        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi);
+        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi, nhanVienId);
 
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);

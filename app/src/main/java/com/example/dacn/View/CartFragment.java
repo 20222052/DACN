@@ -37,6 +37,7 @@ import com.example.dacn.Model.ChiTietDonHang;
 import com.example.dacn.Model.DonHang;
 import com.example.dacn.R;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
     private TextView tvTotalPrice;
     private Button btnXacNhan;
     private OrderController orderController;
+    private int tableId;
+    private String nhanVienId;
 
     public CartFragment() {}
 
@@ -60,6 +63,8 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
         // Nhận danh sách giỏ hàng từ Bundle
         if (getArguments() != null) {
             cartItems = (List<Cart>) getArguments().getSerializable("cart_items");
+            tableId = getArguments().getInt("tableId");
+            nhanVienId = getArguments().getString("nhanVienId");
         }
 
         Log.d("CartFragment", "Received cart items: " + cartItems.size());
@@ -95,7 +100,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
                 List<ChiTietDonHang> chiTietDonHangList = createOrderDetails(donHang);
 
                 // Gọi OrderController để xử lý đơn hàng
-                orderController.handleOrderButtonClick(chiTietDonHangList);
+                orderController.handleOrderButtonClick(chiTietDonHangList, donHang);
 
                 // Xóa sạch giỏ hàng
                 cartItems.clear();
@@ -110,7 +115,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
                 Toast.makeText(requireContext(), "Đặt món thành công! Giỏ hàng đã được làm trống.", Toast.LENGTH_SHORT).show();
 
                 // Hiển thị thông báo thành công dưới dạng popup
-                showCartFragment();
+                showCartFragment(nhanVienId);
             }
         });
 
@@ -134,11 +139,7 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
 
         float tongTien = calculateTotalPrice(); // Tổng tiền từ giỏ hàng
 
-        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang);
-
-        // Lưu đơn hàng vào cơ sở dữ liệu hoặc bộ nhớ
-        // Ví dụ: DonHangDAO.save(donHang);
-
+        DonHang donHang = new DonHang(maDonHang, false, tongTien, ngayDatHang, tableId, nhanVienId);
         return donHang;
     }
 
@@ -209,15 +210,15 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
     }
 
     // Hiển thị popup thông báo đặt hàng thành công
-    private void showCartFragment() {
+    private void showCartFragment(String nhanVienId) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
 
         String thongbaothanhcong = "Cảm ơn bạn đã đặt hàng!";
         String thongbaokhachdoi = "Chúng tôi đang xử lý đơn hàng của bạn. Vui lòng đợi ít phút.";
 
-        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi);
-
+        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi, nhanVienId);
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

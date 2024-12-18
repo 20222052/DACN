@@ -52,8 +52,6 @@ public class NotificationAdapter extends BaseAdapter {
         return convertView;
     }
 
-
-
     // Thêm phương thức này để trả về danh sách notificationItems
     public List<NotificationItem> getNotificationItems() {
         return notificationItems;
@@ -62,10 +60,27 @@ public class NotificationAdapter extends BaseAdapter {
     public static class NotificationItem {
         private final String orderName;
         private final float totalPrice;
+        private int tableId;
+        private String nhanVienId;
 
         public NotificationItem(String orderName, float totalPrice) {
             this.orderName = orderName;
             this.totalPrice = totalPrice;
+        }
+
+        public NotificationItem(String orderName, float totalPrice, int tableId, String nhanVienId) {
+            this.orderName = orderName;
+            this.totalPrice = totalPrice;
+            this.tableId = tableId;
+            this.nhanVienId = nhanVienId;
+        }
+
+        public int getTableId() {
+            return tableId;
+        }
+
+        public String getNhanVienId() {
+            return nhanVienId;
         }
 
         public String getOrderName() {
