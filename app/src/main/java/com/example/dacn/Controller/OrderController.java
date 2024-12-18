@@ -1,6 +1,10 @@
 package com.example.dacn.Controller;
 
+import static android.content.Intent.getIntent;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 

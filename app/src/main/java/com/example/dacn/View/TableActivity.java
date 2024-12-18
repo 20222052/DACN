@@ -22,6 +22,7 @@ import java.util.List;
 public class TableActivity extends AppCompatActivity {
     private RecyclerView rvTables;
     private TableAdapter tableAdapter;
+    private List<Table> tables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,7 @@ public class TableActivity extends AppCompatActivity {
         }
 
         tableAdapter = new TableAdapter(tables, table -> {
-            if (table.isStatus()) {
-                Toast.makeText(this, table.getNameTable() + " đã có khách!", Toast.LENGTH_SHORT).show();
-            } else {
-                // Chuyển sang màn hình order
-                Toast.makeText(this, "Bạn chọn " + table.getNameTable(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, KhachHangActivity.class);
-                intent.putExtra("tableId", table.getIdTable()); // Truyền ID bàn
-                startActivity(intent);
-            }
+
         });
 
         rvTables.setLayoutManager(new GridLayoutManager(this, 4)); // Hiển thị cột

@@ -32,6 +32,7 @@ import com.example.dacn.Controller.QL_menuController;
 import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.CartViewModel;
 import com.example.dacn.Model.SanPham;
+import com.example.dacn.Model.Table;
 import com.example.dacn.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,6 +58,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     private DatabaseReference database;
     private List<Cart> cartList;
     TextView cartCountText;
+    private int idTable;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
