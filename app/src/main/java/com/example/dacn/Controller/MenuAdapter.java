@@ -139,9 +139,8 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     // Phương thức cập nhật lại dữ liệu trong MenuAdapter
-    public void updateData(List<MenuItem> newMenuItems) {
-        this.menuItems.clear();
-        this.menuItems.addAll(newMenuItems);
+    public void updateData(List<MenuItem> filteredList) {
+        this.menuItems = filteredList;
         notifyDataSetChanged();
     }
 

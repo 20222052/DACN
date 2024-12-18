@@ -2,10 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -19,22 +17,27 @@
         android:theme="@style/Theme.DACN"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".View.KhachHangActivity"
-            android:exported="false" />
-        <activity
             android:name=".View.MainActivity"
             android:exported="false" />
         <activity
             android:name=".View.Admin_Activity"
             android:exported="false" />
         <activity
+            android:name=".View.KhachHangActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.TableActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.Staff"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".Controller.MessagingNotification"
             android:exported="false">

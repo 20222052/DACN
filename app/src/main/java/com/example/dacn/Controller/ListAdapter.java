@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dacn.Model.ListItem;
+import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
 import com.example.dacn.View.Staff;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,12 @@ public class ListAdapter extends BaseAdapter {
         this.listItems = listItems;
         this.databaseReference = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
     }
+
+    public void setFilteredList(List<ListItem> filteredList) {
+        this.listItems = filteredList;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getCount() {

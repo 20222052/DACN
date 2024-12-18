@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dacn.Controller.CartAdapter;
@@ -41,8 +43,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class KhachHangActivity extends AppCompatActivity implements ProductAdapter.OnAddToCartListener {
     RecyclerView rcvProduct;
@@ -78,10 +82,28 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         rcvProduct.setAdapter(productAdapter);
         rcvProduct.setLayoutManager(new GridLayoutManager(this, 3));
 
-        btn_staff.setOnClickListener(view -> {
-            Intent intent = new Intent(this, Staff.class);
-            startActivity(intent);
-            finish();
+        btn_staff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(KhachHangActivity.this, Staff.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        searchView.clearFocus();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
         });
 
         // Load Firebase
@@ -151,4 +173,26 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    public void filter(String text) {
+        List<SanPham> filteredList = new ArrayList<>();
+        String normalizedText = removeAccents(text);
+        for (SanPham sp : productList) {
+            String normalizedName = removeAccents(sp.getTenSanPham());
+            if (normalizedName.contains(normalizedText)){
+                filteredList.add(sp);
+            }
+        }
+        if (filteredList.isEmpty()) {
+            return;
+        } else {
+            productAdapter.setFilteredList(filteredList);
+        }
+    }
+    public static String removeAccents(String text) {
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalized).replaceAll("").toLowerCase();
+    }
+
 }

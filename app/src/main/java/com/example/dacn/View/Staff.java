@@ -31,12 +31,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Staff extends AppCompatActivity implements OnOrderSelectedListener, FragmentAlertWarning.OnHuyDonHangListener{
     private GridView gridViewMenu;
@@ -46,7 +48,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     public ListAdapter listAdapter; // Adapter để hiển thị danh sách sản phẩm
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
     private List<SanPham> lstSp = new ArrayList<>();
-    ImageButton bellButton, btn_back;
+    ImageButton bellButton, btn_back, btn_table;
     SearchView searchFood;
     Button  btn_xacnhan, btn_dangxuat;
     private TextView tvTongTien;
@@ -101,6 +103,12 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
             transaction.commit();
         });
 
+        btn_table.setOnClickListener(v -> {
+            Intent intent = new Intent(Staff.this, TableActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         btn_dangxuat.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -120,7 +128,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     @Override
     public void huyDonHang() {
     }
-
 
     private void showFragment(String mess1, String mess2) {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
@@ -157,17 +164,12 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
     // Phương thức lọc sản phẩm theo từ khóa
     private void filterMenuItems(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            // Nếu từ khóa rỗng, hiển thị lại toàn bộ danh sách
-            loadMenuData();
-            return;
-        }
-
         // Lọc danh sách sản phẩm
         List<MenuItem> filteredItems = new ArrayList<>();
+        String normalizedText = removeAccents(keyword);
         for (MenuItem item : menuItems) {
-            if (item.getName().toLowerCase().contains(keyword.toLowerCase())) {
-                Log.d("TimKiem", "Chuoi: " + item.getName().toLowerCase() + " Key: " + keyword.toLowerCase() + "");
+            String normalizedName = removeAccents(item.getName());
+            if (normalizedName.contains(normalizedText)) {
                 filteredItems.add(item);
             }
         }
@@ -175,6 +177,13 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         // Cập nhật adapter với danh sách đã lọc
         menuAdapter.updateData(filteredItems);
     }
+
+    public static String removeAccents(String text) {
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalized).replaceAll("").toLowerCase();
+    }
+
 
 
     public void addToListItem(ListItem listItem) {
@@ -330,6 +339,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
     @SuppressLint("WrongViewCast")
     private void initView() {
+        btn_table = findViewById(R.id.btn_table);
         btn_dangxuat = findViewById(R.id.btn_dangxuat);
         bellButton = findViewById(R.id.btn_bell);
         btn_xacnhan = findViewById(R.id.btn_xacnhan);

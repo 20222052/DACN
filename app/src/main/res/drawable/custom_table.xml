@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="4dp"
+                android:color="#4CAF50" /> <!-- Viền xanh khi bàn được chọn -->
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="2dp"
+                android:color="#D32F2F" /> <!-- Viền đỏ khi bàn đã có khách -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="2dp"
+                android:color="#FF9800" /> <!-- Viền cam mặc định -->
+        </shape>
+    </item>
 </selector>

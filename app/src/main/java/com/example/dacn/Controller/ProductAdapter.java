@@ -15,9 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
 
-import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
@@ -33,6 +32,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.onAddToCartListener = listener;
     }
 
+    public void setFilteredList(List<SanPham> filteredList) {
+        this.productList = filteredList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SanPham product = productList.get(position);
-
         if (product == null) {
             Log.e("ProductAdapter", "Product at position " + position + " is null!");
             return;
@@ -74,12 +77,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void bind(SanPham product) {
             tvFoodName.setText(product.getTenSanPham());
             tvDescription.setText(product.getMoTa());
-            try {
-                NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-                Double price = Double.parseDouble(String.valueOf(product.getGia()));
-                String formattedPrice = vndFormat.format(price);
-                tvPrice.setText(String.valueOf(formattedPrice));
-            }catch (Exception e){e.printStackTrace();}
+            tvPrice.setText(String.valueOf(product.getGia()));
 
             Glide.with(itemView.getContext())
                     .load(product.getHinhAnh())
