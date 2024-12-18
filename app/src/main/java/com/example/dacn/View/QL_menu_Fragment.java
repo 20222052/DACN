@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QL_menu_Fragment extends Fragment {
-    private Button btn_add_product, btn_edit_product, btn_delete_product, btn_clear_product;
+    private Button btn_add_product, btn_edit_product, btn_delete_product, btn_clear_product,btn_edit_catalogue;
     private EditText edit_product_name, edit_product_price, edit_product_description;
     private Spinner spinner_category,Sort_name,Sort_price;
     private RadioGroup radio_group_visibility;
@@ -78,6 +78,7 @@ public class QL_menu_Fragment extends Fragment {
         btn_edit_product = view.findViewById(R.id.btn_edit_product);
         btn_delete_product = view.findViewById(R.id.btn_delete_product);
         btn_clear_product = view.findViewById(R.id.btn_clear_product);
+        btn_edit_catalogue = view.findViewById(R.id.btn_edit_catalogue);
         grid_view_products = view.findViewById(R.id.grid_view_products);
         search_food = view.findViewById(R.id.search_food_menu);
         Sort_name = view.findViewById(R.id.Sort_name);
@@ -149,7 +150,10 @@ public class QL_menu_Fragment extends Fragment {
             Fragment_add_product addProductDialogFragment = new Fragment_add_product();
             addProductDialogFragment.show(getParentFragmentManager(), "Fragment_add_product");
         });
-
+        btn_edit_catalogue.setOnClickListener(v -> {
+            Fragment_edit_catalogue addProductDialogFragment = new Fragment_edit_catalogue();
+            addProductDialogFragment.show(getParentFragmentManager(), "Fragment_edit_catalogue");
+        });
         btn_edit_product.setOnClickListener(v -> {
             if (validateInputFields()) {
                 updateSanPhamFromInput(sanPham -> {
@@ -160,7 +164,7 @@ public class QL_menu_Fragment extends Fragment {
                     DanhMuc selectedCategory = (DanhMuc) spinner_category.getSelectedItem();
                     sanPhamud.setMaDanhMuc(selectedCategory != null ? selectedCategory.getMaDanhMuc() : -1);
                     qlMenuController.updateProduct(sanPhamud);
-                    loadCategoriesAndProducts(); // Refresh list after editing
+                    loadCategoriesAndProducts();
                 });
             }
         });
