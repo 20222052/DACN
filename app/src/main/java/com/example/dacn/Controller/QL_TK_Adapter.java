@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.example.dacn.Model.TaiKhoan;
 import com.example.dacn.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,5 +62,10 @@ public class QL_TK_Adapter extends BaseAdapter {
         tvCV.setText(String.format("Quyền :%s", taiKhoan.getVaiTro()));
 
         return convertView;
+    }
+
+    public void updateList(List<TaiKhoan> newList) {
+        taiKhoanList = new ArrayList<>(newList);
+        notifyDataSetChanged();
     }
 }

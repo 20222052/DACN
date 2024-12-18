@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_product"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/popup_layout"
+        android:layout_width="640dp"
+        android:layout_height="535dp"
+        android:layout_gravity="center"
+        android:background="@drawable/add_product"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/tv_cart_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:text="Thêm mới sản phẩm"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Form nhập liệu (Thêm, sửa, xóa sản phẩm) -->
+            <LinearLayout
+                android:layout_width="640dp"
+                android:layout_height="442dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="#F0F0F0"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Input fields for product data -->
+                <EditText
+                    android:id="@+id/edit_product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Tên sản phẩm" />
+
+                <EditText
+                    android:id="@+id/edit_product_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Giá sản phẩm"
+                    android:inputType="numberDecimal" />
+
+                <!-- Dropdown filter for categories -->
+                <Spinner
+                    android:id="@+id/spinner_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:entries="@array/cat_list" />
+
+                <EditText
+                    android:id="@+id/edit_product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="top|start"
+                    android:hint="Mô tả sản phẩm"
+                    android:inputType="textMultiLine"
+                    android:minLines="4" />
+                <EditText
+                    android:id="@+id/link_product_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="top|start"
+                    android:hint="Link sản phẩm"
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
+
+                <Button
+                    android:id="@+id/btn_checkout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="#FB8C00"
+                    android:paddingLeft="50dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="50dp"
+                    android:paddingBottom="10dp"
+                    android:text="Thêm"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <!-- Phần hiển thị tổng tiền và nút thanh toán -->
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

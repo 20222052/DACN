@@ -96,7 +96,7 @@
 
     <!-- Search View -->
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_food"
+        android:id="@+id/search_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_search"

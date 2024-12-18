@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.example.dacn.Controller.QL_TK_Adapter;
@@ -36,6 +37,7 @@ public class QL_TK_Fragment extends Fragment {
     private EditText edtTenDangNhap, edtMatKhau;
     private AutoCompleteTextView edtNhanVien;
     private Spinner spinnerVaiTro;
+    private SearchView search_account;
     private ListView listViewTaiKhoan;
     private Button btnThem, btnSua, btnXoa;
     private List<TaiKhoan> taiKhoanList;
@@ -71,6 +73,7 @@ public class QL_TK_Fragment extends Fragment {
 
         initializeViews(view);
         setupButtonListeners();
+        setupSearchView();
         loadTaiKhoanList();
         loadNhanVienNames();
 
@@ -83,6 +86,7 @@ public class QL_TK_Fragment extends Fragment {
         edtNhanVien = view.findViewById(R.id.edt_nhan_vien);
         spinnerVaiTro = view.findViewById(R.id.spinner_vai_tro);
         listViewTaiKhoan = view.findViewById(R.id.listview_TK);
+        search_account = view.findViewById(R.id.search_account);
         btnThem = view.findViewById(R.id.btn_them);
         btnSua = view.findViewById(R.id.btn_sua);
         btnXoa = view.findViewById(R.id.btn_xoa);
@@ -122,6 +126,32 @@ public class QL_TK_Fragment extends Fragment {
             selectedTaiKhoanId = selectedTaiKhoan.getMaTaiKhoan(); // Ensure the ID is set
             populateFormWithTaiKhoan(selectedTaiKhoan);
         });
+    }
+
+    private void setupSearchView() {
+        search_account.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+    }
+
+    private void filter(String text) {
+        List<TaiKhoan> filteredList = new ArrayList<>();
+        for (TaiKhoan item : taiKhoanList) {
+            if (item.getTenDangNhap().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        taiKhoanAdapter.updateList(filteredList);
     }
 
     private void loadTaiKhoanList() {

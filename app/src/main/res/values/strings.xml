@@ -23,9 +23,47 @@
         <item>Lê Văn C</item>
     </string-array>
 
-    <string-array name="cat_list">
+    <string-array name="cat_list"></string-array>
+    <string-array name="sort_date">
+        <item>Sớm</item>
+        <item>Muộn</item>
     </string-array>
-
+    <string-array name="status">
+        <item>Tất cả</item>
+        <item>Đã thanh toán</item>
+        <item>Chưa thanh toán</item>
+    </string-array>
+    <string-array name="Years">
+        <item>Năm</item>
+    </string-array>
+    <string-array name="Quarter">
+        <item>Quý</item>
+        <item>Quý 1</item>
+        <item>Quý 2</item>
+        <item>Quý 3</item>
+        <item>Quý 4</item>
+    </string-array>
+    <string-array name="Month">
+        <item>Tháng</item>
+        <item>Tháng 1</item>
+        <item>Tháng 2</item>
+        <item>Tháng 3</item>
+        <item>Tháng 4</item>
+        <item>Tháng 5</item>
+        <item>Tháng 6</item>
+        <item>Tháng 7</item>
+        <item>Tháng 8</item>
+        <item>Tháng 9</item>
+        <item>Tháng 10</item>
+        <item>Tháng 11</item>
+        <item>Tháng 12</item>
+    </string-array>
+    <string-array name="Day">
+        <item>Hiện tại</item>
+        <item>Ngày</item>
+        <item>Tuần</item>
+        <item>Tháng</item>
+    </string-array>
     <string-array name="Sort_name">
         <item>Tên</item>
         <item>A-Z</item>

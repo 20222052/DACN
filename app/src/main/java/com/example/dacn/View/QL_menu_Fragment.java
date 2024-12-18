@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.QL_menuAdapter;
 import com.example.dacn.Controller.QL_menuController;
@@ -144,12 +146,8 @@ public class QL_menu_Fragment extends Fragment {
     }
     private void setupButtonListeners() {
         btn_add_product.setOnClickListener(v -> {
-            if (validateInputFields()) {
-                createSanPhamFromInput(sanPham -> {
-                    qlMenuController.DK_SP(sanPham);
-                    loadCategoriesAndProducts(); // Refresh list after adding
-                });
-            }
+            Fragment_add_product addProductDialogFragment = new Fragment_add_product();
+            addProductDialogFragment.show(getParentFragmentManager(), "Fragment_add_product");
         });
 
         btn_edit_product.setOnClickListener(v -> {
@@ -178,7 +176,6 @@ public class QL_menu_Fragment extends Fragment {
 
         btn_clear_product.setOnClickListener(v -> clearForm());
     }
-
     private void setupSearchView() {
         search_food.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -302,35 +299,25 @@ public class QL_menu_Fragment extends Fragment {
         callback.onProductCountReceived(sanPham);
     }
 
-    private void createSanPhamFromInput(ProductCountCallback callback) {
-        String name = edit_product_name.getText().toString();
-        float price = Float.parseFloat(edit_product_price.getText().toString());
-        String description = edit_product_description.getText().toString();
-        DanhMuc selectedCategory = (DanhMuc) spinner_category.getSelectedItem();
-        int categoryCode = selectedCategory != null ? selectedCategory.getMaDanhMuc() : -1;
-
-        qlMenuController.getProductCount(count -> {
-            boolean isVisible = radio_group_visibility.getCheckedRadioButtonId() == R.id.radio_show;
-            SanPham sanPham = new SanPham(isVisible, price, "", name, categoryCode, count, description, 123);
-            callback.onProductCountReceived(sanPham);
-        });
-    }
-
     private void clearForm() {
         edit_product_name.setText("");
         edit_product_price.setText("");
         edit_product_description.setText("");
         radio_group_visibility.clearCheck();
         radio_group_visibility.check(R.id.radio_show);
-        sanPhamud.setMaSanPham(-1);
-        sanPhamud.setTenSanPham("");
-        sanPhamud.setGia(0);
-        sanPhamud.setMoTa("");
-        sanPhamud.setTrangThai(true);
-        sanPhamud.setMaDanhMuc(-1);
-        sanPhamud.setSoLuong(0);
-        sanPhamud.setHinhAnh("");
-        spinner_category.setSelection(0);
+        if(sanPhamud == null){
+            spinner_category.setSelection(0);
+        }
+        else {
+            sanPhamud.setMaSanPham(-1);
+            sanPhamud.setTenSanPham("");
+            sanPhamud.setGia(0);
+            sanPhamud.setMoTa("");
+            sanPhamud.setTrangThai(true);
+            sanPhamud.setMaDanhMuc(-1);
+            sanPhamud.setSoLuong(0);
+            sanPhamud.setHinhAnh("");
+        }
     }
 
     private void showToast(String message) {

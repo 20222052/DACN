@@ -149,7 +149,7 @@
                     android:id="@+id/btn_add_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lưu sản phẩm" />
+                    android:text="Thêm sản phẩm" />
 
                 <Button
                     android:id="@+id/btn_delete_product"
