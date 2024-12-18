@@ -144,24 +144,28 @@
                     android:id="@+id/btn_edit_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="Sửa sản phẩm" />
                 <Button
                     android:id="@+id/btn_add_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="Thêm sản phẩm" />
 
                 <Button
                     android:id="@+id/btn_delete_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="Xóa sản phẩm" />
 
                 <Button
                     android:id="@+id/btn_clear_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Xóa form" />
+                    android:backgroundTint="@color/primaryColor"
+                    android:text="Xóa thông tin" />
             </LinearLayout>
         </LinearLayout>
         <!-- Grid of products -->

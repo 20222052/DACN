@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.example.dacn.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HoadonListPrd_Adapter extends BaseAdapter {
     private final Context context;
@@ -48,9 +50,13 @@ public class HoadonListPrd_Adapter extends BaseAdapter {
         TextView itemPrice = convertView.findViewById(R.id.item_price_cart_list);
         TextView itemQuantity = convertView.findViewById(R.id.item_quantity);
 
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(item.getPrice());
+
+
         // Đặt dữ liệu lên giao diện
         itemName.setText(item.getOrderName());
-        itemPrice.setText(String.format("%,.0f VND", item.getPrice()));
+        itemPrice.setText(String.format(""+ formattedPrice));
         itemQuantity.setText(String.format("%dx", item.getQuantity()));
 
         return convertView;

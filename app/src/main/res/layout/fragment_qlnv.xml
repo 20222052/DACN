@@ -74,6 +74,7 @@
             android:id="@+id/btn_them"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryColor"
             android:layout_weight="1"
             android:padding="10dp"
             android:layout_margin="10dp"
@@ -82,6 +83,7 @@
         <Button
             android:id="@+id/btn_sua"
             android:layout_width="0dp"
+            android:backgroundTint="@color/primaryColor"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="10dp"
@@ -91,6 +93,7 @@
         <Button
             android:id="@+id/btn_xoa"
             android:layout_width="0dp"
+            android:backgroundTint="@color/primaryColor"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="10dp"

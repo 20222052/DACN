@@ -26,10 +26,10 @@
 
         <TextView
             android:id="@+id/tv_menu"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:gravity="center"
+            android:layout_marginRight="20dp"
             android:text="Menu"
             android:textColor="#FFFFFF"
             android:textSize="44sp"
@@ -37,32 +37,20 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_food"
-            android:layout_width="0dp"
+            android:layout_width="1000dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.22"
             android:paddingRight="5dp"
             android:background="@drawable/bg_search"
             app:iconifiedByDefault="false"
             app:queryHint="Bạn muốn tìm kiếm gì?">
         </androidx.appcompat.widget.SearchView>
 
-        <TextView
-            android:id="@+id/tv_number_table"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:gravity="left"
-            android:paddingLeft="10dp"
-            android:text="TABLE: 02"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp"
-            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btn_bell"
             android:layout_width="60dp"
-            android:layout_weight="0.1"
             android:layout_height="60dp"
+            android:paddingLeft="10dp"
             android:background="@drawable/circle_background_btn_back"
             android:src="@drawable/ic_bell"
             android:layout_gravity="right"
@@ -107,7 +95,7 @@
             <GridView
                 android:id="@+id/gridView_list"
                 android:layout_width="match_parent"
-                android:layout_height="475dp" >
+                android:layout_height="480dp" >
 
             </GridView>
 
@@ -116,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="Tổng cộng: 145.000 đ"
+                android:text="Tổng cộng: 0đ"
                 android:textSize="28dp"
                 android:textStyle="bold" />
 
@@ -128,25 +116,25 @@
                 android:paddingTop="8dp">
 
                 <Button
-                    android:id="@+id/btn_huy"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#F2C4C4"
-                    android:text="Hủy"
-                    android:textColor="#F25C5C"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
                     android:id="@+id/btn_xacnhan"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#FB8C00"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="Xác nhận"
                     android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_dangxuat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#F2C4C4"
+                    android:text="Đăng xuất"
+                    android:textColor="#F25C5C"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>

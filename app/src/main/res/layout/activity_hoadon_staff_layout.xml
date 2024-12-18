@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="24dp"
-                    android:text="CChuyển Khoản" />
+                    android:text="Chuyển Khoản" />
             </RadioGroup>
 
             <LinearLayout
@@ -119,6 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#F2C4C4"
+                    android:textColor="#F25C5C"
                     android:textSize="20sp"
                     android:text="Hủy Thanh Toán" />
 

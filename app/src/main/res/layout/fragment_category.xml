@@ -77,6 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/primaryColor"
                 android:text="Thêm"
                 android:layout_marginEnd="8dp" />
 
@@ -86,6 +87,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/primaryColor"
                 android:text="Sửa"
                 android:layout_marginEnd="8dp" />
 
@@ -95,6 +97,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/primaryColor"
                 android:text="Xóa" />
 
             <Button
@@ -102,6 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/primaryColor"
                 android:text="Đóng" />
         </LinearLayout>
 

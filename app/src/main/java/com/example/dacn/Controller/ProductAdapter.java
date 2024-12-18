@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide;
 import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
@@ -72,7 +74,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void bind(SanPham product) {
             tvFoodName.setText(product.getTenSanPham());
             tvDescription.setText(product.getMoTa());
-            tvPrice.setText(String.valueOf(product.getGia()));
+            try {
+                NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                Double price = Double.parseDouble(String.valueOf(product.getGia()));
+                String formattedPrice = vndFormat.format(price);
+                tvPrice.setText(String.valueOf(formattedPrice));
+            }catch (Exception e){e.printStackTrace();}
 
             Glide.with(itemView.getContext())
                     .load(product.getHinhAnh())

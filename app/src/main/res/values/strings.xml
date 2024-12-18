@@ -25,8 +25,8 @@
 
     <string-array name="cat_list"></string-array>
     <string-array name="sort_date">
-        <item>Sớm</item>
-        <item>Muộn</item>
+        <item>Mới nhất</item>
+        <item>Cũ nhất</item>
     </string-array>
     <string-array name="status">
         <item>Tất cả</item>

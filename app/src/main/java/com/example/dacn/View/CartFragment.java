@@ -37,6 +37,7 @@ import com.example.dacn.Model.ChiTietDonHang;
 import com.example.dacn.Model.DonHang;
 import com.example.dacn.R;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +66,6 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
 
         // Khởi tạo các thành phần giao diện
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
-
         btnXacNhan = view.findViewById(R.id.btn_checkout);
 
         updateTotalPrice();
@@ -229,7 +229,9 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartUpdateLi
             totalPrice += (float) (item.getGia() * item.getSoLuong());
         }
         // Use %,.2f to format the float value with two decimal places
-        tvTotalPrice.setText(String.format("Tổng: %,.0f VND", totalPrice));
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(totalPrice);
+        tvTotalPrice.setText(String.valueOf(formattedPrice));
     }
 
     // Tính toán tổng giá tiền của giỏ hàng

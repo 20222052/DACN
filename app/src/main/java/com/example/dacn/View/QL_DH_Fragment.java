@@ -168,9 +168,9 @@ public class QL_DH_Fragment extends Fragment {
             }
         };
 
-        if (option.equals("Muộn")) {
+        if (option.equals("Mới nhất")) {
             Collections.sort(list, comparator);
-        } else if (option.equals("Sớm")) {
+        } else if (option.equals("Cũ nhất")) {
             Collections.sort(list, Collections.reverseOrder(comparator));
         }
 

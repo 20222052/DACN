@@ -3,6 +3,7 @@ package com.example.dacn.View;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -46,7 +47,7 @@ import java.util.List;
 public class KhachHangActivity extends AppCompatActivity implements ProductAdapter.OnAddToCartListener {
     RecyclerView rcvProduct;
     SearchView searchView;
-    ImageButton btn_cart;
+    ImageButton btn_cart, btn_staff;
     private List<SanPham> productList;
     private ProductAdapter productAdapter;
     private DatabaseReference database;
@@ -64,7 +65,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        btn_staff = findViewById(R.id.btn_staff);
         rcvProduct = findViewById(R.id.rcv_product);
         searchView = findViewById(R.id.search_food);
         btn_cart = findViewById(R.id.btn_cart);
@@ -76,6 +77,12 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
 
         rcvProduct.setAdapter(productAdapter);
         rcvProduct.setLayoutManager(new GridLayoutManager(this, 3));
+
+        btn_staff.setOnClickListener(view -> {
+            Intent intent = new Intent(this, Staff.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Load Firebase
         database = FirebaseDatabase.getInstance().getReference("SanPham");

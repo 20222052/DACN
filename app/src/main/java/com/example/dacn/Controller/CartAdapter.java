@@ -17,7 +17,9 @@ import com.example.dacn.Model.Cart;
 import com.example.dacn.R;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CartAdapter extends BaseAdapter {
     private Context context;
@@ -60,7 +62,12 @@ public class CartAdapter extends BaseAdapter {
 
         Cart cart = cartList.get(position);
         holder.tvProductName.setText(cart.getTenSP());
-        holder.tvProductPrice.setText(String.format("%,.0f VND", cart.getGia()));
+        try {
+            NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            Double price = Double.parseDouble(String.valueOf(cart.getGia()));
+            String formattedPrice = vndFormat.format(price);
+            holder.tvProductPrice.setText(String.valueOf(formattedPrice));
+        }catch (Exception e){e.printStackTrace();}
         holder.tvQuantity.setText(String.valueOf(cart.getSoLuong()));
 
         // Load image with Glide
