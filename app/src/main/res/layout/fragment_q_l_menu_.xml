@@ -159,7 +159,12 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/primaryColor"
                     android:text="Xóa sản phẩm" />
-
+                <Button
+                    android:id="@+id/btn_edit_catalogue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primaryColor"
+                    android:text="Chỉnh sửa danh mục" />
                 <Button
                     android:id="@+id/btn_clear_product"
                     android:layout_width="match_parent"
