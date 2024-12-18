@@ -62,7 +62,7 @@ public class MainActivityController {
     }
     private void navigateToActivity(String role) {
         Intent intent;
-        if (role.equals("Admin")) {
+        if (role.equals("Quản lý")) {
             intent = new Intent(context, Admin_Activity.class);
         }
         else if (role.equals("Nhân viên")) {

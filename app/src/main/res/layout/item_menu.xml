@@ -46,12 +46,6 @@
                 android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
-        <ImageView
-            android:id="@+id/img_TT"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pho_cuon"/>
     </LinearLayout>
 
 </FrameLayout>

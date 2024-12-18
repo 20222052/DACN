@@ -18,9 +18,19 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/btn_staff"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/circle_background_btn_back_khachhang"
+                android:src="@drawable/ic_staff"
+                android:contentDescription="Back button"
+                android:scaleType="centerInside"/>
+
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_food"
-                android:layout_width="1200dp"
+                android:layout_width="1130dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_search"
                 app:iconifiedByDefault="false"

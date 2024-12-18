@@ -31,9 +31,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Staff extends AppCompatActivity implements OnOrderSelectedListener, FragmentAlertWarning.OnHuyDonHangListener{
@@ -46,7 +48,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     private List<SanPham> lstSp = new ArrayList<>();
     ImageButton bellButton, btn_back;
     SearchView searchFood;
-    Button btn_huy, btn_xacnhan;
+    Button  btn_xacnhan, btn_dangxuat;
     private TextView tvTongTien;
     Integer MaDH;
 
@@ -59,7 +61,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         setContentView(R.layout.activity_staff);
 
         initView();
-
 
         gridViewMenu = findViewById(R.id.gridView_menu);
         menuItems = new ArrayList<>();
@@ -100,11 +101,12 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
             transaction.commit();
         });
 
-
-        btn_huy.setOnClickListener(view -> {
-            showFragment();
-
+        btn_dangxuat.setOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
+
 
         //trở về layout khach hang
         Intent intent = new Intent(this, KhachHangActivity.class);
@@ -112,69 +114,19 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
         // Thiết lập tìm kiếm
         setupSearchView();
-        updateButtonState();
+
     }
 
     @Override
     public void huyDonHang() {
-        chiTietDonHangRef.orderByChild("maDonHang").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    data.getRef().removeValue(); // Xóa từng chi tiết đơn hàng
-                }
-
-                // Sau khi xóa xong chi tiết đơn hàng, xóa đơn hàng
-                Log.d("MaDH", "Giá trị MaDH tìm kiếm: " + MaDH);  // Kiểm tra giá trị MaDH
-                donHangRef.orderByChild("MaDH").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot data : snapshot.getChildren()) {
-                                data.getRef().removeValue(); // Xóa đơn hàng theo MaDH
-                            }
-                            Toast.makeText(Staff.this, "Đã xoá đơn hàng và chi tiết thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(Staff.this, "Không tìm thấy đơn hàng với mã: " + MaDH, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(Staff.this, "Lỗi khi xoá đơn hàng", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Staff.this, "Lỗi khi xoá chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
-            }
-        });
-        listItems.clear();
-        listAdapter.notifyDataSetChanged();
-        updateTongTien();
     }
 
-    private void updateButtonState() {
-        if (MaDH == null || MaDH.toString().isEmpty()) {
-            btn_huy.setEnabled(false);
-            btn_huy.setAlpha(0.5f); // Làm mờ nút
-        } else {
-            btn_huy.setEnabled(true);
-            btn_huy.setAlpha(1.0f); // Hiển thị bình thường
-        }
-    }
 
-    private void showFragment() {
+    private void showFragment(String mess1, String mess2) {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        String thongbaothanhcong = "Cảnh Báo!";
-        String thongbaokhachdoi = "Đơn hàng sẽ xóa sau 10 giây.";
-
-        FragmentAlertWarning fragment = FragmentAlertWarning.newInstance(thongbaothanhcong, thongbaokhachdoi);
+        FragmentAlertWarning fragment = FragmentAlertWarning.newInstance(mess1, mess2);
 
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
@@ -378,8 +330,8 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
     @SuppressLint("WrongViewCast")
     private void initView() {
+        btn_dangxuat = findViewById(R.id.btn_dangxuat);
         bellButton = findViewById(R.id.btn_bell);
-        btn_huy = findViewById(R.id.btn_huy);
         btn_xacnhan = findViewById(R.id.btn_xacnhan);
         tvTongTien = findViewById(R.id.tv_tongtien); // Liên kết TextView hiển thị tổng tiền
         btn_back = findViewById(R.id.btn_back);
@@ -392,7 +344,9 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         for (ListItem item : listItems) {
             tongTien += item.getQuantity() * Double.parseDouble(item.getPrice()); // Sử dụng Double.parseDouble
         }
-        tvTongTien.setText(String.format("%,.0f VNĐ", tongTien)); // Định dạng tiền tệ
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(tongTien);
+        tvTongTien.setText(String.format(formattedPrice)); // Định dạng tiền tệ
     }
 
 
@@ -412,6 +366,5 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
         MaDH = Integer.valueOf(orderCode);
-        updateButtonState();
     }
 }

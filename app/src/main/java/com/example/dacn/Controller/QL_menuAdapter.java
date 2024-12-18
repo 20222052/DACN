@@ -16,8 +16,10 @@ import com.bumptech.glide.Glide;
 import com.example.dacn.Model.SanPham;
 import com.example.dacn.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class QL_menuAdapter extends BaseAdapter {
     private final Context context;
@@ -51,24 +53,24 @@ public class QL_menuAdapter extends BaseAdapter {
         TextView tvName = convertView.findViewById(R.id.tv_food_name);
         TextView tvPrice = convertView.findViewById(R.id.tv_gia);
         ImageView ivImage = convertView.findViewById(R.id.img_food);
-        ImageView ivTT = convertView.findViewById(R.id.img_TT);
 
         if (product.getTrangThai()) {
-            Glide.with(context)
-                    .load(product.getHinhAnh())
-                    .into(ivTT);
             convertView.setAlpha(1.0f);
             convertView.setEnabled(true);
         } else {
-            Glide.with(context)
-                    .load(product.getHinhAnh())
-                    .into(ivTT);
             convertView.setAlpha(0.3f);
             convertView.setEnabled(false);
         }
 
         tvName.setText(product.getTenSanPham());
-        tvPrice.setText(String.format("Price: %.2f", product.getGia()));
+        double gia = product.getGia();
+
+// Sử dụng NumberFormat với Locale để định dạng tiền tệ VND
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(gia);
+
+// Set text cho TextView
+        tvPrice.setText("Giá: " + formattedPrice);
         Glide.with(context)
                 .load(product.getHinhAnh())
                 .placeholder(R.drawable.ic_launcher_background) // Add a placeholder image

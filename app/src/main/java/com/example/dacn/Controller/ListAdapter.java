@@ -16,7 +16,9 @@ import com.example.dacn.View.Staff;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ListAdapter extends BaseAdapter {
     private Context context;
@@ -61,7 +63,13 @@ public class ListAdapter extends BaseAdapter {
 
         // Thiết lập dữ liệu
         itemName.setText(listItem.getName());
-        itemPrice.setText(String.valueOf(listItem.getPrice()));
+        try {
+            NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            Double price = Double.parseDouble(listItem.getPrice());
+            String formattedPrice = vndFormat.format(price);
+            itemPrice.setText(String.valueOf(formattedPrice));
+        }catch (Exception ex){ex.printStackTrace();}
+
         tvQuantity.setText(String.valueOf(listItem.getQuantity()));
 
         // Cập nhật số lượng

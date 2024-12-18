@@ -17,6 +17,7 @@ import com.example.dacn.Controller.QL_BCTKController;
 import com.example.dacn.R;
 import com.github.mikephil.charting.charts.LineChart;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -157,12 +158,17 @@ public class QL_BCTK_Fragment extends Fragment {
         });
     }
 
+
+
     private void fetchYearData(int year) {
         controller.fetchYearDataFromFirebase(year, new QL_BCTKController.YearDataCallback() {
             @Override
             public void onCallback(int orderCount, int totalRevenue) {
+                NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                String formattedPrice = vndFormat.format(totalRevenue);
+
                 sdhTextView.setText("Số đơn hàng: " + orderCount);
-                ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
             }
         }, lineChart);
     }
@@ -174,8 +180,11 @@ public class QL_BCTK_Fragment extends Fragment {
             controller.fetchQuarterDataFromFirebase(selectedYear, quarter, new QL_BCTKController.QuarterDataCallback() {
                 @Override
                 public void onCallback(int orderCount, int totalRevenue) {
+                    NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String formattedPrice = vndFormat.format(totalRevenue);
+
                     sdhTextView.setText("Số đơn hàng: " + orderCount);
-                    ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                    ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
                 }
             },lineChart);
         }
@@ -191,8 +200,11 @@ public class QL_BCTK_Fragment extends Fragment {
             controller.fetchMonthDataFromFirebase(selectedYear, month, new QL_BCTKController.MonthDataCallback() {
                 @Override
                 public void onCallback(int orderCount, int totalRevenue) {
+                    NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String formattedPrice = vndFormat.format(totalRevenue);
+
                     sdhTextView.setText("Số đơn hàng: " + orderCount);
-                    ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                    ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
                 }
             }, lineChart);
         }
@@ -215,8 +227,11 @@ public class QL_BCTK_Fragment extends Fragment {
             controller.fetchDayDataFromFirebase(formattedDate, new QL_BCTKController.DayDataCallback() {
                 @Override
                 public void onCallback(int orderCount, int totalRevenue) {
+                    NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String formattedPrice = vndFormat.format(totalRevenue);
+
                     sdhTextView.setText("Số đơn hàng: " + orderCount);
-                    ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                    ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
                 }
             },lineChart);
         }
@@ -224,8 +239,11 @@ public class QL_BCTK_Fragment extends Fragment {
             controller.fetchWeekDataFromFirebase(formattedDate, new QL_BCTKController.WeekDataCallback() {
                 @Override
                 public void onCallback(int orderCount, int totalRevenue) {
+                    NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String formattedPrice = vndFormat.format(totalRevenue);
+
                     sdhTextView.setText("Số đơn hàng: " + orderCount);
-                    ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                    ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
                 }
             }, lineChart);
         }
@@ -233,8 +251,11 @@ public class QL_BCTK_Fragment extends Fragment {
             controller.fetchMonthDataFromFirebase(formattedDate, new QL_BCTKController.MonthDataCallback() {
                 @Override
                 public void onCallback(int orderCount, int totalRevenue) {
+                    NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String formattedPrice = vndFormat.format(totalRevenue);
+
                     sdhTextView.setText("Số đơn hàng: " + orderCount);
-                    ttdTextView.setText("Tổng tiền thu được: " + totalRevenue);
+                    ttdTextView.setText("Tổng tiền thu được: " + formattedPrice);
                 }
             }, lineChart);
         }

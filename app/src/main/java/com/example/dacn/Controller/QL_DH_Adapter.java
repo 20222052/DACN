@@ -13,8 +13,10 @@ import androidx.annotation.Nullable;
 import com.example.dacn.Model.DonHang;
 import com.example.dacn.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class QL_DH_Adapter extends BaseAdapter {
@@ -56,10 +58,13 @@ public class QL_DH_Adapter extends BaseAdapter {
         TextView tvTongTien = convertView.findViewById(R.id.Tong_tien);
         TextView tvTrangThai = convertView.findViewById(R.id.trang_thai);
 
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(donHang.getTongTien());
+
         tvMaDonHang.setText("Mã đơn hàng: #" + donHang.getMaDonHang());
         tvNgayDatHang.setText("Ngày đặt hàng : " + donHang.getNgayDatHang());
-        tvTongTien.setText("Tổng tiền : " + donHang.getTongTien());
-        tvTrangThai.setText(donHang.isTrangThai() ? "Trạng thái : Completed" : "Trạng thái : Pending");
+        tvTongTien.setText("Tổng tiền : " + formattedPrice);
+        tvTrangThai.setText(donHang.isTrangThai() ? "Trạng thái : Hoàn thành" : "Trạng thái : Chờ thanh toán");
 
         return convertView;
     }

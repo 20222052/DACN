@@ -34,8 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HoadonFragment extends Fragment {
     private TextView tvTongTien;
@@ -153,8 +155,10 @@ public class HoadonFragment extends Fragment {
 
         // Khởi tạo GridView và dữ liệu
         GridView gridView = view.findViewById(R.id.gridView_itemList_prd);
+        NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = vndFormat.format(getArguments().getDouble("totallPrice"));
         tvTongTien.setText(
-                String.format("Vui lòng thanh toán số tiền là: %.0f VND", getArguments().getDouble("totallPrice"))
+                String.format("Vui lòng thanh toán số tiền là: "+ formattedPrice)
         );
         // Gán adapter cho GridView
         HoadonListPrd_Adapter adapter = new HoadonListPrd_Adapter(requireContext(), hoadonItems);
