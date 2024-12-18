@@ -96,5 +96,11 @@ public class MenuAdapter extends BaseAdapter {
         return convertView;
     }
 
+    // Phương thức cập nhật lại dữ liệu trong MenuAdapter
+    public void updateData(List<MenuItem> newMenuItems) {
+        this.menuItems.clear();
+        this.menuItems.addAll(newMenuItems);
+        notifyDataSetChanged();
+    }
 
 }

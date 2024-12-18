@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.dacn.R;
+
+import java.io.Serializable;
 
 public class FragmentAlertSuccesful extends Fragment {
 
@@ -38,6 +41,16 @@ public class FragmentAlertSuccesful extends Fragment {
         return fragment;
     }
 
+    public static FragmentAlertSuccesful newInstanceImage(String thongbaothanhcong, String thongbaokhachdoi, ImageView imageView) {
+        FragmentAlertSuccesful fragment = new FragmentAlertSuccesful();
+        Bundle args = new Bundle();
+        args.putString("thongbaothanhcong", thongbaothanhcong);
+        args.putString("thongbaokhachdoi", thongbaokhachdoi);
+        args.putSerializable("imageView", (Serializable) imageView);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +66,8 @@ public class FragmentAlertSuccesful extends Fragment {
 
         TextView textView2 = view.findViewById(R.id.tv_thongBaoKhach);
         textView2.setText(message2); // Gán thông báo cho TextView
+
+        ImageView imageView = view.findViewById(R.id.img_alert);
 
         Button btn_dong = view.findViewById(R.id.btn_dong);
         btn_dong.setOnClickListener(v -> closeFragment());

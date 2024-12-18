@@ -7,22 +7,18 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dacn.Controller.ListAdapter;
 import com.example.dacn.Controller.MenuAdapter;
-import com.example.dacn.Model.Cart;
 import com.example.dacn.Model.ChiTietDonHang;
 import com.example.dacn.Model.ListItem;
 import com.example.dacn.Model.MenuItem;
@@ -40,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Staff extends AppCompatActivity implements OnOrderSelectedListener {
+public class Staff extends AppCompatActivity implements OnOrderSelectedListener, FragmentAlertWarning.OnHuyDonHangListener{
     private GridView gridViewMenu;
     private MenuAdapter menuAdapter;
     private List<MenuItem> menuItems;
@@ -49,9 +45,13 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
     public List<ListItem> listItems; // Danh sách sản phẩm đã chọn
     private List<SanPham> lstSp = new ArrayList<>();
     ImageButton bellButton, btn_back;
+    SearchView searchFood;
     Button btn_huy, btn_xacnhan;
     private TextView tvTongTien;
     Integer MaDH;
+
+    DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
+    DatabaseReference donHangRef = FirebaseDatabase.getInstance().getReference("Don_Hang");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         setContentView(R.layout.activity_staff);
 
         initView();
+
 
         gridViewMenu = findViewById(R.id.gridView_menu);
         menuItems = new ArrayList<>();
@@ -99,16 +100,130 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
             transaction.commit();
         });
 
+
         btn_huy.setOnClickListener(view -> {
-            listItems.clear();
-            listAdapter.notifyDataSetChanged();
-            updateTongTien();
+            showFragment();
+
         });
 
         //trở về layout khach hang
         Intent intent = new Intent(this, KhachHangActivity.class);
         btn_back.setOnClickListener(view -> startActivity(intent));
+
+        // Thiết lập tìm kiếm
+        setupSearchView();
+        updateButtonState();
     }
+
+    @Override
+    public void huyDonHang() {
+        chiTietDonHangRef.orderByChild("maDonHang").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    data.getRef().removeValue(); // Xóa từng chi tiết đơn hàng
+                }
+
+                // Sau khi xóa xong chi tiết đơn hàng, xóa đơn hàng
+                Log.d("MaDH", "Giá trị MaDH tìm kiếm: " + MaDH);  // Kiểm tra giá trị MaDH
+                donHangRef.orderByChild("MaDH").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot data : snapshot.getChildren()) {
+                                data.getRef().removeValue(); // Xóa đơn hàng theo MaDH
+                            }
+                            Toast.makeText(Staff.this, "Đã xoá đơn hàng và chi tiết thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Staff.this, "Không tìm thấy đơn hàng với mã: " + MaDH, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Staff.this, "Lỗi khi xoá đơn hàng", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Staff.this, "Lỗi khi xoá chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+        listItems.clear();
+        listAdapter.notifyDataSetChanged();
+        updateTongTien();
+    }
+
+    private void updateButtonState() {
+        if (MaDH == null || MaDH.toString().isEmpty()) {
+            btn_huy.setEnabled(false);
+            btn_huy.setAlpha(0.5f); // Làm mờ nút
+        } else {
+            btn_huy.setEnabled(true);
+            btn_huy.setAlpha(1.0f); // Hiển thị bình thường
+        }
+    }
+
+    private void showFragment() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        String thongbaothanhcong = "Cảnh Báo!";
+        String thongbaokhachdoi = "Đơn hàng sẽ xóa sau 10 giây.";
+
+        FragmentAlertWarning fragment = FragmentAlertWarning.newInstance(thongbaothanhcong, thongbaokhachdoi);
+
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    // Phương thức tạo mã đơn hàng tự động
+    private int generateMaDonHang() {
+        // Giả sử mã đơn hàng được tạo tự động (có thể sử dụng số tăng dần hoặc ID tự động)
+        return (int) (Math.random() * 10000); // Ví dụ: tạo mã ngẫu nhiên
+    }
+
+    private void setupSearchView() {
+        searchFood.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Không cần xử lý vì hiển thị kết quả ngay khi nhập
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterMenuItems(newText); // Gọi phương thức lọc khi từ khóa thay đổi
+                return true;
+            }
+        });
+    }
+
+    // Phương thức lọc sản phẩm theo từ khóa
+    private void filterMenuItems(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // Nếu từ khóa rỗng, hiển thị lại toàn bộ danh sách
+            loadMenuData();
+            return;
+        }
+
+        // Lọc danh sách sản phẩm
+        List<MenuItem> filteredItems = new ArrayList<>();
+        for (MenuItem item : menuItems) {
+            if (item.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                Log.d("TimKiem", "Chuoi: " + item.getName().toLowerCase() + " Key: " + keyword.toLowerCase() + "");
+                filteredItems.add(item);
+            }
+        }
+
+        // Cập nhật adapter với danh sách đã lọc
+        menuAdapter.updateData(filteredItems);
+    }
+
 
     public void addToListItem(ListItem listItem) {
         boolean exists = false;
@@ -247,6 +362,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     SanPham product = data.getValue(SanPham.class);
                     if (product != null && product.getTrangThai()) {
+                        Log.d("TenSP: ", product.getTenSanPham() + "");
                         menuItems.add(new MenuItem(product.getMaSanPham(), product.getHinhAnh(), product.getTenSanPham(), String.valueOf(product.getGia())));
                     }
                 }
@@ -267,6 +383,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         btn_xacnhan = findViewById(R.id.btn_xacnhan);
         tvTongTien = findViewById(R.id.tv_tongtien); // Liên kết TextView hiển thị tổng tiền
         btn_back = findViewById(R.id.btn_back);
+        searchFood = findViewById(R.id.search_food);
     }
 
     // Tính và cập nhật tổng tiền
@@ -295,5 +412,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener 
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
         MaDH = Integer.valueOf(orderCode);
+        updateButtonState();
     }
 }
