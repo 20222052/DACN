@@ -4,6 +4,7 @@ package com.example.dacn.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -44,11 +45,14 @@ public class TableActivity extends AppCompatActivity {
     private DatabaseReference tableRef;
     private String nhanVienId;
 
+    ImageButton btnBackStaff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
+        btnBackStaff = findViewById(R.id.btn_back);
         rvTables = findViewById(R.id.rvTables);
         tables = new ArrayList<>();
 
@@ -74,6 +78,12 @@ public class TableActivity extends AppCompatActivity {
 
         rvTables.setLayoutManager(new GridLayoutManager(this, 4)); // Hiển thị 4 cột
         rvTables.setAdapter(tableAdapter);
+
+        btnBackStaff.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Staff.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void loadTablesFromFirebase() {

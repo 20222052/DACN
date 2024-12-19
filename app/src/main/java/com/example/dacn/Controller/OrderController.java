@@ -62,7 +62,7 @@ public class OrderController {
     }
 
     private void updateTableStatus(int tableId) {
-        database.child("Table").child(String.valueOf(tableId)).child("status").setValue(false);
+        database.child("Table").child(String.valueOf(tableId)).child("status").setValue(true);
     }
 
     // Tính tổng tiền từ giỏ hàng
