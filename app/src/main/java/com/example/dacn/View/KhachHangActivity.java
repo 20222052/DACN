@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.dacn.Controller.KhachhangController;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,10 +54,10 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     ImageButton btn_cart, btn_staff;
     private List<SanPham> productList;
     private ProductAdapter productAdapter;
-    private DatabaseReference database;
     private List<Cart> cartList;
     TextView cartCountText;
     private int tableId;
+    private KhachhangController KhachhangController;
     private String nhanVienId;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -88,7 +88,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
 
         rcvProduct.setAdapter(productAdapter);
         rcvProduct.setLayoutManager(new GridLayoutManager(this, 3));
-
+        KhachhangController = new KhachhangController();
         btn_staff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,33 +113,26 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
             }
         });
 
-        // Load Firebase
-        database = FirebaseDatabase.getInstance().getReference("SanPham");
-        database.addValueEventListener(new ValueEventListener() {
+        searchView.clearFocus();
+
+        btn_cart.setOnClickListener(view -> showCartFragment());
+        loadSanPhamDetails();
+    }
+    private void loadSanPhamDetails() {
+        KhachhangController.loadSanPhamDetails(new KhachhangController.SanPhamListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                productList.clear(); // Xóa danh sách cũ
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    SanPham product = snapshot.getValue(SanPham.class);
-                    if (product != null && product.getTrangThai()) { // Kiểm tra trạng thái sản phẩm
-                        productList.add(product); // Chỉ thêm sản phẩm có trạng thái true
-                    }
-                }
+            public void onSanPhamLoaded(List<SanPham> sanPhamList) {
+                productList.clear();
+                productList.addAll(sanPhamList);
                 productAdapter.notifyDataSetChanged(); // Cập nhật adapter sau khi thay đổi danh sách
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("Firebase", "loadProduct:onCancelled", databaseError.toException());
+            public void onError(String errorMessage) {
+                Log.w("Firebase", "loadProduct:onCancelled", new Exception(errorMessage));
             }
         });
-
-
-        searchView.clearFocus();
-
-        btn_cart.setOnClickListener(view -> showCartFragment());
     }
-
     @Override
     public void onAddToCart(SanPham product) {
         boolean productExists = false;

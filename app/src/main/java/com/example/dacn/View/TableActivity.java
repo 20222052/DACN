@@ -67,7 +67,6 @@ public class TableActivity extends AppCompatActivity {
                 Toast.makeText(this, table.getNameTable() + " đã có khách!", Toast.LENGTH_SHORT).show();
             } else {
                 // Chuyển sang màn hình order
-                Toast.makeText(this, "Bạn chọn " + table.getNameTable(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, KhachHangActivity.class);
                 intent.putExtra("tableId", table.getIdTable()); // Truyền ID bàn
                 intent.putExtra("nhanVienId", nhanVienId); // Truyền ID nhân viên
@@ -81,6 +80,7 @@ public class TableActivity extends AppCompatActivity {
 
         btnBackStaff.setOnClickListener(v -> {
             Intent intent = new Intent(this, Staff.class);
+            intent.putExtra("nhanVienId", nhanVienId);
             startActivity(intent);
             finish();
         });

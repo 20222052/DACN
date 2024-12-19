@@ -25,12 +25,6 @@
         android:orientation="vertical"
         android:padding="8dp"
         android:background="#F0F0F0">
-        <EditText
-            android:id="@+id/edt_ma_ban"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Mã bàn" />
         <!-- Tên nhân viên -->
         <EditText
             android:id="@+id/edt_ten_ban"

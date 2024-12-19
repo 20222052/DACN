@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:gravity="top|start"
-                    android:hint="Link sản phẩm"
+                    android:hint="Link ảnh"
                     android:inputType="textMultiLine"
                     android:minLines="3" />
 

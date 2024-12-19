@@ -22,7 +22,7 @@ import com.example.dacn.R;
 import java.util.ArrayList;
 import java.util.List;
 public class QL_Table_Fragment extends Fragment {
-    private EditText edtMaBan, edtTenBan;
+    private EditText edtTenBan;
     private Button btnThem, btnXoa;
     private SearchView searchTable;
     private GridView gridViewTable;
@@ -53,7 +53,6 @@ public class QL_Table_Fragment extends Fragment {
     }
     @SuppressLint("WrongViewCast")
     private void initializeViews(View view) {
-        edtMaBan = view.findViewById(R.id.edt_ma_ban);
         edtTenBan = view.findViewById(R.id.edt_ten_ban);
         btnThem = view.findViewById(R.id.btn_them);
         btnXoa = view.findViewById(R.id.btn_xoaTB);
@@ -64,6 +63,7 @@ public class QL_Table_Fragment extends Fragment {
         btnThem.setOnClickListener(v -> {
                 Table table = createTableFromInput();
                 qlTBController.DK_TB(table);
+                edtTenBan.setText("");
                 loadTableList(); // Refresh list after adding
         });
 
@@ -115,24 +115,10 @@ public class QL_Table_Fragment extends Fragment {
             }
         });
     }
-    private boolean validateInputFields() {
-        String tenBan = edtTenBan.getText().toString().trim();
-        if (tenBan.isEmpty()) {
-            showToast("Tên bàn không được để trống");
-            return false;
-        }
-        Log.e("QL_Table_Fragment", "Ten ban: ");
-        return true;
-    }
     private Table createTableFromInput() {
-        int maBan = Integer.parseInt(edtMaBan.getText().toString().trim());
         String tenBan = edtTenBan.getText().toString().trim();
-        return new Table(maBan, tenBan, false); // ID will be set later
+        return new Table(0, tenBan, false); // ID will be set later
     }
-//    private void populateFormWithNhanVien(Table table) {
-//        edtMaBan.setText(table.getIdTable());
-//        edtTenBan.setText(table.getNameTable());
-//    }
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }

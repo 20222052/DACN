@@ -18,9 +18,9 @@
         <TextView
             android:id="@+id/item_name_cart_list"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_weight="0.7"
+            android:layout_weight="0.4"
             android:textColor="#000"
             android:paddingLeft="15dp"
             android:textSize="24sp"
@@ -29,12 +29,12 @@
 
         <TextView
             android:id="@+id/item_price_cart_list"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textColor="#000"
             android:textSize="20sp"
-            android:layout_weight="0.7"
+            android:layout_weight="1"
             android:text="40,000"
             android:gravity="center"/>
         <ImageButton

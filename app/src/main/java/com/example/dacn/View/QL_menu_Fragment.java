@@ -149,6 +149,7 @@ public class QL_menu_Fragment extends Fragment {
         btn_add_product.setOnClickListener(v -> {
             Fragment_add_product addProductDialogFragment = new Fragment_add_product();
             addProductDialogFragment.show(getParentFragmentManager(), "Fragment_add_product");
+            loadCategoriesAndProducts();
         });
         btn_edit_catalogue.setOnClickListener(v -> {
             Fragment_edit_catalogue addProductDialogFragment = new Fragment_edit_catalogue();

@@ -54,7 +54,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     private SearchView searchFood;
     private Button  btn_xacnhan, btn_dangxuat;
     private TextView tvTongTien;
-    private Integer MaDH, tableId;
+    private Integer MaDH = 0, tableId;
     private String nhanVienId;
 
 
@@ -79,7 +79,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         gridViewSelectedItems.setAdapter(listAdapter);
 
         loadMenuData();
-
+        updateButtonState(MaDH);
         bellButton.setOnClickListener(view -> showNotificationFragment());
         btn_xacnhan.setOnClickListener(view -> {
             double tongTien = 0.0; // Đổi sang kiểu double
@@ -112,7 +112,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         btn_table.setOnClickListener(v -> {
             Intent intent = new Intent(Staff.this, TableActivity.class);
             intent.putExtra("nhanVienId", nhanVienId);
-            Toast.makeText(this, "nhanVienId: " + nhanVienId, Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         });
@@ -144,7 +143,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
         // Thiết lập tìm kiếm
         setupSearchView();
-
+        generateMaDonHang();
     }
 
     @Override
@@ -381,7 +380,15 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         transaction.commit();
     }
 
-
+    private void updateButtonState(int maDH) {
+        if (maDH == 0) {
+            btn_xacnhan.setEnabled(false);
+            btn_xacnhan.setAlpha(0.5f); // Làm mờ nút
+        } else {
+            btn_xacnhan.setEnabled(true);
+            btn_xacnhan.setAlpha(1.0f); // Hiển thị bình thường
+        }
+    }
     @Override
     public void onOrderSelected(String orderCode, int tableIdd, String nhanVienIdd) {
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
@@ -389,9 +396,8 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         MaDH = Integer.valueOf(orderCode);
         tableId = tableIdd;
         nhanVienId = nhanVienIdd;
+        updateButtonState(MaDH);
         Log.d("Staff", "MaDH: " + MaDH + ", TableId: " + tableId + ", NhanVienId: " + nhanVienId);
     }
-
-
 }
 
