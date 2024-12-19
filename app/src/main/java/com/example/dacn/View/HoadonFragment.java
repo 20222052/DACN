@@ -76,11 +76,10 @@ public class HoadonFragment extends Fragment {
             } else if (checkedId == R.id.radioChuyenKhoan) {
                 imageView.setVisibility(View.VISIBLE); // Hiển thị ImageView
                 // Đặt link ảnh QR
-                String imageUrl = "https://img.vietqr.io/image/BIDV-0976956191-compact2.png?amount="+getArguments().getDouble("totallPrice")+"&addInfo=Thanh%20Toán%20Hóa%20Đơn%20Ăn%20HaDiLao&accountName=HadilaoRestauron";
+                String imageUrl = "https://img.vietqr.io/image/BIDV-0976956191-compact2.png?amount="+getArguments().getDouble("totallPrice")+"&addInfo=Thanh%20Toán%20Hóa%20Đơn%20Ăn%20HaDiLao&accountName=HadilaoRestaurant";
                 Glide.with(requireContext()).load(imageUrl).into(imageView);
             }
         });
-
 
 
         // Khai báo nút "Huỷ" và "Xác nhận"

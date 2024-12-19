@@ -93,6 +93,7 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(KhachHangActivity.this, Staff.class);
+                intent.putExtra("nhanVienId", nhanVienId);
                 startActivity(intent);
                 finish();
             }
@@ -135,29 +136,36 @@ public class KhachHangActivity extends AppCompatActivity implements ProductAdapt
     }
     @Override
     public void onAddToCart(SanPham product) {
-        boolean productExists = false;
-        Log.d("KhachHangActivity", "Adding product to cart: " + product.getTenSanPham());
+        if (tableId == -1) {
+            Intent intent = new Intent(this, TableActivity.class);
+            intent.putExtra("nhanVienId", nhanVienId);
+            Toast.makeText(this, "Vui lòng chọn bàn!", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+        } else {
+            boolean productExists = false;
+            Log.d("KhachHangActivity", "Adding product to cart: " + product.getTenSanPham());
 
-        for (Cart cartItem : cartList) {
-            if (cartItem.getId() == product.getMaSanPham()) {
-                cartItem.setSoLuong(cartItem.getSoLuong() + 1);
-                productExists = true;
-                break;
+            for (Cart cartItem : cartList) {
+                if (cartItem.getId() == product.getMaSanPham()) {
+                    cartItem.setSoLuong(cartItem.getSoLuong() + 1);
+                    productExists = true;
+                    break;
+                }
             }
-        }
 
-        if (!productExists) {
-            Cart newCartItem = new Cart(
-                    product.getMaSanPham(),
-                    product.getTenSanPham(),
-                    product.getHinhAnh(),
-                    Double.parseDouble(String.valueOf(product.getGia())),
-                    1
-            );
-            cartList.add(newCartItem);
-        }
+            if (!productExists) {
+                Cart newCartItem = new Cart(
+                        product.getMaSanPham(),
+                        product.getTenSanPham(),
+                        product.getHinhAnh(),
+                        Double.parseDouble(String.valueOf(product.getGia())),
+                        1
+                );
+                cartList.add(newCartItem);
+            }
 
-        cartCountText.setText(String.valueOf(cartList.size()));
+            cartCountText.setText(String.valueOf(cartList.size()));
+        }
     }
 
     private void showCartFragment() {

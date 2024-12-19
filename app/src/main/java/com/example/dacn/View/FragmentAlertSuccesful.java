@@ -92,9 +92,9 @@ public class FragmentAlertSuccesful extends Fragment {
                 .remove(FragmentAlertSuccesful.this)
                 .commit();
 
-        requireActivity().finish();
         Intent intent = new Intent(this.getActivity(), Staff.class);
         intent.putExtra("nhanVienId", nhanVienId);
         startActivity(intent);
+        requireActivity().finish();
     }
 }

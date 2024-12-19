@@ -234,9 +234,9 @@ public class QL_DH_Fragment extends Fragment {
             }
         };
 
-        if (option.equals("Mới nhất")) {
+        if (option.equals("Cũ nhất")) {
             Collections.sort(list, comparator);
-        } else if (option.equals("Cũ nhất")) {
+        } else if (option.equals("Mới nhất")) {
             Collections.sort(list, Collections.reverseOrder(comparator));
         }
 

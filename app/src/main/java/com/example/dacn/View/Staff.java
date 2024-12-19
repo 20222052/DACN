@@ -66,6 +66,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         Intent intentt = getIntent();
         nhanVienId = intentt.getStringExtra("nhanVienId");
 
+
         gridViewMenu = findViewById(R.id.gridView_menu);
         menuItems = new ArrayList<>();
         menuAdapter = new MenuAdapter(this, menuItems);
