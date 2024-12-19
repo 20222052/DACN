@@ -1,5 +1,7 @@
 package com.example.dacn.View;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -117,7 +119,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
 
         btn_dangxuat.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
-
             startActivity(intent);
             finish();
         });
@@ -362,6 +363,19 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         NotificationFragment fragment = new NotificationFragment();
+        transaction.add(android.R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    // Hiển thị popup thông báo đặt hàng thành công
+    private void showNotifileLogoutFragment() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        String thongbaothanhcong = "Thông báo!";
+        String thongbaokhachdoi = "Bạn Có chắc chắn muốn đăng xuất.";
+
+        FragmentAlertSuccesful fragment = FragmentAlertSuccesful.newInstance(thongbaothanhcong, thongbaokhachdoi, nhanVienId);
         transaction.add(android.R.id.content, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

@@ -105,6 +105,7 @@ public class HoadonFragment extends Fragment {
             // Xóa chi tiết đơn hàng cũ
             DatabaseReference chiTietDonHangRef = FirebaseDatabase.getInstance().getReference("Chi_Tiet_Don_Hang");
             DatabaseReference donHangRef = FirebaseDatabase.getInstance().getReference("Don_Hang");
+            DatabaseReference tableRef = FirebaseDatabase.getInstance().getReference("Table");
 
             chiTietDonHangRef.orderByChild("maDonHang").equalTo(MaDH).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -125,6 +126,13 @@ public class HoadonFragment extends Fragment {
                         Log.d("DEBUG", "Item: " + generateUniqueKey() +", Item: " + item.getMaSanPham() + ", Quantity: " + item.getQuantity() + ", Price: " + item.getPrice());
                         chiTietDonHangRef.push().setValue(chiTiet); // Lưu chi tiết đơn hàng vào Firebase
                     }
+
+                    // Cập nhật trạng thái table sang "true"
+                    tableRef.child(tableId + "").child("status").setValue(true).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(requireContext(), "Cập nhật trạng thái bàn thành công!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                     // Cập nhật trạng thái đơn hàng sang "true"
                     donHangRef.child(MaDH.toString()).child("trangThai").setValue(true).addOnCompleteListener(task -> {
@@ -172,6 +180,7 @@ public class HoadonFragment extends Fragment {
 
         return view;
     }
+
 
     private int generateUniqueKey() {
         return (int) (System.currentTimeMillis() / 1000); // Tạo mã duy nhất từ timestamp
