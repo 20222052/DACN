@@ -50,7 +50,7 @@ public class OrderController {
         database.child("Don_Hang").child(maDonHang).setValue(donHang)
                 .addOnSuccessListener(unused -> Log.d("Firebase", "Đơn hàng đã được lưu thành công."))
                 .addOnFailureListener(e -> Log.e("Firebase", "Lỗi khi lưu đơn hàng", e));
-
+        updateTableStatus(donHang.getTableId());
         // Lưu chi tiết đơn hàng vào Firebase
         for (ChiTietDonHang item : cartItems) {
             String maChiTietDonHang = String.valueOf(item.getMaChiTietDonHang()); // Tạo mã chi tiết ngẫu nhiên
@@ -59,6 +59,10 @@ public class OrderController {
                     .addOnSuccessListener(unused -> Log.d("Firebase", "Chi tiết đơn hàng đã được lưu."))
                     .addOnFailureListener(e -> Log.e("Firebase", "Lỗi khi lưu chi tiết đơn hàng", e));
         }
+    }
+
+    private void updateTableStatus(int tableId) {
+        database.child("Table").child(String.valueOf(tableId)).child("status").setValue(false);
     }
 
     // Tính tổng tiền từ giỏ hàng

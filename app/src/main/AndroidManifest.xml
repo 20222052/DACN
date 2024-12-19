@@ -17,16 +17,16 @@
         android:theme="@style/Theme.DACN"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".View.Staff"
+            android:name=".View.TableActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Admin_Activity"
+            android:name=".View.Staff"
             android:exported="false" />
         <activity
             android:name=".View.KhachHangActivity"
             android:exported="false" />
         <activity
-            android:name=".View.TableActivity"
+            android:name=".View.Admin_Activity"
             android:exported="false" />
         <activity
             android:name=".View.MainActivity"

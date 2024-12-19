@@ -1,7 +1,9 @@
 package com.example.dacn.View;
 
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,9 +21,27 @@ import com.example.dacn.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TableActivity extends AppCompatActivity {
     private RecyclerView rvTables;
     private TableAdapter tableAdapter;
+    private List<Table> tables;
+    private DatabaseReference tableRef;
     private String nhanVienId;
 
     @Override
@@ -29,17 +49,14 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
-        nhanVienId = getIntent().getStringExtra("nhanVienId");
-
         rvTables = findViewById(R.id.rvTables);
+        tables = new ArrayList<>();
 
-        // Danh sách số bàn
-        List<Table> tables = new ArrayList<>();
-
-        for (int i = 1; i <= 12; i++) { // 20 bàn
-            boolean hasCustomer = (i % 3 == 0);
-            tables.add(new Table(i, "Bàn " + i, hasCustomer));
-        }
+        // Firebase Realtime Database reference
+        tableRef = FirebaseDatabase.getInstance().getReference("Table");
+        nhanVienId = getIntent().getStringExtra("nhanVienId");
+        // Lấy dữ liệu từ Firebase
+        loadTablesFromFirebase();
 
         tableAdapter = new TableAdapter(tables, table -> {
             if (table.isStatus()) {
@@ -54,7 +71,30 @@ public class TableActivity extends AppCompatActivity {
             }
         });
 
-        rvTables.setLayoutManager(new GridLayoutManager(this, 4)); // Hiển thị cột
+
+        rvTables.setLayoutManager(new GridLayoutManager(this, 4)); // Hiển thị 4 cột
         rvTables.setAdapter(tableAdapter);
     }
+
+    private void loadTablesFromFirebase() {
+        tableRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tables.clear(); // Xóa danh sách cũ
+                for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
+                    Table table = tableSnapshot.getValue(Table.class);
+                    if (table != null) {
+                        tables.add(table);
+                    }
+                }
+                tableAdapter.notifyDataSetChanged(); // Cập nhật RecyclerView
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(TableActivity.this, "Failed to load tables: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
