@@ -169,13 +169,15 @@ public class QL_TK_Fragment extends Fragment {
         nvController.getNhanVienList(new QL_NV_Controller.NhanVienListener() {
             @Override
             public void onNhanVienLoaded(List<NhanVien> nhanVienList) {
-                for (NhanVien nhanVien : nhanVienList) {
-                    nhanVienNames.add(nhanVien.getTenNhanVien());
-                    nhanVienNameToIdMap.put(nhanVien.getTenNhanVien(), nhanVien.getId());
-                    nhanVienIdToNameMap.put(nhanVien.getId(), nhanVien.getTenNhanVien());
+                if (isAdded()) { // Check if the fragment is attached to the activity
+                    for (NhanVien nhanVien : nhanVienList) {
+                        nhanVienNames.add(nhanVien.getTenNhanVien());
+                        nhanVienNameToIdMap.put(nhanVien.getTenNhanVien(), nhanVien.getId());
+                        nhanVienIdToNameMap.put(nhanVien.getId(), nhanVien.getTenNhanVien());
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, nhanVienNames);
+                    edtNhanVien.setAdapter(adapter);
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, nhanVienNames);
-                edtNhanVien.setAdapter(adapter);
             }
         });
     }

@@ -7,8 +7,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +52,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
     private SearchView searchFood;
     private Button  btn_xacnhan, btn_dangxuat;
     private TextView tvTongTien;
-    private Integer MaDH = 0, tableId;
+    private Integer MaDH, tableId;
     private String nhanVienId;
 
 
@@ -79,7 +77,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         gridViewSelectedItems.setAdapter(listAdapter);
 
         loadMenuData();
-        updateButtonState(MaDH);
         bellButton.setOnClickListener(view -> showNotificationFragment());
         btn_xacnhan.setOnClickListener(view -> {
             double tongTien = 0.0; // Đổi sang kiểu double
@@ -91,6 +88,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
             for (ListItem item : listItems) {
                 Log.d("MaSP: ", "" + item.getMaSanPham() + "");
             }
+
             bundle.putSerializable("listItems", new ArrayList<>(listItems)); // Dùng putSerializable để truyền danh sách
             bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
@@ -112,44 +110,41 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         btn_table.setOnClickListener(v -> {
             Intent intent = new Intent(Staff.this, TableActivity.class);
             intent.putExtra("nhanVienId", nhanVienId);
+            Toast.makeText(this, "nhanVienId: " + nhanVienId, Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         });
 
         btn_dangxuat.setOnClickListener(view -> {
-            // Tạo một AlertDialog để hỏi người dùng có muốn đăng xuất không
-            new AlertDialog.Builder(this)
-                    .setTitle("Xác nhận")
-                    .setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản không?")
-                    .setPositiveButton("Đồng ý", (dialog, which) -> {
-                        // Nếu người dùng chọn "Đồng ý", chuyển sang MainActivity và kết thúc Activity hiện tại
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    })
-                    .setNegativeButton("Hủy", (dialog, which) -> {
-                        // Nếu người dùng chọn "Hủy", không làm gì cả
-                        dialog.dismiss();
-                    })
-                    .show();
-        });
+            Intent intent = new Intent(this, MainActivity.class);
 
+            startActivity(intent);
+            finish();
+        });
 
 
         //trở về layout khach hang
         Intent intent = new Intent(this, KhachHangActivity.class);
         intent.putExtra("nhanVienId", nhanVienId);
         btn_back.setOnClickListener(view -> startActivity(intent));
-
+        updateButtonState(MaDH);
         // Thiết lập tìm kiếm
         setupSearchView();
-        generateMaDonHang();
-    }
 
+    }
+    // Cập nhật trạng thái nút xác nhận dựa trên trạng thái giỏ hàng
+    private void updateButtonState(int MaDH) {
+        if (MaDH == 0) {
+            btn_xacnhan.setEnabled(false);
+            btn_xacnhan.setAlpha(0.5f); // Làm mờ nút
+        } else {
+            btn_xacnhan.setEnabled(true);
+            btn_xacnhan.setAlpha(1.0f); // Hiển thị bình thường
+        }
+    }
     @Override
     public void huyDonHang() {
     }
-
     // Phương thức tạo mã đơn hàng tự động
     private int generateMaDonHang() {
         // Giả sử mã đơn hàng được tạo tự động (có thể sử dụng số tăng dần hoặc ID tự động)
@@ -380,23 +375,15 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         transaction.commit();
     }
 
-    private void updateButtonState(int maDH) {
-        if (maDH == 0) {
-            btn_xacnhan.setEnabled(false);
-            btn_xacnhan.setAlpha(0.5f); // Làm mờ nút
-        } else {
-            btn_xacnhan.setEnabled(true);
-            btn_xacnhan.setAlpha(1.0f); // Hiển thị bình thường
-        }
-    }
+
     @Override
     public void onOrderSelected(String orderCode, int tableIdd, String nhanVienIdd) {
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
         MaDH = Integer.valueOf(orderCode);
+        updateButtonState(MaDH);
         tableId = tableIdd;
         nhanVienId = nhanVienIdd;
-        updateButtonState(MaDH);
         Log.d("Staff", "MaDH: " + MaDH + ", TableId: " + tableId + ", NhanVienId: " + nhanVienId);
     }
 }

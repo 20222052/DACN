@@ -77,18 +77,16 @@ public class QL_NV_Fragment extends Fragment {
         searchEmployee = view.findViewById(R.id.search_employee);
         gridViewNhanVien = view.findViewById(R.id.gridview_nhan_vien);
     }
-    private void setTextWatcher(){
+
+    private void setTextWatcher() {
         edtTenNhanVien.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-            }
-
+            @Override
             public void afterTextChanged(Editable s) {
                 String input = s.toString();
                 if (input.length() < 5) {
@@ -96,35 +94,29 @@ public class QL_NV_Fragment extends Fragment {
                 }
             }
         });
+
         edtSoDienThoai.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
                 String input = s.toString();
-                if (input.length() < 5||input.length() > 15 || !input.matches("\\d+")|| input.charAt(0) != '0') {
+                if (input.length() < 5 || input.length() > 15 || !input.matches("\\d+") || input.charAt(0) != '0') {
                     edtSoDienThoai.setError("Nhập đúng định dạng!");
                 }
             }
         });
+
         edtAddress.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -135,6 +127,7 @@ public class QL_NV_Fragment extends Fragment {
             }
         });
     }
+
     private void setupButtonListeners() {
         btnThem.setOnClickListener(v -> {
             if (validateInputFields()) {
@@ -201,9 +194,11 @@ public class QL_NV_Fragment extends Fragment {
         qlNvController.getNhanVienList(new QL_NV_Controller.NhanVienListener() {
             @Override
             public void onNhanVienLoaded(List<NhanVien> nhanVienList) {
-                QL_NV_Fragment.this.nhanVienList = nhanVienList;
-                nhanVienAdapter = new QL_NV_Adapter(requireContext(), nhanVienList);
-                gridViewNhanVien.setAdapter(nhanVienAdapter);
+                if (isAdded()) { // Check if the fragment is attached to the activity
+                    QL_NV_Fragment.this.nhanVienList = nhanVienList;
+                    nhanVienAdapter = new QL_NV_Adapter(requireContext(), nhanVienList);
+                    gridViewNhanVien.setAdapter(nhanVienAdapter);
+                }
             }
         });
     }

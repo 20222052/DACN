@@ -69,7 +69,7 @@ public class QL_NV_Controller {
         mDatabase.child("NhanVien").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<NhanVien> nhanVienList = new ArrayList<>();
+                    List<NhanVien> nhanVienList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NhanVien nhanVien = snapshot.getValue(NhanVien.class);
                     if (nhanVien != null) {
