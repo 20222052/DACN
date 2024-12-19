@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.dacn.Model.NhanVien;
 import com.example.dacn.Model.Table;
 import com.example.dacn.R;
 
@@ -45,10 +44,11 @@ public class QL_Table_Adapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.item_table, parent, false);
+        convertView = LayoutInflater.from(context).inflate(R.layout.item_ql_table, parent, false);
         Table table = tableList.get(position);
+
         TextView tvMaTable = convertView.findViewById(R.id.id_Table);
-        TextView tvName = convertView.findViewById(R.id.name);
+        TextView tvName = convertView.findViewById(R.id.nameTB);
         TextView tvStatus = convertView.findViewById(R.id.is_Status);
 
         tvMaTable.setText(String.format("Mã bàn: %s", table.getIdTable()));

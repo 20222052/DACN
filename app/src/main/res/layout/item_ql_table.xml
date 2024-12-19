@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:elevation="6dp"
+    app:cardUseCompatPadding="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/id_Table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="idTable"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/nameTB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:textSize="20sp"
+            android:layout_below="@+id/id_Table"
+            android:layout_marginStart="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/is_Status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="20sp"
+            android:layout_below="@+id/nameTB"
+            android:layout_marginStart="10dp">
+        </TextView>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

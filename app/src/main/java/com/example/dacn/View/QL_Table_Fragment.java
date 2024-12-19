@@ -31,7 +31,7 @@ import java.util.List;
 
 public class QL_Table_Fragment extends Fragment {
     private EditText edtMaBan, edtTenBan;
-    private Button btnThem, btnSua, btnXoa;
+    private Button btnThem, btnXoa;
     private SearchView searchTable;
     private GridView gridViewTable;
     private QL_Table_Controller qlTBController;
@@ -70,7 +70,6 @@ public class QL_Table_Fragment extends Fragment {
         edtMaBan = view.findViewById(R.id.id_Table);
         edtTenBan = view.findViewById(R.id.nameTB);
         btnThem = view.findViewById(R.id.btn_them);
-        btnSua = view.findViewById(R.id.btn_sua);
         btnXoa = view.findViewById(R.id.btn_xoa);
         searchTable = view.findViewById(R.id.search_table);
         gridViewTable = view.findViewById(R.id.gridview_table);
@@ -82,16 +81,6 @@ public class QL_Table_Fragment extends Fragment {
                 Table table = createTableFromInput();
                 qlTBController.DK_TB(table);
                 loadTableList(); // Refresh list after adding
-            }
-        });
-
-        btnSua.setOnClickListener(v -> {
-            if (validateInputFields() && selectedTableId != null) {
-                Table table = createTableFromInput();
-                table.setIdTable(Integer.parseInt(selectedTableId)); // Ensure the ID is set
-                loadTableList(); // Refresh list after editing
-            } else {
-                showToast("No employee selected for editing");
             }
         });
 
@@ -107,7 +96,7 @@ public class QL_Table_Fragment extends Fragment {
         gridViewTable.setOnItemClickListener((parent, view, position, id) -> {
             Table selectedTable = tableList.get(position);
             selectedTableId = String.valueOf(selectedTable.getIdTable()); // Ensure the ID is set
-            populateFormWithNhanVien(selectedTable);
+//            populateFormWithNhanVien(selectedTable);
         });
     }
 
@@ -143,7 +132,7 @@ public class QL_Table_Fragment extends Fragment {
             public void onTableLoaded(List<Table> tableList) {
                 QL_Table_Fragment.this.tableList = tableList;
                 tableAdapter = new QL_Table_Adapter(requireContext(), tableList);
-
+                gridViewTable.setAdapter(tableAdapter);
             }
         });
     }
@@ -167,10 +156,10 @@ public class QL_Table_Fragment extends Fragment {
         return new Table(maBan, tenBan, false); // ID will be set later
     }
 
-    private void populateFormWithNhanVien(Table table) {
-        edtMaBan.setText(table.getIdTable());
-        edtTenBan.setText(table.getNameTable());
-    }
+//    private void populateFormWithNhanVien(Table table) {
+//        edtMaBan.setText(table.getIdTable());
+//        edtTenBan.setText(table.getNameTable());
+//    }
 
 
     private void showToast(String message) {
