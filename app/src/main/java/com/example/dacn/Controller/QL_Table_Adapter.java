@@ -53,7 +53,7 @@ public class QL_Table_Adapter extends BaseAdapter {
 
         tvMaTable.setText(String.format("Mã bàn: %s", table.getIdTable()));
         tvName.setText(String.format("Tên bàn :%s", table.getNameTable()));
-        tvStatus.setText(table.isStatus() ? "Trạng thái : Trống" : "Trạng thái : Đang có khách");
+        tvStatus.setText(table.isStatus() ? "Trạng thái : Đang có khách" : "Trạng thái : Trống");
 
         if (position == selectedPosition) {
             convertView.setBackgroundColor(context.getResources().getColor(R.color.primaryColor));

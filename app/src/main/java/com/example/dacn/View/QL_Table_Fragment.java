@@ -127,7 +127,7 @@ public class QL_Table_Fragment extends Fragment {
     private Table createTableFromInput() {
         int maBan = Integer.parseInt(edtMaBan.getText().toString().trim());
         String tenBan = edtTenBan.getText().toString().trim();
-        return new Table(maBan, tenBan, true); // ID will be set later
+        return new Table(maBan, tenBan, false); // ID will be set later
     }
 //    private void populateFormWithNhanVien(Table table) {
 //        edtMaBan.setText(table.getIdTable());
