@@ -61,6 +61,10 @@ public class QL_Table_Fragment extends Fragment {
     }
     private void setupButtonListeners() {
         btnThem.setOnClickListener(v -> {
+                if (edtTenBan.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Vui lòng nhập tên bàn", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Table table = createTableFromInput();
                 qlTBController.DK_TB(table);
                 edtTenBan.setText("");
@@ -69,6 +73,11 @@ public class QL_Table_Fragment extends Fragment {
 
         btnXoa.setOnClickListener(v -> {
             String selectedTableId = tableAdapter.getSelectedTableId();
+            Boolean selectedTableStatus = tableAdapter.getSelectedTableStatus();
+            if (Boolean.TRUE.equals(selectedTableStatus)) {
+                Toast.makeText(getContext(), "Không xóa được bàn đang được sử dụng", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (selectedTableId != null) {
                 qlTBController.deleteTable(selectedTableId);
                 loadTableList(); // Refresh list after deleting

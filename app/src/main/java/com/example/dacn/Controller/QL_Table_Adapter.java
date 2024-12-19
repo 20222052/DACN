@@ -73,6 +73,14 @@ public class QL_Table_Adapter extends BaseAdapter {
         tableList = new ArrayList<>(newList);
         notifyDataSetChanged();
     }
+    @Nullable
+    public Boolean getSelectedTableStatus() {
+        if (selectedPosition != -1) {
+            return tableList.get(selectedPosition).isStatus(); // Lấy ID của mục được chọn
+        }
+        return null; // Không có mục nào được chọn
+    }
+
 
     @Nullable
     public String getSelectedTableId() {

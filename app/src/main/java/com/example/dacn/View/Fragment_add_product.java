@@ -85,9 +85,11 @@ public class Fragment_add_product extends DialogFragment {
         addProductController.getDanhMucSp(new Add_productController.DanhMucListener() {
             @Override
             public void onDanhMucLoaded(List<DanhMuc> danhMucList) {
-                ArrayAdapter<DanhMuc> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, danhMucList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerCategory.setAdapter(adapter);
+                if (isAdded()) { // Check if the fragment is attached to the activity
+                    ArrayAdapter<DanhMuc> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, danhMucList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerCategory.setAdapter(adapter);
+                }
             }
         });
     }

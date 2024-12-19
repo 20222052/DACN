@@ -158,9 +158,11 @@ public class QL_TK_Fragment extends Fragment {
         controller.getAllTaiKhoan(new QL_TK_Controller.TaiKhoanListener() {
             @Override
             public void onTaiKhoanLoaded(List<TaiKhoan> taiKhoanList) {
-                QL_TK_Fragment.this.taiKhoanList = taiKhoanList;
-                taiKhoanAdapter = new QL_TK_Adapter(requireContext(), taiKhoanList, nhanVienIdToNameMap);
-                listViewTaiKhoan.setAdapter(taiKhoanAdapter);
+                if (isAdded()) { // Check if the fragment is attached to the activity
+                    QL_TK_Fragment.this.taiKhoanList = taiKhoanList;
+                    taiKhoanAdapter = new QL_TK_Adapter(requireContext(), taiKhoanList, nhanVienIdToNameMap);
+                    listViewTaiKhoan.setAdapter(taiKhoanAdapter);
+                }
             }
         });
     }

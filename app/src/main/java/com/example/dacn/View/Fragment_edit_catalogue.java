@@ -64,10 +64,12 @@ public class Fragment_edit_catalogue extends DialogFragment implements catalogue
         controller.getAllDanhMuc(new catalogueController.DanhMucListener() {
             @Override
             public void onDanhMucLoaded(List<DanhMuc> danhMucList) {
-                Fragment_edit_catalogue.this.danhMucList = danhMucList;
-                catalogueAdapter adapter = new catalogueAdapter(requireContext(), danhMucList);
-                adapter.setOnItemClickListener(Fragment_edit_catalogue.this); // Set listener
-                gvCartItems.setAdapter(adapter);
+                if (isAdded()) { // Check if the fragment is attached to the activity
+                    Fragment_edit_catalogue.this.danhMucList = danhMucList;
+                    catalogueAdapter adapter = new catalogueAdapter(requireContext(), danhMucList);
+                    adapter.setOnItemClickListener(Fragment_edit_catalogue.this); // Set listener
+                    gvCartItems.setAdapter(adapter);
+                }
             }
         });
     }
