@@ -48,6 +48,24 @@
             android:layout_below="@+id/Tong_tien"
             android:layout_marginStart="10dp">
         </TextView>
+        <TextView
+            android:id="@+id/name_NV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tên nhân viên"
+            android:textSize="20sp"
+            android:layout_below="@+id/trang_thai"
+            android:layout_marginStart="10dp">
+        </TextView>
+        <TextView
+            android:id="@+id/name_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tên bàn"
+            android:textSize="20sp"
+            android:layout_below="@+id/name_NV"
+            android:layout_marginStart="10dp">
+        </TextView>
 
     </RelativeLayout>
 

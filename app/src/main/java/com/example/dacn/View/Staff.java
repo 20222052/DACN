@@ -79,7 +79,6 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         gridViewSelectedItems.setAdapter(listAdapter);
 
         loadMenuData();
-
         bellButton.setOnClickListener(view -> showNotificationFragment());
         btn_xacnhan.setOnClickListener(view -> {
             double tongTien = 0.0; // Đổi sang kiểu double
@@ -91,6 +90,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
             for (ListItem item : listItems) {
                 Log.d("MaSP: ", "" + item.getMaSanPham() + "");
             }
+
             bundle.putSerializable("listItems", new ArrayList<>(listItems)); // Dùng putSerializable để truyền danh sách
             bundle.putSerializable("listPrd", new ArrayList<>(lstSp)); // Dùng putSerializable để truyền danh sách
             bundle.putDouble("totallPrice", tongTien); // Truyền tổng tiền
@@ -128,16 +128,24 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         Intent intent = new Intent(this, KhachHangActivity.class);
         intent.putExtra("nhanVienId", nhanVienId);
         btn_back.setOnClickListener(view -> startActivity(intent));
-
+        updateButtonState(MaDH);
         // Thiết lập tìm kiếm
         setupSearchView();
 
     }
-
+    // Cập nhật trạng thái nút xác nhận dựa trên trạng thái giỏ hàng
+    private void updateButtonState(int MaDH) {
+        if (MaDH == 0) {
+            btn_xacnhan.setEnabled(false);
+            btn_xacnhan.setAlpha(0.5f); // Làm mờ nút
+        } else {
+            btn_xacnhan.setEnabled(true);
+            btn_xacnhan.setAlpha(1.0f); // Hiển thị bình thường
+        }
+    }
     @Override
     public void huyDonHang() {
     }
-
     // Phương thức tạo mã đơn hàng tự động
     private int generateMaDonHang() {
         // Giả sử mã đơn hàng được tạo tự động (có thể sử dụng số tăng dần hoặc ID tự động)
@@ -387,6 +395,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         Toast.makeText(this, "Đang tải chi tiết đơn hàng: " + orderCode, Toast.LENGTH_SHORT).show();
         loadOrderDetails(orderCode);
         MaDH = Integer.valueOf(orderCode);
+        updateButtonState(MaDH);
         tableId = tableIdd;
         nhanVienId = nhanVienIdd;
         Log.d("Staff", "MaDH: " + MaDH + ", TableId: " + tableId + ", NhanVienId: " + nhanVienId);
