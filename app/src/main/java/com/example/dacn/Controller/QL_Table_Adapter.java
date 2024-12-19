@@ -20,7 +20,7 @@ import java.util.List;
 public class QL_Table_Adapter extends BaseAdapter {
     private Context context;
     private List<Table> tableList;
-
+    private int selectedPosition = -1;
     public QL_Table_Adapter(@NonNull Context context, @NonNull List<Table> tableList) {
         this.context = context;
         this.tableList = tableList;
@@ -55,11 +55,30 @@ public class QL_Table_Adapter extends BaseAdapter {
         tvName.setText(String.format("Tên bàn :%s", table.getNameTable()));
         tvStatus.setText(table.isStatus() ? "Trạng thái : Trống" : "Trạng thái : Đang có khách");
 
+        if (position == selectedPosition) {
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.primaryColor));
+        } else {
+            convertView.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        }
+
+        convertView.setOnClickListener(v -> {
+            selectedPosition = position;
+            notifyDataSetChanged(); // Làm mới danh sách để cập nhật trạng thái
+        });
+
         return convertView;
     }
 
     public void updateList(List<Table> newList) {
         tableList = new ArrayList<>(newList);
         notifyDataSetChanged();
+    }
+
+    @Nullable
+    public String getSelectedTableId() {
+        if (selectedPosition != -1) {
+            return String.valueOf(tableList.get(selectedPosition).getIdTable()); // Lấy ID của mục được chọn
+        }
+        return null; // Không có mục nào được chọn
     }
 }

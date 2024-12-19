@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,11 +118,23 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         });
 
         btn_dangxuat.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-
-            startActivity(intent);
-            finish();
+            // Tạo một AlertDialog để hỏi người dùng có muốn đăng xuất không
+            new AlertDialog.Builder(this)
+                    .setTitle("Xác nhận")
+                    .setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản không?")
+                    .setPositiveButton("Đồng ý", (dialog, which) -> {
+                        // Nếu người dùng chọn "Đồng ý", chuyển sang MainActivity và kết thúc Activity hiện tại
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> {
+                        // Nếu người dùng chọn "Hủy", không làm gì cả
+                        dialog.dismiss();
+                    })
+                    .show();
         });
+
 
 
         //trở về layout khach hang
@@ -377,5 +391,7 @@ public class Staff extends AppCompatActivity implements OnOrderSelectedListener,
         nhanVienId = nhanVienIdd;
         Log.d("Staff", "MaDH: " + MaDH + ", TableId: " + tableId + ", NhanVienId: " + nhanVienId);
     }
+
+
 }
 

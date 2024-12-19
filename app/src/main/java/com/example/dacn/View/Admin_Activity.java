@@ -1,11 +1,13 @@
 package com.example.dacn.View;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,7 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.dacn.R;
 
 public class Admin_Activity extends AppCompatActivity {
-    Button btn_QL_menu, btn_QL_DH, btn_QL_NV, btn_QL_TK, btn_QL_BCTK, btn_QL_Table;
+    Button btn_QL_menu, btn_QL_DH, btn_QL_NV, btn_QL_TK, btn_QL_BCTK, btn_QL_Table, btn_dangXuat;
     FrameLayout fragment_container;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class Admin_Activity extends AppCompatActivity {
         btn_QL_TK = findViewById(R.id.button_QL_TK);
         btn_QL_BCTK = findViewById(R.id.button_QL_BCTK);
         btn_QL_Table = findViewById(R.id.button_QL_Table);
+        btn_dangXuat = findViewById(R.id.button_dangXuat);
 
         fragment_container = findViewById(R.id.fragment_container);
         btn_QL_menu.setOnClickListener(view -> {
@@ -126,6 +129,24 @@ public class Admin_Activity extends AppCompatActivity {
             btn_QL_Table.setBackgroundResource(R.color.white);
             btn_QL_Table.setTextColor(Color.BLACK);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QL_Table_Fragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+        });
+
+        btn_dangXuat.setOnClickListener(view -> {
+            // Tạo một AlertDialog để hỏi người dùng có muốn đăng xuất không
+            new AlertDialog.Builder(this)
+                    .setTitle("Xác nhận")
+                    .setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản không?")
+                    .setPositiveButton("Đồng ý", (dialog, which) -> {
+                        // Nếu người dùng chọn "Đồng ý", chuyển sang MainActivity và kết thúc Activity hiện tại
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> {
+                        // Nếu người dùng chọn "Hủy", không làm gì cả
+                        dialog.dismiss();
+                    })
+                    .show();
         });
         fragment_container = findViewById(R.id.fragment_container);
     }

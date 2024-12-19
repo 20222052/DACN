@@ -53,10 +53,10 @@ public class QL_Table_Fragment extends Fragment {
     }
     @SuppressLint("WrongViewCast")
     private void initializeViews(View view) {
-        edtMaBan = view.findViewById(R.id.id_Table);
-        edtTenBan = view.findViewById(R.id.nameTB);
+        edtMaBan = view.findViewById(R.id.edt_ma_ban);
+        edtTenBan = view.findViewById(R.id.edt_ten_ban);
         btnThem = view.findViewById(R.id.btn_them);
-        btnXoa = view.findViewById(R.id.btn_xoa);
+        btnXoa = view.findViewById(R.id.btn_xoaTB);
         searchTable = view.findViewById(R.id.search_table);
         gridViewTable = view.findViewById(R.id.gridview_table);
     }
@@ -68,11 +68,12 @@ public class QL_Table_Fragment extends Fragment {
         });
 
         btnXoa.setOnClickListener(v -> {
+            String selectedTableId = tableAdapter.getSelectedTableId();
             if (selectedTableId != null) {
                 qlTBController.deleteTable(selectedTableId);
                 loadTableList(); // Refresh list after deleting
             } else {
-                showToast("No employee selected for deletion");
+                showToast("No table selected for deletion");
             }
         });
         gridViewTable.setOnItemClickListener((parent, view, position, id) -> {
@@ -114,19 +115,19 @@ public class QL_Table_Fragment extends Fragment {
             }
         });
     }
-//    private boolean validateInputFields() {
-//        String tenBan = edtTenBan.getText().toString().trim();
-//        if (tenBan.isEmpty()) {
-//            showToast("Tên bàn không được để trống");
-//            return false;
-//        }
-//        Log.e("QL_Table_Fragment", "Ten ban: ");
-//        return true;
-//    }
+    private boolean validateInputFields() {
+        String tenBan = edtTenBan.getText().toString().trim();
+        if (tenBan.isEmpty()) {
+            showToast("Tên bàn không được để trống");
+            return false;
+        }
+        Log.e("QL_Table_Fragment", "Ten ban: ");
+        return true;
+    }
     private Table createTableFromInput() {
         int maBan = Integer.parseInt(edtMaBan.getText().toString().trim());
         String tenBan = edtTenBan.getText().toString().trim();
-        return new Table(maBan, tenBan, false); // ID will be set later
+        return new Table(maBan, tenBan, true); // ID will be set later
     }
 //    private void populateFormWithNhanVien(Table table) {
 //        edtMaBan.setText(table.getIdTable());

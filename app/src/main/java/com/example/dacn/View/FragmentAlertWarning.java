@@ -24,7 +24,6 @@ public class FragmentAlertWarning extends Fragment {
 
     private String message;  // Biến nhận dữ liệu từ CartFragment
     private String message2; // Biến nhận dữ liệu từ CartFragment
-
     private Button btn_dong;  // Nút "Đóng"
     private CountDownTimer countDownTimer;
     private OnHuyDonHangListener mListener;
