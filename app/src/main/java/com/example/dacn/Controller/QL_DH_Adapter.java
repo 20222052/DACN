@@ -1,6 +1,7 @@
 package com.example.dacn.Controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,12 @@ public class QL_DH_Adapter extends BaseAdapter {
     private Context context;
     private List<DonHang> donHangList;
     private Map<Integer, String> nhanVienIdToNameMap;
-
-    public QL_DH_Adapter(@NonNull Context context, @NonNull List<DonHang> donHangList, @NonNull Map<Integer, String> nhanVienIdToNameMap) {
+    private Map<Integer, String> tableIdToNameMap;
+    public QL_DH_Adapter(@NonNull Context context, @NonNull List<DonHang> donHangList, @NonNull Map<Integer, String> nhanVienIdToNameMap, @NonNull Map<Integer, String> tableIdToNameMap) {
         this.context = context;
         this.donHangList = donHangList;
         this.nhanVienIdToNameMap = nhanVienIdToNameMap;
+        this.tableIdToNameMap = tableIdToNameMap;
     }
 
     @Override
@@ -55,10 +57,19 @@ public class QL_DH_Adapter extends BaseAdapter {
         TextView tvNgayDatHang = convertView.findViewById(R.id.date_hd);
         TextView tvTongTien = convertView.findViewById(R.id.Tong_tien);
         TextView tvTrangThai = convertView.findViewById(R.id.trang_thai);
+        TextView tvTenNV = convertView.findViewById(R.id.name_NV);
+        TextView tvTenBan = convertView.findViewById(R.id.name_table);
 
         tvMaDonHang.setText("Mã đơn hàng: #" + donHang.getMaDonHang());
         tvNgayDatHang.setText("Ngày đặt hàng : " + donHang.getNgayDatHang());
         tvTongTien.setText("Tổng tiền : " + donHang.getTongTien());
+
+        String tenNhanVien = nhanVienIdToNameMap.get(Integer.parseInt(String.valueOf(donHang.getNhanVienId())));
+        tvTenNV.setText("Tên nhân viên : " + (tenNhanVien != null ? tenNhanVien : "Unknown"));
+
+        String tenBan = tableIdToNameMap.get(donHang.getTableId());
+        tvTenBan.setText("Tên bàn : " + (tenBan != null ? tenBan : "Unknown"));
+
         tvTrangThai.setText(donHang.isTrangThai() ? "Trạng thái : Completed" : "Trạng thái : Pending");
 
         return convertView;
